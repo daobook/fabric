@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 Jeff Forcier
+# This file is distributed under the same license as the Fabric package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Fabric \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-04 01:13+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.1\n"
+
+#: ../../api/testing.rst:5
+msgid "``testing``"
+msgstr ""
+
+#: ../../api/testing.rst:7
+msgid ""
+"The ``fabric.testing`` subpackage contains a handful of test helper "
+"modules:"
+msgstr ""
+
+#: ../../api/testing.rst:9
+msgid ""
+"`fabric.testing.base` which only depends on things like ``mock`` and is "
+"appropriate in just about any test paradigm;"
+msgstr ""
+
+#: ../../api/testing.rst:11
+msgid ""
+"`fabric.testing.fixtures`, containing ``pytest`` fixtures and thus only "
+"of interest for users of ``pytest``."
+msgstr ""
+
+#: ../../api/testing.rst:14
+msgid ""
+"All are documented below. Please note the module-level documentation "
+"which contains install instructions!"
+msgstr ""
+
+#: ../../api/testing.rst:18
+msgid "``testing.base``"
+msgstr ""
+
+#: fabric.testing.base:1 of
+msgid ""
+"This module contains helpers/fixtures to assist in testing Fabric-driven "
+"code."
+msgstr ""
+
+#: fabric.testing.base:3 of
+msgid ""
+"It is not intended for production use, and pulls in some test-oriented "
+"dependencies such as `mock <https://pypi.org/project/mock/>`_. You can "
+"install an 'extra' variant of Fabric to get these dependencies if you "
+"aren't already using them for your own testing purposes: ``pip install "
+"fabric[testing]``."
+msgstr ""
+
+#: fabric.testing.base:9 of
+msgid ""
+"If you're using pytest for your test suite, you may be interested in "
+"grabbing ``fabric[pytest]`` instead, which encompasses the dependencies "
+"of both this module and the `fabric.testing.fixtures` module, which "
+"contains pytest fixtures."
+msgstr ""
+
+#: ../../api/testing.rst:23
+msgid "``testing.fixtures``"
+msgstr ""
+
+#: fabric.testing.fixtures:1 of
+msgid ""
+"`pytest <https://pytest.org>`_ fixtures for easy use of Fabric test "
+"helpers."
+msgstr ""
+
+#: fabric.testing.fixtures:3 of
+msgid ""
+"To get Fabric plus this module's dependencies (as well as those of the "
+"main `fabric.testing.base` module which these fixtures wrap), ``pip "
+"install fabric[pytest]``."
+msgstr ""
+
+#: fabric.testing.fixtures:7 of
+msgid ""
+"The simplest way to get these fixtures loaded into your test suite so "
+"Pytest notices them is to import them into a ``conftest.py`` (`docs "
+"<http://pytest.readthedocs.io/en/latest/fixture.html#conftest-py-sharing-"
+"fixture-functions>`_). For example, if you intend to use the `remote` and"
+" `client` fixtures::"
+msgstr ""
+

@@ -1,0 +1,2938 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 Jeff Forcier
+# This file is distributed under the same license as the Fabric package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Fabric \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-04 01:13+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.1\n"
+
+#: ../../upgrading.rst:5
+msgid "Upgrading from 1.x"
+msgstr ""
+
+#: ../../upgrading.rst:7
+msgid ""
+"Modern Fabric (2+) represents a near-total reimplementation & "
+"reorganization of the software. It's been :ref:`broken in two <invoke-"
+"split-from-fabric>`, cleaned up, made more explicit, and so forth. In "
+"some cases, upgrading requires only basic search & replace; in others, "
+"more work is needed."
+msgstr ""
+
+#: ../../upgrading.rst:12
+msgid ""
+"If you read this document carefully, it should guide you in the right "
+"direction until you're fully upgraded. If any functionality you're using "
+"in Fabric 1 isn't listed here, please file a ticket `on Github "
+"<https://github.com/fabric/fabric>`_ and we'll update it ASAP."
+msgstr ""
+
+#: ../../upgrading.rst:18
+#, python-format
+msgid ""
+"As of the 2.0 release line, Fabric 2 is **not** at 100% feature parity "
+"with 1.x! Some features have been explicitly dropped, but others simply "
+"have not been ported over yet, either due to time constraints or because "
+"said features need to be re-examined in a modern context."
+msgstr ""
+
+#: ../../upgrading.rst:23
+msgid ""
+"Please review the information below, including the :ref:`upgrade-"
+"specifics` section which contains a very detailed list, before filing bug"
+" reports!"
+msgstr ""
+
+#: ../../upgrading.rst:26
+msgid ""
+"Also see :ref:`the roadmap <roadmap>` for additional notes about release "
+"versioning."
+msgstr ""
+
+#: ../../upgrading.rst:30
+msgid "Why upgrade?"
+msgstr ""
+
+#: ../../upgrading.rst:32
+msgid ""
+"We'd like to call out, in no particular order, some specific improvements"
+" in modern Fabric that might make upgrading worth your time."
+msgstr ""
+
+#: ../../upgrading.rst:36
+msgid ""
+"These are all listed in the rest of the doc too, so if you're already "
+"sold, just skip there."
+msgstr ""
+
+#: ../../upgrading.rst:39
+msgid "Python 3 compatibility (specifically, we now support 2.7 and 3.4+);"
+msgstr ""
+
+#: ../../upgrading.rst:40
+msgid "Thread-safe - no more requirement on multiprocessing for concurrency;"
+msgstr ""
+
+#: ../../upgrading.rst:41
+msgid ""
+"API reorganized around `fabric.connection.Connection` objects instead of "
+"global module state;"
+msgstr ""
+
+#: ../../upgrading.rst:43
+msgid ""
+"Command-line parser overhauled to allow for regular GNU/POSIX style flags"
+" and options on a per-task basis (no more ``fab "
+"mytask:weird=custom,arg=format``);"
+msgstr ""
+
+#: ../../upgrading.rst:45
+msgid "Task organization is more explicit and flexible / has less 'magic';"
+msgstr ""
+
+#: ../../upgrading.rst:46
+msgid "Tasks can declare other tasks to always be run before or after themselves;"
+msgstr ""
+
+#: ../../upgrading.rst:47
+msgid ""
+"Configuration massively expanded to allow for multiple config files & "
+"formats, env vars, per-user/project/module configs, and much more;"
+msgstr ""
+
+#: ../../upgrading.rst:49
+msgid ""
+"SSH config file loading enabled by default & has been fleshed out re: "
+"system/user/runtime file selection;"
+msgstr ""
+
+#: ../../upgrading.rst:51
+msgid ""
+"Shell command execution API consistent across local and remote method "
+"calls - no more differentiation between ``local`` and ``run`` (besides "
+"where the command runs, of course!);"
+msgstr ""
+
+#: ../../upgrading.rst:54
+msgid ""
+"Shell commands significantly more flexible re: interactive behavior, "
+"simultaneous capture & display (now applies to local subprocesses, not "
+"just remote), encoding control, and auto-responding;"
+msgstr ""
+
+#: ../../upgrading.rst:57
+msgid ""
+"Use of Paramiko's APIs for the SSH layer much more transparent - e.g. "
+"`fabric.connection.Connection` allows control over the kwargs given to "
+"`SSHClient.connect <paramiko.client.SSHClient.connect>`;"
+msgstr ""
+
+#: ../../upgrading.rst:60
+msgid ""
+"Gateway/jump-host functionality offers a ``ProxyJump`` style 'native' (no"
+" proxy-command subprocesses) option, which can be nested infinitely;"
+msgstr ""
+
+#: ../../upgrading.rst:65
+msgid "'Sidegrading' to Invoke"
+msgstr ""
+
+#: ../../upgrading.rst:67
+msgid ""
+"We linked to a note about this above, but to be explicit: modern Fabric "
+"is really a few separate libraries, and anything not strictly SSH or "
+"network related has been :ref:`split out into the Invoke project <invoke-"
+"split-from-fabric>`."
+msgstr ""
+
+#: ../../upgrading.rst:72
+msgid ""
+"This means that if you're in the group of users leveraging Fabric solely "
+"for its task execution or ``local``, and never used ``run``, ``put`` or "
+"similar - **you don't need to use Fabric itself anymore** and can simply "
+"**'sidegrade' to Invoke instead**."
+msgstr ""
+
+#: ../../upgrading.rst:77
+msgid ""
+"You'll still want to read over this document to get a sense of how things"
+" have changed, but be aware that you can get away with ``pip install "
+"invoke`` and won't need Fabric, Paramiko, cryptography dependencies, or "
+"anything else."
+msgstr ""
+
+#: ../../upgrading.rst:83
+msgid "Using modern Fabric from within Invoke"
+msgstr ""
+
+#: ../../upgrading.rst:85
+msgid ""
+"We intend to enhance modern Fabric until it encompasses the bulk of "
+"Fabric 1's use cases, such that you can use ``fab`` and fabfiles on their"
+" own without caring too much about how it's built on top of Invoke."
+msgstr ""
+
+#: ../../upgrading.rst:89
+msgid ""
+"However, prior to that point -- and very useful on its own for "
+"intermediate-to-advanced users -- is the fact that modern Fabric is "
+"designed with library or direct API use in mind. **It's entirely "
+"possible, and in some cases preferable, to use Invoke for your CLI needs "
+"and Fabric as a pure API within your Invoke tasks.**"
+msgstr ""
+
+#: ../../upgrading.rst:95
+msgid ""
+"In other words, you can eschew ``fab``/fabfiles entirely unless you find "
+"yourself strongly needing the conveniences it wraps around ad-hoc "
+"sessions, such as :option:`--hosts` and the like."
+msgstr ""
+
+#: ../../upgrading.rst:101
+msgid "Running both Fabric versions simultaneously"
+msgstr ""
+
+#: ../../upgrading.rst:103
+msgid ""
+"To help with gradual upgrades, modern Fabric may be installed under the "
+"name ``fabric2`` (in addition to being made available \"normally\" as "
+"versions 2.0+ of ``fabric``) and can live alongside installations of "
+"version 1.x."
+msgstr ""
+
+#: ../../upgrading.rst:107
+msgid ""
+"Thus, if you have a large codebase and don't want to make the jump to "
+"modern versions in one leap, it's possible to have both Fabric 1 "
+"(``fabric``, as you presumably had it installed previously) and modern "
+"Fabric (as ``fabric2``) resident in your Python environment "
+"simultaneously."
+msgstr ""
+
+#: ../../upgrading.rst:113
+msgid ""
+"We strongly recommend that you eventually migrate all code using Fabric "
+"1, to versions 2 or above, so that you can move back to installing and "
+"importing under the ``fabric`` name. ``fabric2`` as a distinct package "
+"and module is intended to be a stopgap, and there will not be any "
+"``fabric3`` or above (not least because some of those names are already "
+"taken!)"
+msgstr ""
+
+#: ../../upgrading.rst:119
+msgid ""
+"For details on how to obtain the ``fabric2`` version of the package, see "
+":ref:`installing-as-fabric2`."
+msgstr ""
+
+#: ../../upgrading.rst:125
+msgid "Creating ``Connection`` and/or ``Config`` objects from v1 settings"
+msgstr ""
+
+#: ../../upgrading.rst:127
+msgid ""
+"A common tactic when upgrading piecemeal is to generate modern Fabric "
+"objects whose contents match the current Fabric 1 environment. Whereas "
+"Fabric 1 stores *all* configuration (including the \"current host\") in a"
+" single place -- the ``env`` object -- modern Fabric breaks things up "
+"into multiple (albeit composed) objects: `~fabric.connection.Connection` "
+"for per-connection parameters, and `~fabric.config.Config` for general "
+"settings and defaults."
+msgstr ""
+
+#: ../../upgrading.rst:134
+msgid ""
+"In most cases, you'll only need to generate a "
+"`~fabric.connection.Connection` object using the alternate class "
+"constructor `Connection.from_v1 <fabric.connection.Connection.from_v1>`, "
+"which should be fed your appropriate local ``fabric.api.env`` object; see"
+" its API docs for details."
+msgstr ""
+
+#: ../../upgrading.rst:139
+msgid "A contrived example::"
+msgstr ""
+
+#: ../../upgrading.rst:149
+msgid ""
+"By default, this constructor calls another API member -- `Config.from_v1 "
+"<fabric.config.Config.from_v1>` -- internally on your behalf. Users who "
+"need tighter control over modern-style config options may opt to call "
+"that classmethod explicitly and hand their modified result into "
+"`Connection.from_v1 <fabric.connection.Connection.from_v1>`, which will "
+"cause the latter to skip any implicit config creation."
+msgstr ""
+
+#: ../../upgrading.rst:159
+msgid "Mapping of v1 ``env`` vars to modern API members"
+msgstr ""
+
+#: ../../upgrading.rst:161
+msgid ""
+"The ``env`` vars and how they map to `~fabric.connection.Connection` "
+"arguments or `~fabric.config.Config` values (when fed into the "
+"``.from_v1`` constructors described above) are listed below."
+msgstr ""
+
+#: ../../upgrading.rst:168
+msgid "v1 ``env`` var"
+msgstr ""
+
+#: ../../upgrading.rst:169
+msgid "v2+ usage (prefixed with the class it ends up in)"
+msgstr ""
+
+#: ../../upgrading.rst:171
+msgid "``always_use_pty``"
+msgstr ""
+
+#: ../../upgrading.rst:172
+msgid "Config: ``run.pty``."
+msgstr ""
+
+#: ../../upgrading.rst:173
+msgid "``command_timeout``"
+msgstr ""
+
+#: ../../upgrading.rst:174
+msgid ""
+"Config: ``timeouts.command``; timeouts are now their own config subtree, "
+"whereas in v1 it was possible for the ambiguous ``timeout`` setting -- "
+"see below -- to work for either connect OR command timeouts."
+msgstr ""
+
+#: ../../upgrading.rst:177
+msgid "``forward_agent``"
+msgstr ""
+
+#: ../../upgrading.rst:178
+msgid "Config: ``connect_kwargs.forward_agent``."
+msgstr ""
+
+#: ../../upgrading.rst:179
+msgid "``gateway``"
+msgstr ""
+
+#: ../../upgrading.rst:180
+msgid "Config: ``gateway``."
+msgstr ""
+
+#: ../../upgrading.rst:181
+msgid "``host_string``"
+msgstr ""
+
+#: ../../upgrading.rst:182
+msgid ""
+"Connection: ``host`` kwarg (which can handle host-string like values, "
+"including user/port)."
+msgstr ""
+
+#: ../../upgrading.rst:184
+msgid "``key``"
+msgstr ""
+
+#: ../../upgrading.rst:185
+msgid ""
+"**Not supported**: Fabric 1 performed extra processing on this (trying a "
+"bunch of key classes to instantiate) before handing it into Paramiko; "
+"modern Fabric prefers to just let you handle Paramiko-level parameters "
+"directly."
+msgstr ""
+
+#: ../../upgrading.rst:190
+msgid ""
+"If you're filling your Fabric 1 ``key`` data from a file, we recommend "
+"switching to ``key_filename`` instead, which is supported."
+msgstr ""
+
+#: ../../upgrading.rst:193
+msgid ""
+"If you're loading key data from some other source as a string, you should"
+" know what type of key your data is and manually instantiate it instead, "
+"then supply it to the ``connect_kwargs`` parameter. For example::"
+msgstr ""
+
+#: ../../upgrading.rst:207
+msgid "``key_filename``"
+msgstr ""
+
+#: ../../upgrading.rst:208
+msgid "Config: ``connect_kwargs.key_filename``."
+msgstr ""
+
+#: ../../upgrading.rst:209
+msgid "``no_agent``"
+msgstr ""
+
+#: ../../upgrading.rst:210
+msgid "Config: ``connect_kwargs.allow_agent`` (inverted)."
+msgstr ""
+
+#: ../../upgrading.rst:211
+msgid "``password``"
+msgstr ""
+
+#: ../../upgrading.rst:212
+msgid ""
+"Config: ``connect_kwargs.password``, as well as ``sudo.password`` **if "
+"and only if** the env's ``sudo_password`` (see below) is unset. (This "
+"mimics how v1 uses this particular setting - in earlier versions there "
+"was no ``sudo_password`` at all.)"
+msgstr ""
+
+#: ../../upgrading.rst:216
+msgid "``port``"
+msgstr ""
+
+#: ../../upgrading.rst:217
+msgid ""
+"Connection: ``port`` kwarg. Is casted to an integer due to Fabric 1's "
+"default being a string value (which is not valid in v2)."
+msgstr ""
+
+#: ../../upgrading.rst:221
+msgid ""
+"Since v1's ``port`` is used both for a default *and* to store the current"
+" connection state, v2 uses it to fill in the Connection only, and not the"
+" Config, on assumption that it will typically be the current connection "
+"state."
+msgstr ""
+
+#: ../../upgrading.rst:226
+msgid "``ssh_config_path``"
+msgstr ""
+
+#: ../../upgrading.rst:227
+msgid "Config: ``ssh_config_path``."
+msgstr ""
+
+#: ../../upgrading.rst:228
+msgid "``sudo_password``"
+msgstr ""
+
+#: ../../upgrading.rst:229
+msgid "Config: ``sudo.password``."
+msgstr ""
+
+#: ../../upgrading.rst:230
+msgid "``sudo_prompt``"
+msgstr ""
+
+#: ../../upgrading.rst:231
+msgid "Config: ``sudo.prompt``."
+msgstr ""
+
+#: ../../upgrading.rst:232
+msgid "``timeout``"
+msgstr ""
+
+#: ../../upgrading.rst:233
+msgid ""
+"Config: ``timeouts.connection``, for connection timeouts, or "
+"``timeouts.command`` for command timeouts (see above)."
+msgstr ""
+
+#: ../../upgrading.rst:235
+msgid "``use_ssh_config``"
+msgstr ""
+
+#: ../../upgrading.rst:236
+msgid "Config: ``load_ssh_configs``."
+msgstr ""
+
+#: ../../upgrading.rst:237
+msgid "``user``"
+msgstr ""
+
+#: ../../upgrading.rst:238
+msgid "Connection: ``user`` kwarg."
+msgstr ""
+
+#: ../../upgrading.rst:239
+msgid "``warn_only``"
+msgstr ""
+
+#: ../../upgrading.rst:240
+msgid "Config: ``run.warn``"
+msgstr ""
+
+#: ../../upgrading.rst:246
+msgid "Upgrade specifics"
+msgstr ""
+
+#: ../../upgrading.rst:248
+msgid ""
+"This is (intended to be) an exhaustive list of *all* Fabric 1.x "
+"functionality, as well as new-to-Invoke-or-Fabric-2 functionality not "
+"present in 1.x; it specifies whether upgrading is necessary, how to "
+"upgrade if so, and tracks features which haven't been implemented in "
+"modern versions yet."
+msgstr ""
+
+#: ../../upgrading.rst:253
+msgid "Most sections are broken down in table form, as follows:"
+msgstr ""
+
+#: ../../upgrading.rst:257
+msgid "Fabric 1 feature or behavior"
+msgstr ""
+
+#: ../../upgrading.rst:258
+msgid "Status, see below for breakdown"
+msgstr ""
+
+#: ../../upgrading.rst:259
+msgid "Migration notes, removal rationale, etc"
+msgstr ""
+
+#: ../../upgrading.rst:261
+msgid ""
+"Below are the typical values for the 'status' column, though some of them"
+" are a bit loose - make sure to read the notes column in all cases! Also "
+"note that things are not ironclad - eg any 'removed' item has some chance"
+" of returning if enough users request it or use cases are made that "
+"workarounds are insufficient."
+msgstr ""
+
+#: ../../upgrading.rst:267
+msgid ""
+"**Ported**: available already, possibly renamed or moved (frequently, "
+"moved into the `Invoke <https://pyinvoke.org>`_ codebase.)"
+msgstr ""
+
+#: ../../upgrading.rst:269
+msgid ""
+"**Pending**: would fit, but has not yet been ported, good candidate for a"
+" patch. *These entries link to the appropriate Github ticket* - please do"
+" not make new ones!"
+msgstr ""
+
+#: ../../upgrading.rst:272
+msgid ""
+"**Removed**: explicitly *not* ported (no longer fits with vision, had too"
+" poor a maintenance-to-value ratio, etc) and unlikely to be reinstated."
+msgstr ""
+
+#: ../../upgrading.rst:275
+msgid "Here's a quick local table of contents for navigation purposes:"
+msgstr ""
+
+#: ../../upgrading.rst:283
+msgid "General / conceptual"
+msgstr ""
+
+#: ../../upgrading.rst:285
+msgid ""
+"Modern Fabric is fully Python 3 compatible; as a cost, Python 2.5 support"
+" (a longstanding feature of Fabric 1) has been dropped - in fact, we've "
+"dropped support for anything older than Python 2.7."
+msgstr ""
+
+#: ../../upgrading.rst:288
+msgid ""
+"The CLI task-oriented workflow remains a primary design goal, but the "
+"library use case is no longer a second-class citizen; instead, the "
+"library functionality has been designed first, with the CLI/task features"
+" built on top of it."
+msgstr ""
+
+#: ../../upgrading.rst:292
+msgid ""
+"Additionally, within the CLI use case, version 1 placed too much emphasis"
+" on 'lazy' interactive prompts for authentication secrets or even "
+"connection parameters, driven in part by a lack of strong configuration "
+"mechanisms. Over time it became clear this wasn't worth the tradeoffs of "
+"having confusing noninteractive behavior and difficult debugging/testing "
+"procedures."
+msgstr ""
+
+#: ../../upgrading.rst:298
+msgid ""
+"Modern Fabric takes an arguably cleaner approach (based on functionality "
+"added to v1 over time) where users are encouraged to leverage the "
+"configuration system and/or serve the user prompts for runtime secrets at"
+" the *start* of the process; if the system determines it's missing "
+"information partway through, it raises exceptions instead of prompting."
+msgstr ""
+
+#: ../../upgrading.rst:303
+msgid ""
+"Invoke's design includes :ref:`explicit user-facing testing functionality"
+" <testing-user-code>`; if you didn't find a way to write tests for your "
+"Fabric-using code before, it should be much easier now."
+msgstr ""
+
+#: ../../upgrading.rst:307
+msgid ""
+"We recommend trying to write tests early on; they will help clarify the "
+"upgrade process for you & also make the process safer!"
+msgstr ""
+
+#: ../../upgrading.rst:313
+msgid "API organization"
+msgstr ""
+
+#: ../../upgrading.rst:315
+msgid "High level code flow and API member concerns."
+msgstr ""
+
+#: ../../upgrading.rst:320
+msgid "Import everything via ``fabric.api``"
+msgstr ""
+
+#: ../../upgrading.rst:321 ../../upgrading.rst:327 ../../upgrading.rst:377
+#: ../../upgrading.rst:464 ../../upgrading.rst:471 ../../upgrading.rst:483
+#: ../../upgrading.rst:489 ../../upgrading.rst:496 ../../upgrading.rst:546
+#: ../../upgrading.rst:553 ../../upgrading.rst:577 ../../upgrading.rst:590
+#: ../../upgrading.rst:601 ../../upgrading.rst:609 ../../upgrading.rst:622
+#: ../../upgrading.rst:628 ../../upgrading.rst:640 ../../upgrading.rst:660
+#: ../../upgrading.rst:673 ../../upgrading.rst:695 ../../upgrading.rst:769
+#: ../../upgrading.rst:821 ../../upgrading.rst:895 ../../upgrading.rst:924
+#: ../../upgrading.rst:948 ../../upgrading.rst:956 ../../upgrading.rst:969
+#: ../../upgrading.rst:976 ../../upgrading.rst:1009 ../../upgrading.rst:1059
+#: ../../upgrading.rst:1127 ../../upgrading.rst:1137 ../../upgrading.rst:1146
+#: ../../upgrading.rst:1248 ../../upgrading.rst:1266 ../../upgrading.rst:1289
+#: ../../upgrading.rst:1332 ../../upgrading.rst:1399 ../../upgrading.rst:1408
+msgid "Removed"
+msgstr ""
+
+#: ../../upgrading.rst:322
+msgid ""
+"All useful imports are now available at the top level, e.g. ``from fabric"
+" import Connection``."
+msgstr ""
+
+#: ../../upgrading.rst:324
+msgid ""
+"Configure connection parameters globally (via ``env.host_string``, "
+"``env.host``, ``env.port``, ``env.user``) and call global methods which "
+"implicitly reference them (``run``/``sudo``/etc)"
+msgstr ""
+
+#: ../../upgrading.rst:328
+msgid ""
+"The primary API is now properly OOP: instantiate "
+"`fabric.connection.Connection` objects and call their methods. These "
+"objects encapsulate all connection state (user, host, gateway, etc) and "
+"have their own SSH client instances."
+msgstr ""
+
+#: ../../upgrading.rst:334
+msgid "`Connection.from_v1 <fabric.connection.Connection.from_v1>`"
+msgstr ""
+
+#: ../../upgrading.rst:336
+msgid ""
+"Emphasis on serialized \"host strings\" as method of setting user, host, "
+"port, etc"
+msgstr ""
+
+#: ../../upgrading.rst:338 ../../upgrading.rst:406 ../../upgrading.rst:1359
+msgid "Ported/Removed"
+msgstr ""
+
+#: ../../upgrading.rst:339
+msgid ""
+"`fabric.connection.Connection` *can* accept a shorthand \"host "
+"string\"-like argument, but the primary API is now explicit user, host, "
+"port, etc keyword arguments."
+msgstr ""
+
+#: ../../upgrading.rst:343
+msgid ""
+"Additionally, many arguments/settings/etc that expected a host string in "
+"v1 will now expect a `fabric.connection.Connection` instance instead."
+msgstr ""
+
+#: ../../upgrading.rst:345
+msgid "Use of \"roles\" as global named lists of host strings"
+msgstr ""
+
+#: ../../upgrading.rst:346 ../../upgrading.rst:371 ../../upgrading.rst:382
+#: ../../upgrading.rst:391 ../../upgrading.rst:421 ../../upgrading.rst:448
+#: ../../upgrading.rst:477 ../../upgrading.rst:480 ../../upgrading.rst:501
+#: ../../upgrading.rst:512 ../../upgrading.rst:527 ../../upgrading.rst:556
+#: ../../upgrading.rst:560 ../../upgrading.rst:565 ../../upgrading.rst:572
+#: ../../upgrading.rst:585 ../../upgrading.rst:597 ../../upgrading.rst:631
+#: ../../upgrading.rst:645 ../../upgrading.rst:653 ../../upgrading.rst:657
+#: ../../upgrading.rst:665 ../../upgrading.rst:707 ../../upgrading.rst:727
+#: ../../upgrading.rst:750 ../../upgrading.rst:757 ../../upgrading.rst:778
+#: ../../upgrading.rst:784 ../../upgrading.rst:796 ../../upgrading.rst:806
+#: ../../upgrading.rst:857 ../../upgrading.rst:875 ../../upgrading.rst:912
+#: ../../upgrading.rst:935 ../../upgrading.rst:939 ../../upgrading.rst:991
+#: ../../upgrading.rst:1001 ../../upgrading.rst:1004 ../../upgrading.rst:1023
+#: ../../upgrading.rst:1044 ../../upgrading.rst:1047 ../../upgrading.rst:1054
+#: ../../upgrading.rst:1066 ../../upgrading.rst:1071 ../../upgrading.rst:1085
+#: ../../upgrading.rst:1101 ../../upgrading.rst:1113 ../../upgrading.rst:1118
+#: ../../upgrading.rst:1123 ../../upgrading.rst:1152 ../../upgrading.rst:1182
+#: ../../upgrading.rst:1199 ../../upgrading.rst:1244 ../../upgrading.rst:1262
+#: ../../upgrading.rst:1310 ../../upgrading.rst:1313 ../../upgrading.rst:1327
+#: ../../upgrading.rst:1344 ../../upgrading.rst:1351 ../../upgrading.rst:1396
+#: ../../upgrading.rst:1404
+msgid "Ported"
+msgstr ""
+
+#: ../../upgrading.rst:347
+msgid ""
+"This need is now served by `fabric.group.Group` objects (which wrap some "
+"number of `fabric.connection.Connection` instances with \"do a thing to "
+"all members\" methods.) Users can create & organize these any way they "
+"want."
+msgstr ""
+
+#: ../../upgrading.rst:352
+msgid ""
+"See the line items for ``--roles`` (:ref:`upgrading-cli`), ``env.roles`` "
+"(:ref:`upgrading-env`) and ``@roles`` (:ref:`upgrading-tasks`) for the "
+"status of those specifics."
+msgstr ""
+
+#: ../../upgrading.rst:359
+msgid "Task functions & decorators"
+msgstr ""
+
+#: ../../upgrading.rst:362
+msgid ""
+"Nearly all task-related functionality is implemented in Invoke; for more "
+"details see its :ref:`execution <invoking-tasks>` and :ref:`namespaces "
+"<task-namespaces>` documentation."
+msgstr ""
+
+#: ../../upgrading.rst:369
+msgid ""
+"By default, tasks are loaded from a ``fabfile.py`` which is sought up "
+"towards filesystem root from the user's current working directory"
+msgstr ""
+
+#: ../../upgrading.rst:372
+msgid ""
+"This behavior is basically identical today, with minor modifications and "
+"enhancements (such as tighter control over the load process, and API "
+"hooks for implementing custom loader logic - see :ref:`loading-"
+"collections`.)"
+msgstr ""
+
+#: ../../upgrading.rst:376
+msgid "\"Classic\" style implicit task functions lacking a ``@task`` decorator"
+msgstr ""
+
+#: ../../upgrading.rst:378
+msgid ""
+"These were on the way out even in v1, and arbitrary task/namespace "
+"creation is more explicitly documented now, via Invoke's "
+"`~invoke.tasks.Task` and `~invoke.collection.Collection`."
+msgstr ""
+
+#: ../../upgrading.rst:381
+msgid "\"New\" style ``@task``-decorated, module-level task functions"
+msgstr ""
+
+#: ../../upgrading.rst:383
+msgid ""
+"Largely the same, though now with superpowers - `@task "
+"<fabric.tasks.task>` can still be used without any parentheses, but where"
+" v1 only had a single ``task_class`` argument, the new version (largely "
+"based on Invoke's) has a number of namespace and parser hints, as well as"
+" execution related options (such as those formerly served by ``@hosts`` "
+"and friends)."
+msgstr ""
+
+#: ../../upgrading.rst:389
+msgid ""
+"Arbitrary task function arguments (i.e. ``def mytask(any, thing, at, "
+"all)``)"
+msgstr ""
+
+#: ../../upgrading.rst:392
+msgid ""
+"This gets its own line item because: tasks must now take a "
+"`~invoke.context.Context` (vanilla Invoke) or "
+"`fabric.connection.Connection` (Fabric) object as their first positional "
+"argument. The rest of the function signature is, as before, totally up to"
+" the user & will get automatically turned into CLI flags."
+msgstr ""
+
+#: ../../upgrading.rst:398
+msgid ""
+"This sacrifices a small bit of the \"quick DSL\" of v1 in exchange for a "
+"cleaner, easier to understand/debug, and more user-overrideable API "
+"structure."
+msgstr ""
+
+#: ../../upgrading.rst:402
+msgid ""
+"As a side effect, it lessens the distinction between \"module of "
+"functions\" and \"class of methods\"; users can more easily start with "
+"the former and migrate to the latter when their needs grow/change."
+msgstr ""
+
+#: ../../upgrading.rst:405
+msgid "Implicit task tree generation via import-crawling"
+msgstr ""
+
+#: ../../upgrading.rst:407
+msgid ""
+"Namespace construction is now more explicit; for example, imported "
+"modules in your ``fabfile.py`` are no longer auto-scanned and auto-added "
+"to the task tree."
+msgstr ""
+
+#: ../../upgrading.rst:411
+msgid ""
+"However, the root ``fabfile.py`` *is* automatically loaded (using "
+"`Collection.from_module <invoke.collection.Collection.from_module>`), "
+"preserving the simple/common case. See :ref:`task-namespaces` for "
+"details."
+msgstr ""
+
+#: ../../upgrading.rst:416
+msgid ""
+"We may reinstate (in an opt-in fashion) imported module scanning later, "
+"since the use of explicit namespace objects still allows users control "
+"over the tree that results."
+msgstr ""
+
+#: ../../upgrading.rst:419
+msgid ""
+"``@hosts`` for determining the default host or list of hosts a given task"
+" uses"
+msgstr ""
+
+#: ../../upgrading.rst:422
+msgid ""
+"Reinstated as the ``hosts`` parameter of `@task <fabric.tasks.task>`. "
+"Further, it can now handle dicts of `fabric.connection.Connection` kwargs"
+" in addition to simple host strings."
+msgstr ""
+
+#: ../../upgrading.rst:425
+msgid ""
+"``@roles`` for determining the default list of group-of-host targets a "
+"given task uses"
+msgstr ""
+
+#: ../../upgrading.rst:427 ../../upgrading.rst:953
+msgid "Pending"
+msgstr ""
+
+#: ../../upgrading.rst:428
+msgid ""
+"See :ref:`upgrading-api` for details on the overall 'roles' concept. When"
+" it returns, this will probably follow ``@hosts`` and become some "
+"``@task`` argument."
+msgstr ""
+
+#: ../../upgrading.rst:431
+msgid "``@serial``/``@parallel``/``@runs_once``"
+msgstr ""
+
+#: ../../upgrading.rst:432
+msgid "Ported/`Pending <https://github.com/pyinvoke/invoke/issues/63>`__"
+msgstr ""
+
+#: ../../upgrading.rst:433
+msgid ""
+"Parallel execution is currently offered at the API level via "
+"`fabric.group.Group` subclasses such as `fabric.group.ThreadingGroup`; "
+"however, designating entire sessions and/or tasks to run in parallel (or "
+"to exempt from parallelism) has not been solved yet."
+msgstr ""
+
+#: ../../upgrading.rst:438
+msgid ""
+"The problem needs solving at a higher level than just SSH targets, so "
+"this links to an Invoke-level ticket."
+msgstr ""
+
+#: ../../upgrading.rst:440
+msgid ""
+"``execute`` for calling named tasks from other tasks while honoring "
+"decorators and other execution mechanics (as opposed to calling them "
+"simply as functions)"
+msgstr ""
+
+#: ../../upgrading.rst:443
+msgid "`Pending <https://github.com/pyinvoke/invoke/issues/170>`__"
+msgstr ""
+
+#: ../../upgrading.rst:444
+msgid ""
+"This is one of the top \"missing features\" from the rewrite; link is to "
+"Invoke's tracker."
+msgstr ""
+
+#: ../../upgrading.rst:446
+msgid ""
+"``Task`` class for programmatic creation of tasks (as opposed to using "
+"some function object and the ``@task`` decorator)"
+msgstr ""
+
+#: ../../upgrading.rst:449
+msgid ""
+"While not sharing many implementation details with v1, modern Fabric (via"
+" Invoke) has a publicly exposed `~invoke.tasks.Task` class, which "
+"alongside `~invoke.collection.Collection` allow full programmatic "
+"creation of task trees, no decorator needed."
+msgstr ""
+
+#: ../../upgrading.rst:457
+msgid "CLI arguments, options and behavior"
+msgstr ""
+
+#: ../../upgrading.rst:462
+msgid ""
+"Exposure of task arguments as custom colon/comma delimited CLI arguments,"
+" e.g. ``fab mytask:posarg,kwarg=val``"
+msgstr ""
+
+#: ../../upgrading.rst:465
+msgid ""
+"CLI arguments are now proper GNU/POSIX-style long and short flags, "
+"including globbing shortflags together, space or equals signs to attach "
+"values, optional values, and much more. See :ref:`invoking-tasks`."
+msgstr ""
+
+#: ../../upgrading.rst:468
+msgid ""
+"Task definition names are mirrored directly on the command-line, e.g for "
+"task ``def journald_logs()``, command line argument is ``fab "
+"journald_logs``"
+msgstr ""
+
+#: ../../upgrading.rst:472
+msgid ""
+"Tasks names now get converted from underscores to hyphens. Eg. task ``def"
+" journald_logs()`` now evaluates to ``fab journald-logs`` on the "
+"commandline."
+msgstr ""
+
+#: ../../upgrading.rst:475
+msgid ""
+"Ability to invoke multiple tasks in a single command line, e.g. ``fab "
+"task1 task2``"
+msgstr ""
+
+#: ../../upgrading.rst:478
+msgid "Works great!"
+msgstr ""
+
+#: ../../upgrading.rst:479
+msgid "``python -m fabric`` as stand-in for ``fab``"
+msgstr ""
+
+#: ../../upgrading.rst:481
+msgid "Ported in 2.2."
+msgstr ""
+
+#: ../../upgrading.rst:482
+msgid "``-a``/``--no_agent`` for disabling automatic SSH agent key selection"
+msgstr ""
+
+#: ../../upgrading.rst:484
+msgid ""
+"To disable use of an agent permanently, set config value "
+"``connect_kwargs.allow_agent`` to ``False``; to disable temporarily, "
+"unset the ``SSH_AUTH_SOCK`` env var."
+msgstr ""
+
+#: ../../upgrading.rst:487
+msgid "``-A``/``--forward-agent`` for enabling agent forwarding to the remote end"
+msgstr ""
+
+#: ../../upgrading.rst:490
+msgid ""
+"The config and kwarg versions of this are ported, but there is currently "
+"no CLI flag. Usual \"you can set the config value at runtime with a shell"
+" env variable\" clause is in effect, so this *may* not get ported, "
+"depending."
+msgstr ""
+
+#: ../../upgrading.rst:494
+msgid ""
+"``--abort-on-prompts`` to turn interactive prompts into exceptions (helps"
+" avoid 'hanging' sessions)"
+msgstr ""
+
+#: ../../upgrading.rst:497
+msgid ""
+"See the notes about interactive prompts going away in :ref:`upgrading-"
+"general`. Without mid-session prompts, there's no need for this option."
+msgstr ""
+
+#: ../../upgrading.rst:500
+msgid "``-c``/``--config`` for specifying an alternate config file path"
+msgstr ""
+
+#: ../../upgrading.rst:502
+msgid ""
+"``--config`` lives on, but the short flag is now ``-f`` (``-c`` now "
+"determines which collection module name is sought by the task loader.)"
+msgstr ""
+
+#: ../../upgrading.rst:504
+msgid ""
+"``--colorize-errors`` (and ``env.colorize_errors``) to enable ANSI "
+"coloring of error output"
+msgstr ""
+
+#: ../../upgrading.rst:506
+msgid "`Pending <https://github.com/fabric/fabric/issues/101>`__"
+msgstr ""
+
+#: ../../upgrading.rst:507
+msgid ""
+"Very little color work has been done yet and this is one of the "
+"potentially missing pieces. We're unsure how often this was used in v1 so"
+" it's possible it won't show up again, but generally, we like using color"
+" as an additional output vector, so..."
+msgstr ""
+
+#: ../../upgrading.rst:511
+msgid "``-d``/``--display`` for showing info on a given command"
+msgstr ""
+
+#: ../../upgrading.rst:513
+msgid ""
+"This is now the more standard ``-h``/``--help``, and can be given in "
+"either \"direction\": ``fab -h mytask`` or ``fab mytask -h``."
+msgstr ""
+
+#: ../../upgrading.rst:515
+msgid ""
+"``-D``/``--disable-known-hosts`` to turn off Paramiko's automatic loading"
+" of user-level ``known_hosts`` files"
+msgstr ""
+
+#: ../../upgrading.rst:517 ../../upgrading.rst:614
+msgid "`Pending <https://github.com/fabric/fabric/issues/1804>`__"
+msgstr ""
+
+#: ../../upgrading.rst:518
+msgid "Not ported yet, probably will be."
+msgstr ""
+
+#: ../../upgrading.rst:519
+msgid ""
+"``-e``/``--eagerly-disconnect`` (and ``env.eagerly_disconnect``) which "
+"tells the execution system to disconnect from hosts as soon as a task is "
+"done running"
+msgstr ""
+
+#: ../../upgrading.rst:522
+msgid "Ported/`Pending <https://github.com/fabric/fabric/issues/1805>`__"
+msgstr ""
+
+#: ../../upgrading.rst:523
+msgid ""
+"There's no explicit connection cache anymore, so eager disconnection "
+"should be less necessary. However, investigation and potential feature "
+"toggles are still pending."
+msgstr ""
+
+#: ../../upgrading.rst:526
+msgid "``-f``/``--fabfile`` to select alternate fabfile location"
+msgstr ""
+
+#: ../../upgrading.rst:528
+msgid ""
+"This is now split up into ``-c``/``--collection`` and ``-r``/``--search-"
+"root``; see :ref:`loading-collections`."
+msgstr ""
+
+#: ../../upgrading.rst:530
+msgid ""
+"``-g``/``--gateway`` (and ``env.gateway``) for selecting a global SSH "
+"gateway host string"
+msgstr ""
+
+#: ../../upgrading.rst:532
+msgid "`Pending <https://github.com/fabric/fabric/issues/1806>`__"
+msgstr ""
+
+#: ../../upgrading.rst:533
+msgid ""
+"One can set the global ``gateway`` config option via an environment "
+"variable, which at a glance would remove the need for a dedicated CLI "
+"option. However, this approach only allows setting string values, which "
+"in turn only get used for ``ProxyCommand`` style gatewaying, so it "
+"*doesn't* replace v1's ``--gateway`` (which took a host string and turned"
+" it into a ``ProxyJump`` style gateway)."
+msgstr ""
+
+#: ../../upgrading.rst:541
+msgid ""
+"Thus, if enough users notice the lack, we'll consider a feature-add that "
+"largely mimics the v1 behavior: string becomes first argument to "
+"`fabric.connection.Connection` and that resulting object is then set as "
+"``gateway``."
+msgstr ""
+
+#: ../../upgrading.rst:545
+msgid "``--gss-auth``/``--gss-deleg``/``--gss-kex``"
+msgstr ""
+
+#: ../../upgrading.rst:547
+msgid ""
+"These didn't seem used enough to be worth porting over, especially since "
+"they fall under the usual umbrella of \"Paramiko-level connect "
+"passthrough\" covered by the ``connect_kwargs`` config option. (Which, if"
+" necessary, can be set at runtime via shell environment variables, like "
+"any other config value.)"
+msgstr ""
+
+#: ../../upgrading.rst:552
+msgid "``--hide``/``--show`` for tweaking output display globally"
+msgstr ""
+
+#: ../../upgrading.rst:554
+msgid "This is configurable via the config system and env vars."
+msgstr ""
+
+#: ../../upgrading.rst:555
+msgid "``-H``/``--hosts``"
+msgstr ""
+
+#: ../../upgrading.rst:557
+msgid ""
+"Works basically the same as before - if given, is shorthand for executing"
+" any given tasks once per host."
+msgstr ""
+
+#: ../../upgrading.rst:559
+msgid "``-i`` for SSH key filename selection"
+msgstr ""
+
+#: ../../upgrading.rst:561
+msgid ""
+"Works same as v1, including ability to give multiple times to build a "
+"list of keys to try."
+msgstr ""
+
+#: ../../upgrading.rst:563
+msgid ""
+"``-I``/``--initial-password-prompt`` for requesting an initial pre-"
+"execution password prompt"
+msgstr ""
+
+#: ../../upgrading.rst:566
+msgid ""
+"It's now :option:`--prompt-for-login-password`, :ref:`--prompt-for-sudo-"
+"password <prompt-for-sudo-password>` or :option:`--prompt-for-"
+"passphrase`, depending on whether you were using the former to fill in "
+"passwords or key passphrases (or both.)"
+msgstr ""
+
+#: ../../upgrading.rst:570
+msgid ""
+"``--initial-sudo-password-prompt`` for requesting an initial pre-"
+"execution sudo password prompt"
+msgstr ""
+
+#: ../../upgrading.rst:573
+msgid ""
+"This is now :option:`--prompt-for-sudo-password`. Still a bit of a "
+"mouthful but still 4 characters shorter!"
+msgstr ""
+
+#: ../../upgrading.rst:575
+msgid ""
+"``-k``/``--no-keys`` which prevents Paramiko's automatic loading of key "
+"files such as ``~/.ssh/id_rsa``"
+msgstr ""
+
+#: ../../upgrading.rst:578
+msgid ""
+"Use environment variables to set the ``connect_kwargs.look_for_keys`` "
+"config value to ``False``."
+msgstr ""
+
+#: ../../upgrading.rst:580
+msgid "``--keepalive`` for setting network keepalive"
+msgstr ""
+
+#: ../../upgrading.rst:581 ../../upgrading.rst:1016
+msgid "`Pending <https://github.com/fabric/fabric/issues/1807>`__"
+msgstr ""
+
+#: ../../upgrading.rst:582 ../../upgrading.rst:595 ../../upgrading.rst:615
+#: ../../upgrading.rst:637 ../../upgrading.rst:1017 ../../upgrading.rst:1020
+msgid "Not ported yet."
+msgstr ""
+
+#: ../../upgrading.rst:583
+msgid ""
+"``-l``/``--list`` for listing tasks, plus ``-F``/``--list-format`` for "
+"tweaking list display format"
+msgstr ""
+
+#: ../../upgrading.rst:586
+msgid ""
+"Now with bonus JSON list-format! Which incidentally replaces ``-F "
+"short``/``--shortlist``."
+msgstr ""
+
+#: ../../upgrading.rst:588
+msgid ""
+"``--linewise`` for buffering output line by line instead of roughly byte "
+"by byte"
+msgstr ""
+
+#: ../../upgrading.rst:591
+msgid ""
+"This doesn't really fit with the way modern command execution code views "
+"the world, so it's gone."
+msgstr ""
+
+#: ../../upgrading.rst:593
+msgid "``-n``/``--connection-attempts`` controlling multiple connect retries"
+msgstr ""
+
+#: ../../upgrading.rst:594 ../../upgrading.rst:1019
+msgid "`Pending <https://github.com/fabric/fabric/issues/1808>`__"
+msgstr ""
+
+#: ../../upgrading.rst:596
+msgid "``--no-pty`` to disable automatic PTY allocation in ``run``, etc"
+msgstr ""
+
+#: ../../upgrading.rst:598
+msgid "Is now ``-p``/``--pty`` as the default behavior was switched around."
+msgstr ""
+
+#: ../../upgrading.rst:599
+msgid ""
+"``--password``/``--sudo-password`` for specifying login/sudo password "
+"values"
+msgstr ""
+
+#: ../../upgrading.rst:602
+msgid ""
+"This is typically not very secure to begin with, and there are now many "
+"other avenues for setting the related configuration values, so they're "
+"gone at least for now."
+msgstr ""
+
+#: ../../upgrading.rst:605
+msgid "``-P``/``--parallel`` for activating global parallelism"
+msgstr ""
+
+#: ../../upgrading.rst:606
+msgid "`Pending <https://github.com/pyinvoke/invoke/issues/63>`__"
+msgstr ""
+
+#: ../../upgrading.rst:607
+msgid "See the notes around ``@parallel`` in :ref:`upgrading-tasks`."
+msgstr ""
+
+#: ../../upgrading.rst:608
+msgid "``--port`` to set default SSH port"
+msgstr ""
+
+#: ../../upgrading.rst:610
+msgid ""
+"Our gut says this is best left up to the configuration system's env var "
+"layer, or use of the ``port`` kwarg on `fabric.connection.Connection`; "
+"however it may find its way back."
+msgstr ""
+
+#: ../../upgrading.rst:613
+msgid "``r``/``--reject-unknown-hosts`` to modify Paramiko known host behavior"
+msgstr ""
+
+#: ../../upgrading.rst:616
+msgid "``-R``/``--roles`` for global list-of-hosts target selection"
+msgstr ""
+
+#: ../../upgrading.rst:617 ../../upgrading.rst:669 ../../upgrading.rst:1322
+#: ../../upgrading.rst:1374
+msgid "`Pending <https://github.com/fabric/fabric/issues/1594>`__"
+msgstr ""
+
+#: ../../upgrading.rst:618
+msgid ""
+"As noted under :ref:`upgrading-api`, role lists are only partially "
+"applicable to the new API and we're still feeling out whether/how they "
+"would work at a global or CLI level."
+msgstr ""
+
+#: ../../upgrading.rst:621
+msgid "``--set key=value`` for setting ``fabric.state.env`` vars at runtime"
+msgstr ""
+
+#: ../../upgrading.rst:623
+msgid ""
+"This is largely obviated by the new support for shell environment "
+"variables (just do ``INVOKE_KEY=value fab mytask`` or similar), though "
+"it's remotely possible a CLI flag method of setting config values will "
+"reappear later."
+msgstr ""
+
+#: ../../upgrading.rst:627
+msgid "``-s``/``--shell`` to override default shell path"
+msgstr ""
+
+#: ../../upgrading.rst:629
+msgid "Use the configuration system for this."
+msgstr ""
+
+#: ../../upgrading.rst:630
+msgid "``--shortlist`` for short/computer-friendly list output"
+msgstr ""
+
+#: ../../upgrading.rst:632
+msgid ""
+"See ``--list``/``--list-format`` - there's now a JSON format instead. No "
+"point reinventing the wheel."
+msgstr ""
+
+#: ../../upgrading.rst:634
+msgid ""
+"``--skip-bad-hosts`` (and ``env.skip_bad_hosts``) to bypass problematic "
+"hosts"
+msgstr ""
+
+#: ../../upgrading.rst:636
+msgid "`Pending <https://github.com/fabric/fabric/issues/1809>`__"
+msgstr ""
+
+#: ../../upgrading.rst:638
+msgid ""
+"``--skip-unknown-tasks`` and ``env.skip_unknown_tasks`` for silently "
+"skipping past bogus task names on CLI invocation"
+msgstr ""
+
+#: ../../upgrading.rst:641
+msgid ""
+"This felt mostly like bloat to us and could require nontrivial parser "
+"changes to reimplement, so it's out for now."
+msgstr ""
+
+#: ../../upgrading.rst:643
+msgid ""
+"``--ssh-config-path`` and ``env.ssh_config_path`` for selecting an SSH "
+"config file"
+msgstr ""
+
+#: ../../upgrading.rst:646
+msgid "This is now ``-S``/``--ssh-config``."
+msgstr ""
+
+#: ../../upgrading.rst:647
+msgid ""
+"``--system-known-hosts`` to trigger loading systemwide ``known_hosts`` "
+"files"
+msgstr ""
+
+#: ../../upgrading.rst:649
+msgid "`Pending <https://github.com/fabric/fabric/issues/1804>`__/Removed"
+msgstr ""
+
+#: ../../upgrading.rst:650
+msgid ""
+"This isn't super likely to come back as its own CLI flag but it may well "
+"return as a configuration value."
+msgstr ""
+
+#: ../../upgrading.rst:652
+msgid "``-t``/``--timeout`` controlling connection timeout"
+msgstr ""
+
+#: ../../upgrading.rst:654
+msgid ""
+"It's now ``-t``/``--connect-timeout`` as ``--timeout`` was technically "
+"ambiguous re: connect vs command timeout."
+msgstr ""
+
+#: ../../upgrading.rst:656
+msgid "``-T``/``--command-timeout``"
+msgstr ""
+
+#: ../../upgrading.rst:658
+msgid "Implemented in Invoke and preserved in ``fab`` under the same name."
+msgstr ""
+
+#: ../../upgrading.rst:659
+msgid "``-u``/``--user`` to set global default username"
+msgstr ""
+
+#: ../../upgrading.rst:661
+msgid ""
+"Most of the time, configuration (env vars for true runtime, or eg "
+"user/project level config files as appropriate) should be used for this, "
+"but it may return."
+msgstr ""
+
+#: ../../upgrading.rst:664
+msgid "``-w``/``--warn-only`` to toggle warn-vs-abort behavior"
+msgstr ""
+
+#: ../../upgrading.rst:666
+msgid "Ported as-is, no changes."
+msgstr ""
+
+#: ../../upgrading.rst:667
+msgid ""
+"``-x``/``--exclude-hosts`` (and ``env.exclude_hosts``) for excluding "
+"otherwise selected targets"
+msgstr ""
+
+#: ../../upgrading.rst:670
+msgid ""
+"Not ported yet, is pending an in depth rework of global (vs hand-"
+"instantiated) connection/group selection."
+msgstr ""
+
+#: ../../upgrading.rst:672
+msgid "``-z``/``--pool-size`` for setting parallel-mode job queue pool size"
+msgstr ""
+
+#: ../../upgrading.rst:674
+msgid ""
+"There's no job queue anymore, or at least at present. Whatever replaces "
+"it (besides the already-implemented threading model) is likely to look "
+"pretty different."
+msgstr ""
+
+#: ../../upgrading.rst:681
+msgid "Shell command execution (``local``/``run``/``sudo``)"
+msgstr ""
+
+#: ../../upgrading.rst:684
+msgid "General"
+msgstr ""
+
+#: ../../upgrading.rst:686
+msgid ""
+"Behaviors shared across either ``run``/``sudo``, or all of "
+"``run``/``sudo``/``local``. Subsequent sections go into per-function "
+"differences."
+msgstr ""
+
+#: ../../upgrading.rst:693
+msgid ""
+"``local`` and ``run``/``sudo`` have wildly differing APIs and "
+"implementations"
+msgstr ""
+
+#: ../../upgrading.rst:696
+msgid ""
+"All command execution is now unified; all three functions (now methods on"
+" `fabric.connection.Connection`, though ``local`` is also available as "
+"`invoke.run` for standalone use) have the same underlying protocol and "
+"logic (the `~invoke.runners.Runner` class hierarchy), with only low-level"
+" details like process creation and pipe consumption differing."
+msgstr ""
+
+#: ../../upgrading.rst:703
+msgid ""
+"For example, in v1 ``local`` required you to choose between displaying "
+"and capturing subprocess output; modern ``local`` is like ``run`` and "
+"does both at the same time."
+msgstr ""
+
+#: ../../upgrading.rst:706
+msgid "Prompt auto-response, via ``env.prompts`` and/or ``sudo``'s internals"
+msgstr ""
+
+#: ../../upgrading.rst:708
+msgid ""
+"The ``env.prompts`` functionality has been significantly fleshed out, "
+"into a framework of :ref:`Watchers <autoresponding>` which operate on any"
+" (local or remote!) running command's input and output streams."
+msgstr ""
+
+#: ../../upgrading.rst:712
+msgid ""
+"In addition, ``sudo`` has been rewritten to use that framework; while "
+"still useful enough to offer an implementation in core, it no longer does"
+" anything users cannot do themselves using public APIs."
+msgstr ""
+
+#: ../../upgrading.rst:715
+msgid ""
+"``fabric.context_managers.cd``/``lcd`` (and ``prefix``) allow scoped "
+"mutation of executed comments"
+msgstr ""
+
+#: ../../upgrading.rst:717
+msgid "Ported/`Pending <https://github.com/fabric/fabric/issues/1752>`__"
+msgstr ""
+
+#: ../../upgrading.rst:718
+msgid ""
+"These are now methods on `~invoke.context.Context` (`Context.cd "
+"<invoke.context.Context.cd>`, `Context.prefix "
+"<invoke.context.Context.prefix>`) but need work in its subclass "
+"`fabric.connection.Connection` (quite possibly including recreating "
+"``lcd``) so that local vs remote state are separated."
+msgstr ""
+
+#: ../../upgrading.rst:723
+msgid ""
+"``fabric.context_managers.shell_env`` and its specific expression "
+"``path`` (plus ``env.shell_env``, ``env.path`` and "
+"``env.path_behavior``), for modifying remote environment variables "
+"(locally, one would just modify `os.environ`.)"
+msgstr ""
+
+#: ../../upgrading.rst:728
+msgid ""
+"The context managers were the only way to set environment variables at "
+"any scope; in modern Fabric, subprocess shell environment is controllable"
+" per-call (directly in `fabric.connection.Connection.run` and siblings "
+"via an ``env`` kwarg) *and* across multiple calls (by manipulating the "
+"configuration system, statically or at runtime.)"
+msgstr ""
+
+#: ../../upgrading.rst:733
+msgid ""
+"Controlling subprocess output & other activity display text by "
+"manipulating ``fabric.state.output`` (directly or via "
+"``fabric.context_managers.hide``, ``show`` or ``quiet`` as well as the "
+"``quiet`` kwarg to ``run``/``sudo``; plus ``utils.puts``/``fastprint``)"
+msgstr ""
+
+#: ../../upgrading.rst:738
+msgid "Ported/`Pending <https://github.com/pyinvoke/invoke/issues/15>`__"
+msgstr ""
+
+#: ../../upgrading.rst:739
+msgid ""
+"The core concept of \"output levels\" is gone, likely to be replaced in "
+"the near term by a logging module (stdlib or other) which output levels "
+"poorly reimplemented."
+msgstr ""
+
+#: ../../upgrading.rst:743
+msgid ""
+"Command execution methods like `~invoke.runners.Runner.run` retain a "
+"``hide`` kwarg controlling which subprocess streams are copied to your "
+"terminal, and an ``echo`` kwarg controlling whether commands are printed "
+"before execution. All of these also honor the configuration system."
+msgstr ""
+
+#: ../../upgrading.rst:748
+msgid ""
+"``timeout`` kwarg and the ``CommandTimeout`` exception raised when said "
+"command-runtime timeout was violated"
+msgstr ""
+
+#: ../../upgrading.rst:751
+msgid ""
+"Primarily lives at the Invoke layer now, but applies to all command "
+"execution, local or remote; see the ``timeout`` argument to "
+"`~invoke.runners.Runner.run` and its related configuration value and CLI "
+"flag."
+msgstr ""
+
+#: ../../upgrading.rst:755
+msgid ""
+"``pty`` kwarg and ``env.always_use_pty``, controlling whether commands "
+"run in a pseudo-terminal or are invoked directly"
+msgstr ""
+
+#: ../../upgrading.rst:758
+msgid ""
+"This has been thoroughly ported (and its behavior often improved) "
+"including preservation of the ``pty`` kwarg and updating the config value"
+" to be simply ``run.pty``. However, a major change is that pty allocation"
+" is now ``False`` by default instead of ``True``."
+msgstr ""
+
+#: ../../upgrading.rst:763
+msgid ""
+"Fabric 0.x and 1.x already changed this value around; during Fabric 1's "
+"long lifetime it became clear that neither default works for all or even "
+"most users, so we opted to return the default to ``False`` as it's "
+"cleaner and less wasteful."
+msgstr ""
+
+#: ../../upgrading.rst:767
+msgid ""
+"``combine_stderr`` (kwarg and ``env.combine_stderr``) controlling whether"
+" Paramiko weaves remote stdout and stderr into the stdout stream"
+msgstr ""
+
+#: ../../upgrading.rst:770
+msgid ""
+"This wasn't terrifically useful, and often caused conceptual problems in "
+"tandem with ``pty`` (as pseudo-terminals by their nature always combine "
+"the two streams.)"
+msgstr ""
+
+#: ../../upgrading.rst:774
+msgid ""
+"We recommend users who really need both streams to be merged, either use "
+"shell redirection in their command, or set ``pty=True``."
+msgstr ""
+
+#: ../../upgrading.rst:776
+msgid ""
+"``warn_only`` kwarg for preventing automatic abort on non-zero return "
+"codes"
+msgstr ""
+
+#: ../../upgrading.rst:779
+msgid ""
+"This is now just ``warn``, both kwarg and config value. It continues to "
+"default to ``False``."
+msgstr ""
+
+#: ../../upgrading.rst:781
+msgid ""
+"``stdout`` and ``stderr`` kwargs for reassigning default stdout/err "
+"mirroring targets, which otherwise default to the appropriate `sys` "
+"members"
+msgstr ""
+
+#: ../../upgrading.rst:785
+msgid ""
+"These are now ``out_stream`` and ``err_stream`` but otherwise remain "
+"similar in nature. They are also accompanied by the new, rather obvious "
+"in hindsight ``in_stream``."
+msgstr ""
+
+#: ../../upgrading.rst:788
+msgid ""
+"``capture_buffer_size`` arg & use of a ring buffer for storing captured "
+"stdout/stderr to limit total size"
+msgstr ""
+
+#: ../../upgrading.rst:790
+msgid "`Pending <https://github.com/pyinvoke/invoke/issues/344>`__"
+msgstr ""
+
+#: ../../upgrading.rst:791
+msgid ""
+"Existing `~invoke.runners.Runner` implementation uses regular lists for "
+"capture buffers, but we fully expect to upgrade this to a ring buffer or "
+"similar at some point."
+msgstr ""
+
+#: ../../upgrading.rst:794
+msgid ""
+"Return values are string-like objects with extra attributes like "
+"``succeeded`` and ``return_code`` sprinkled on top"
+msgstr ""
+
+#: ../../upgrading.rst:797
+msgid ""
+"Return values are no longer string-a-likes with a semi-private API, but "
+"are full fledged regular objects of type `~invoke.runners.Result`. They "
+"expose all of the same info as the old \"attribute strings\", and only "
+"really differ in that they don't pretend to be strings themselves."
+msgstr ""
+
+#: ../../upgrading.rst:802
+msgid ""
+"They do, however, still behave as booleans - just ones reflecting the "
+"exit code's relation to zero instead of whether there was any stdout."
+msgstr ""
+
+#: ../../upgrading.rst:804
+msgid ""
+"``open_shell`` for obtaining interactive-friendly remote shell sessions "
+"(something that ``run`` historically was bad at )"
+msgstr ""
+
+#: ../../upgrading.rst:807
+msgid ""
+"Not only is the new version of ``run`` vastly improved and able to deal "
+"with interactive sessions at least as well as the old ``open_shell`` "
+"(provided you supply ``pty=True``), but for corner cases there's also a "
+"direct port: `~fabric.connection.Connection.shell`."
+msgstr ""
+
+#: ../../upgrading.rst:813
+msgid "``run``"
+msgstr ""
+
+#: ../../upgrading.rst:818
+msgid ""
+"``shell`` / ``env.use_shell`` designating whether or not to wrap commands"
+" within an explicit call to e.g. ``/bin/sh -c \"real command\"``; plus "
+"their attendant options like ``shell_escape``"
+msgstr ""
+
+#: ../../upgrading.rst:822
+msgid ""
+"Non-``sudo`` remote execution never truly required an explicit shell "
+"wrapper: the remote SSH daemon hands your command string off to the "
+"connecting user's login shell in almost all cases. Since wrapping is "
+"otherwise extremely error-prone and requires frustrating escaping rules, "
+"we dropped it for this use case."
+msgstr ""
+
+#: ../../upgrading.rst:828
+msgid ""
+"See the matching line items for ``local`` and ``sudo`` as their "
+"situations differ. (For now, because they all share the same "
+"underpinnings, `fabric.connection.Connection.run` does accept a ``shell``"
+" kwarg - it just doesn't do anything with it.)"
+msgstr ""
+
+#: ../../upgrading.rst:834
+msgid "``sudo``"
+msgstr ""
+
+#: ../../upgrading.rst:836
+msgid ""
+"Unless otherwise noted, all common ``run``+``sudo`` args/functionality "
+"(e.g. ``pty``, ``warn_only`` etc) are covered above in the section on "
+"``run``; the below are ``sudo`` specific."
+msgstr ""
+
+#: ../../upgrading.rst:843
+msgid ""
+"``shell`` / ``env.use_shell`` designating whether or not to wrap commands"
+" within an explicit call to e.g. ``/bin/sh -c \"real command\"``"
+msgstr ""
+
+#: ../../upgrading.rst:845
+msgid "`Pending <https://github.com/pyinvoke/invoke/issues/459>`__/Removed"
+msgstr ""
+
+#: ../../upgrading.rst:846
+msgid ""
+"See the note above under ``run`` for details on shell wrapping as a "
+"general strategy; unfortunately for ``sudo``, some sort of manual "
+"wrapping is still necessary for nontrivial commands (i.e. anything using "
+"actual shell syntax as opposed to a single program's argv) due to how the"
+" command string is handed off to the ``sudo`` program."
+msgstr ""
+
+#: ../../upgrading.rst:852
+msgid ""
+"We hope to upgrade ``sudo`` soon so it can perform a common-best-case, "
+"no-escaping-required shell wrapping on your behalf; see the 'Pending' "
+"link."
+msgstr ""
+
+#: ../../upgrading.rst:855
+msgid ""
+"``user`` argument (and ``env.sudo_user``) allowing invocation via ``sudo "
+"-u <user>`` (instead of defaulting to root)"
+msgstr ""
+
+#: ../../upgrading.rst:858
+msgid "This is still here, and still called ``user``."
+msgstr ""
+
+#: ../../upgrading.rst:859
+msgid "``group`` argument controlling the effective group of the sudo'd command"
+msgstr ""
+
+#: ../../upgrading.rst:861 ../../upgrading.rst:1390
+msgid "`Pending <https://github.com/pyinvoke/invoke/issues/540>`__"
+msgstr ""
+
+#: ../../upgrading.rst:862
+msgid "This has not been ported yet."
+msgstr ""
+
+#: ../../upgrading.rst:865
+msgid "``local``"
+msgstr ""
+
+#: ../../upgrading.rst:867
+msgid ""
+"See the 'general' notes at top of this section for most details about the"
+" new ``local``. A few specific extras are below."
+msgstr ""
+
+#: ../../upgrading.rst:873
+msgid "``shell`` kwarg designating which shell to ask `subprocess.Popen` to use"
+msgstr ""
+
+#: ../../upgrading.rst:876
+msgid ""
+"Basically the same as in v1, though there are now situations where "
+"`os.execve` (or similar) is used instead of `subprocess.Popen`. Behavior "
+"is much the same: no shell wrapping (as in legacy ``run``), just "
+"informing the operating system what actual program to run."
+msgstr ""
+
+#: ../../upgrading.rst:882
+msgid "``open_shell``"
+msgstr ""
+
+#: ../../upgrading.rst:884
+msgid ""
+"As noted in the main list, this is now "
+"`~fabric.connection.Connection.shell`, and behaves similarly to "
+"``open_shell`` (exit codes, if any, are ignored; a PTY is assumed; etc). "
+"It has some improvements too, such as a return value (which is slightly "
+"lacking compared to that from `~fabric.connection.Connection.run` but "
+"still a big improvement over ``None``)."
+msgstr ""
+
+#: ../../upgrading.rst:893
+msgid ""
+"``command`` optional kwarg allowing 'prefilling' the input stream with a "
+"specific command string plus newline"
+msgstr ""
+
+#: ../../upgrading.rst:896
+msgid ""
+"If you needed this, you should instead try the modern version of "
+"`~fabric.connection.Connection.run`, which is equally capable of "
+"interaction as `~fabric.connection.Connection.shell` but takes a command "
+"to execute. There's a small chance we'll add this back later if anybody "
+"misses it (there's a few corner cases that could possibly want it)."
+msgstr ""
+
+#: ../../upgrading.rst:906
+msgid "Utilities"
+msgstr ""
+
+#: ../../upgrading.rst:911
+msgid "Error handling via ``abort`` and ``warn``"
+msgstr ""
+
+#: ../../upgrading.rst:913
+msgid ""
+"The old functionality leaned too far in the \"everything is a DSL\" "
+"direction & didn't offer enough value to offset how it gets in the way of"
+" experienced Pythonistas."
+msgstr ""
+
+#: ../../upgrading.rst:917
+msgid ""
+"These functions have been removed in favor of \"just raise an exception\""
+" (with one useful option being Invoke's `~invoke.exceptions.Exit`) as "
+"exception handling feels more Pythonic than thin wrappers around "
+"``sys.exit`` or having to ``except SystemExit:`` and hope it was a "
+"`SystemExit` your own code raised!"
+msgstr ""
+
+#: ../../upgrading.rst:922
+msgid ""
+"ANSI color helpers in ``fabric.colors`` allowed users to easily print "
+"ANSI colored text without a standalone library"
+msgstr ""
+
+#: ../../upgrading.rst:925
+msgid ""
+"There seemed no point to poorly replicating one of the many fine "
+"terminal-massaging libraries out there (such as those listed in the "
+"description of `#101 <https://github.com/fabric/fabric/issues/101>`_) in "
+"the rewrite, so we didn't."
+msgstr ""
+
+#: ../../upgrading.rst:930
+msgid ""
+"That said, it seems highly plausible we'll end up vendoring such a "
+"library in the future to offer internal color support, at which point "
+"\"baked-in\" color helpers would again be within easy reach."
+msgstr ""
+
+#: ../../upgrading.rst:933
+msgid ""
+"``with char_buffered`` context manager for forcing a local stream to be "
+"character buffered"
+msgstr ""
+
+#: ../../upgrading.rst:936
+msgid "This is now `~invoke.terminals.character_buffered`."
+msgstr ""
+
+#: ../../upgrading.rst:937
+msgid ""
+"``docs.unwrap_tasks`` for extracting docstrings from wrapped task "
+"functions"
+msgstr ""
+
+#: ../../upgrading.rst:940
+msgid ""
+"v1 required using a Fabric-specific 'unwrap_tasks' helper function "
+"somewhere in your Sphinx build pipeline; now you can instead just enable "
+"the new `invocations.autodoc "
+"<https://invocations.readthedocs.io/en/latest/api/autodoc.html>`_ Sphinx "
+"mini-plugin in your extensions list; see link for details."
+msgstr ""
+
+#: ../../upgrading.rst:945
+msgid ""
+"``network.normalize``, ``denormalize`` and ``parse_host_string``, "
+"ostensibly internals but sometimes exposed to users for dealing with host"
+" strings"
+msgstr ""
+
+#: ../../upgrading.rst:949
+msgid ""
+"As with other host-string-related tools, these are gone and serve no "
+"purpose. `fabric.connection.Connection` is now the primary API focus and "
+"has individual attributes for all \"host string\" components."
+msgstr ""
+
+#: ../../upgrading.rst:952
+msgid "``utils.indent`` for indenting/wrapping text (uncommonly used)"
+msgstr ""
+
+#: ../../upgrading.rst:954
+msgid "Not ported yet; ideally we'll just vendor a third party lib in Invoke."
+msgstr ""
+
+#: ../../upgrading.rst:955
+msgid "``reboot`` for rebooting and reconnecting to a remote system"
+msgstr ""
+
+#: ../../upgrading.rst:957
+msgid ""
+"No equivalent has been written for modern Fabric; now that the "
+"connection/client objects are made explicit, one can simply instantiate a"
+" new object with the same parameters (potentially with sufficient timeout"
+" parameters to get past the reboot, if one doesn't want to manually call "
+"something like `time.sleep`.)"
+msgstr ""
+
+#: ../../upgrading.rst:963
+msgid ""
+"There is a small chance it will return if there appears to be enough "
+"need; if so, it's likely to be a more generic reconnection related "
+"`fabric.connection.Connection` method, where the user is responsible for "
+"issuing the restart shell command via ``sudo`` themselves."
+msgstr ""
+
+#: ../../upgrading.rst:967
+msgid ""
+"``require`` for ensuring certain key(s) in ``env`` have values set, "
+"optionally by noting they can be ``provided_by=`` a list of setup tasks"
+msgstr ""
+
+#: ../../upgrading.rst:970
+msgid ""
+"This has not been ported, in part because the maintainers never used it "
+"themselves, and is unlikely to be directly reimplemented. However, its "
+"core use case of \"require certain data to be available to run a given "
+"task\" may return within the upcoming dependency framework."
+msgstr ""
+
+#: ../../upgrading.rst:974
+msgid ""
+"``prompt`` for prompting the user & storing the entered data (optionally "
+"with validation) directly into ``env``"
+msgstr ""
+
+#: ../../upgrading.rst:977
+msgid ""
+"Like ``require``, this seemed like a less-used feature (especially "
+"compared to its sibling ``confirm``) and was not ported. If it returns "
+"it's likely to be via ``invocations``, which is where ``confirm`` ended "
+"up."
+msgstr ""
+
+#: ../../upgrading.rst:985
+msgid "Networking"
+msgstr ""
+
+#: ../../upgrading.rst:990
+msgid "``env.gateway`` for setting an SSH jump gateway"
+msgstr ""
+
+#: ../../upgrading.rst:992
+msgid ""
+"This is now the ``gateway`` kwarg to `fabric.connection.Connection`, and "
+"-- for the newly supported ``ProxyJump`` style gateways, which can be "
+"nested indefinitely! -- should be another `fabric.connection.Connection` "
+"object instead of a host string."
+msgstr ""
+
+#: ../../upgrading.rst:997
+msgid ""
+"(You may specify a runtime, non-SSH-config-driven ``ProxyCommand``-style "
+"string as the ``gateway`` kwarg instead, which will act just like a "
+"regular ``ProxyCommand``.)"
+msgstr ""
+
+#: ../../upgrading.rst:1000
+msgid "``ssh_config``-driven ``ProxyCommand`` support"
+msgstr ""
+
+#: ../../upgrading.rst:1002
+msgid "This continues to work as it did in v1."
+msgstr ""
+
+#: ../../upgrading.rst:1003
+msgid "``with remote_tunnel(...):`` port forwarding"
+msgstr ""
+
+#: ../../upgrading.rst:1005
+msgid ""
+"This is now `fabric.connection.Connection.forward_local`, since it's used"
+" to *forward* a *local* port to the remote end. (Newly added is the "
+"logical inverse, `fabric.connection.Connection.forward_remote`.)"
+msgstr ""
+
+#: ../../upgrading.rst:1008
+msgid "``NetworkError`` raised on some network related errors"
+msgstr ""
+
+#: ../../upgrading.rst:1010
+msgid ""
+"In v1 this was simply a (partially implemented) stepping-back from the "
+"original \"just sys.exit on any error!\" behavior. Modern Fabric is "
+"significantly more exception-friendly; situations that would raise "
+"``NetworkError`` in v1 now simply become the real underlying exceptions, "
+"typically from Paramiko or the stdlib."
+msgstr ""
+
+#: ../../upgrading.rst:1015
+msgid "``env.keepalive`` for setting network keepalive value"
+msgstr ""
+
+#: ../../upgrading.rst:1018
+msgid "``env.connection_attempts`` for setting connection retries"
+msgstr ""
+
+#: ../../upgrading.rst:1021
+msgid ""
+"``env.timeout`` for controlling connection (and sometimes command "
+"execution) timeout"
+msgstr ""
+
+#: ../../upgrading.rst:1024
+msgid ""
+"Connection timeout is now controllable both via the configuration system "
+"(as ``timeouts.connect``) and a direct kwarg on "
+"`fabric.connection.Connection`. Command execution timeout is its own "
+"setting now, ``timeouts.command`` and a ``timeout`` kwarg to ``run`` and "
+"friends."
+msgstr ""
+
+#: ../../upgrading.rst:1031
+msgid "Authentication"
+msgstr ""
+
+#: ../../upgrading.rst:1034
+msgid ""
+"Some ``env`` keys from v1 were simply passthroughs to Paramiko's "
+"`SSHClient.connect <paramiko.client.SSHClient.connect>` method. Modern "
+"Fabric gives you explicit control over the arguments it passes to that "
+"method, via the ``connect_kwargs`` :ref:`configuration <fab-"
+"configuration>` subtree, and the below table will frequently refer you to"
+" that approach."
+msgstr ""
+
+#: ../../upgrading.rst:1043
+msgid "``env.key_filename``"
+msgstr ""
+
+#: ../../upgrading.rst:1045 ../../upgrading.rst:1048 ../../upgrading.rst:1055
+msgid "Use ``connect_kwargs``."
+msgstr ""
+
+#: ../../upgrading.rst:1046
+msgid "``env.password``"
+msgstr ""
+
+#: ../../upgrading.rst:1050
+msgid ""
+"Also note that this used to perform double duty as connection *and* sudo "
+"password; the latter is now found in the ``sudo.password`` setting."
+msgstr ""
+
+#: ../../upgrading.rst:1053
+msgid "``env.gss_(auth|deleg|kex)``"
+msgstr ""
+
+#: ../../upgrading.rst:1056
+msgid ""
+"``env.key``, a string or file object holding private key data, whose "
+"specific type is auto-determined and instantiated for use as the ``pkey``"
+" connect kwarg"
+msgstr ""
+
+#: ../../upgrading.rst:1060
+msgid ""
+"This has been dropped as unnecessary (& bug-prone) obfuscation of "
+"Paramiko-level APIs; users should already know which type of key they're "
+"dealing with and instantiate a ``PKey`` subclass themselves, placing the "
+"result in ``connect_kwargs.pkey``."
+msgstr ""
+
+#: ../../upgrading.rst:1064
+msgid ""
+"``env.no_agent``, which is a renaming/inversion of Paramiko's "
+"``allow_agent`` connect kwarg"
+msgstr ""
+
+#: ../../upgrading.rst:1067
+msgid ""
+"Users who were setting this to ``True`` should now simply set "
+"``connect_kwargs.allow_agent`` to ``False`` instead."
+msgstr ""
+
+#: ../../upgrading.rst:1069
+msgid ""
+"``env.no_keys``, similar to ``no_agent``, just an inversion of the "
+"``look_for_keys`` connect kwarg"
+msgstr ""
+
+#: ../../upgrading.rst:1072
+msgid ""
+"Use ``connect_kwargs.look_for_keys`` instead (setting it to ``False`` to "
+"disable Paramiko's default key-finding behavior.)"
+msgstr ""
+
+#: ../../upgrading.rst:1074
+msgid ""
+"``env.passwords`` (and ``env.sudo_passwords``) stores connection/sudo "
+"passwords in a dict keyed by host strings"
+msgstr ""
+
+#: ../../upgrading.rst:1076
+msgid "Ported/`Pending <https://github.com/fabric/fabric/issues/4>`__"
+msgstr ""
+
+#: ../../upgrading.rst:1077
+msgid ""
+"Each `fabric.connection.Connection` object may be configured with its own"
+" ``connect_kwargs`` given at instantiation time, allowing for per-host "
+"password configuration already."
+msgstr ""
+
+#: ../../upgrading.rst:1081
+msgid ""
+"However, we expect users may want a simpler way to set configuration "
+"values that are turned into implicit `fabric.connection.Connection` "
+"objects automatically; such a feature is still pending."
+msgstr ""
+
+#: ../../upgrading.rst:1084
+msgid "Configuring ``IdentityFile`` in one's ``ssh_config``"
+msgstr ""
+
+#: ../../upgrading.rst:1086
+msgid ""
+"Still honored, along with a bunch of newly honored ``ssh_config`` "
+"settings; see :ref:`ssh-config`."
+msgstr ""
+
+#: ../../upgrading.rst:1092
+msgid "File transfer"
+msgstr ""
+
+#: ../../upgrading.rst:1094
+msgid ""
+"The below feature breakdown applies to the ``put`` and/or ``get`` "
+"\"operation\" functions from v1."
+msgstr ""
+
+#: ../../upgrading.rst:1100
+msgid "Transferring individual files owned by the local and remote user"
+msgstr ""
+
+#: ../../upgrading.rst:1102
+msgid ""
+"Basic file transfer in either direction works and is offered as "
+"`fabric.connection.Connection.get`/`fabric.connection.Connection.put` "
+"(though the code is split out into a separate-responsibility class, "
+"`fabric.transfer.Transfer`.)"
+msgstr ""
+
+#: ../../upgrading.rst:1107
+msgid ""
+"The signature of these methods has been cleaned up compared to v1, though"
+" their positional-argument essence (``get(remote, local)`` and "
+"``put(local, remote)`` remains the same."
+msgstr ""
+
+#: ../../upgrading.rst:1110
+msgid ""
+"Omit the 'destination' argument for implicit 'relative to local context' "
+"behavior (e.g. ``put(\"local.txt\")`` implicitly uploading to remote "
+"``$HOME/local.txt``.)"
+msgstr ""
+
+#: ../../upgrading.rst:1114
+msgid "You should probably still be explicit, because this is Python."
+msgstr ""
+
+#: ../../upgrading.rst:1115
+msgid ""
+"Use either file paths *or* file-like objects on either side of the "
+"transfer operation (e.g. uploading a ``StringIO`` instead of an on-disk "
+"file)"
+msgstr ""
+
+#: ../../upgrading.rst:1119
+msgid "This was a useful enough and simple enough trick to keep around."
+msgstr ""
+
+#: ../../upgrading.rst:1120
+msgid ""
+"Preservation of source file mode at destination (e.g. ensuring an "
+"executable bit that would otherwise be dropped by the destination's "
+"umask, is re-added.)"
+msgstr ""
+
+#: ../../upgrading.rst:1124
+msgid ""
+"Not only was this ported, but it is now the default behavior. It may be "
+"disabled via kwarg if desired."
+msgstr ""
+
+#: ../../upgrading.rst:1126
+msgid "Bundled ``sudo`` operations as part of file transfer"
+msgstr ""
+
+#: ../../upgrading.rst:1128
+msgid ""
+"This was one of the absolute buggiest parts of v1 and never truly did "
+"anything users could not do themselves with a followup call to ``sudo``, "
+"so we opted not to port it."
+msgstr ""
+
+#: ../../upgrading.rst:1132
+msgid ""
+"Should enough users pine for its loss, we *may* reconsider, but if we do "
+"it will be with a serious eye towards simplification and/or an approach "
+"not involving intermediate files."
+msgstr ""
+
+#: ../../upgrading.rst:1135
+msgid ""
+"Recursive multi-file transfer (e.g. ``put(a_directory)`` uploads entire "
+"directory and all its contents)"
+msgstr ""
+
+#: ../../upgrading.rst:1138
+msgid ""
+"This was *another* one of the buggiest parts of v1, and over time it "
+"became clear that its maintenance burden far outweighed the fact that it "
+"was poorly reinventing ``rsync`` and/or the use of archival file tools "
+"like ye olde ``tar``+``gzip``."
+msgstr ""
+
+#: ../../upgrading.rst:1143
+msgid ""
+"For one potential workaround, see the ``rsync`` function in `patchwork "
+"<https://github.com/fabric/patchwork>`_."
+msgstr ""
+
+#: ../../upgrading.rst:1145
+msgid "Remote file path tilde expansion"
+msgstr ""
+
+#: ../../upgrading.rst:1147
+msgid ""
+"This behavior is ultimately unnecessary (one can simply leave the tilde "
+"off for the same result) and had a few pernicious bugs of its own, so "
+"it's gone."
+msgstr ""
+
+#: ../../upgrading.rst:1150
+msgid ""
+"Naming downloaded files after some aspect of the remote destination, to "
+"avoid overwriting during multi-server actions"
+msgstr ""
+
+#: ../../upgrading.rst:1153
+msgid "Added back (to `fabric.transfer.Transfer.get`) in Fabric 2.6."
+msgstr ""
+
+#: ../../upgrading.rst:1159
+msgid "Configuration"
+msgstr ""
+
+#: ../../upgrading.rst:1161
+msgid ""
+"In general, configuration has been massively improved over the old "
+"``fabricrc`` files; most config logic comes from :ref:`Invoke's "
+"configuration system <configuration>`, which offers a full-fledged "
+"configuration hierarchy (in-code config, multiple config file locations, "
+"environment variables, CLI flags, and more) and multiple file formats. "
+"Nearly all configuration avenues in Fabric 1 become, in modern Fabric, "
+"manipulation of whatever part of the config hierarchy is most appropriate"
+" for your needs."
+msgstr ""
+
+#: ../../upgrading.rst:1169
+msgid ""
+"Modern versions of Fabric only make minor modifications to (or "
+"parameterizations of) Invoke's setup; see :ref:`our locally-specific "
+"config doc page <fab-configuration>` for details."
+msgstr ""
+
+#: ../../upgrading.rst:1174
+msgid ""
+"Make sure to look elsewhere in this document for details on any given v1 "
+"``env`` setting, as many have moved outside the configuration system into"
+" object or method keyword arguments."
+msgstr ""
+
+#: ../../upgrading.rst:1181
+msgid "Modifying ``fabric.(api.)env`` directly"
+msgstr ""
+
+#: ../../upgrading.rst:1183
+msgid ""
+"To effect truly global-scale config changes, use config files, task-"
+"collection-level config data, or the invoking shell's environment "
+"variables."
+msgstr ""
+
+#: ../../upgrading.rst:1186
+msgid ""
+"Making locally scoped ``fabric.env`` changes via ``with settings(...):`` "
+"or its decorator equivalent, ``@with_settings``"
+msgstr ""
+
+#: ../../upgrading.rst:1188 ../../upgrading.rst:1254
+msgid "Ported/Pending"
+msgstr ""
+
+#: ../../upgrading.rst:1189
+msgid ""
+"Most of the use cases surrounding ``settings`` are now served by the fact"
+" that `fabric.connection.Connection` objects keep per-host/connection "
+"state - the pattern of switching the implicit global context around was a"
+" design antipattern which is now gone."
+msgstr ""
+
+#: ../../upgrading.rst:1194
+msgid ""
+"The remaining such use cases have been turned into context-manager "
+"methods of `fabric.connection.Connection` (or its parent class), or have "
+"such methods pending."
+msgstr ""
+
+#: ../../upgrading.rst:1197
+msgid ""
+"SSH config file loading (off by default, limited to ``~/.ssh/config`` "
+"only unless configured to a different, single path)"
+msgstr ""
+
+#: ../../upgrading.rst:1200
+msgid ""
+"Much improved: SSH config file loading is **on** by default (which "
+":ref:`can be changed <disabling-ssh-config>`), multiple sources are "
+"loaded and merged just like OpenSSH, and more besides; see :ref:`ssh-"
+"config`."
+msgstr ""
+
+#: ../../upgrading.rst:1205
+msgid ""
+"In addition, we've added support for some ``ssh_config`` directives which"
+" were ignored by v1, such as ``ConnectTimeout`` and ``ProxyCommand``, and"
+" going forwards we intend to support as much of ``ssh_config`` as is "
+"reasonably possible."
+msgstr ""
+
+#: ../../upgrading.rst:1213
+msgid "``contrib``"
+msgstr ""
+
+#: ../../upgrading.rst:1215
+msgid ""
+"The old ``contrib`` module represented \"best practice\" functions that "
+"did not, themselves, require core support from the rest of Fabric but "
+"were built using the same primitives available to users."
+msgstr ""
+
+#: ../../upgrading.rst:1219
+msgid ""
+"In modern Fabric, that responsibility has been removed from the core "
+"library into other standalone libraries which have their own identity & "
+"release process, typically either `invocations "
+"<https://github.com/pyinvoke/invocations>`_ (local-oriented code that "
+"does not use SSH) or `patchwork <https://github.com/fabric/patchwork>`_ "
+"(primarily remote-oriented code, though anything not explicitly dealing "
+"with both ends of the connection will work just as well locally.)"
+msgstr ""
+
+#: ../../upgrading.rst:1227
+msgid ""
+"Those libraries are still a work in progress, not least because we still "
+"need to identify the best way to bridge the gap between them (as many "
+"operations are not intrinsically local-or-remote but can work on either "
+"end.)"
+msgstr ""
+
+#: ../../upgrading.rst:1231
+msgid ""
+"Since they are by definition built on the core APIs available to all "
+"users, they currently get less development focus; users can always "
+"implement their own versions without sacrificing much (something less "
+"true for the core libraries.) We expect to put more work into curating "
+"these collections once the core APIs have settled down."
+msgstr ""
+
+#: ../../upgrading.rst:1237
+msgid ""
+"Details about what happened to each individual chunk of "
+"``fabric.contrib`` are in the below table:"
+msgstr ""
+
+#: ../../upgrading.rst:1243
+msgid "``console.confirm`` for easy bool-returning confirmation prompts"
+msgstr ""
+
+#: ../../upgrading.rst:1245
+msgid "Moved to ``invocations.console.confirm``, with minor signature tweaks."
+msgstr ""
+
+#: ../../upgrading.rst:1246
+msgid ""
+"``django.*``, supporting integration with a local Django project re: "
+"importing and using Django models and other code"
+msgstr ""
+
+#: ../../upgrading.rst:1249
+msgid ""
+"We aren't even sure if this is useful a decade after it was written, "
+"given how much Django has surely changed since then. If you're reading "
+"and are sad that this is gone, let us know!"
+msgstr ""
+
+#: ../../upgrading.rst:1252
+msgid ""
+"``files.*`` (e.g. ``exists``, ``append``, ``contains`` etc) for "
+"interrogating and modifying remote files"
+msgstr ""
+
+#: ../../upgrading.rst:1255
+msgid ""
+"Many of the more useful functions in this file have been ported to "
+"``patchwork.files`` but are still in an essentially alpha state."
+msgstr ""
+
+#: ../../upgrading.rst:1258
+msgid ""
+"Others, such as ``is_link``, ``comment``/``uncomment``, etc have not been"
+" ported yet. If they are, the are likely to end up in the same place."
+msgstr ""
+
+#: ../../upgrading.rst:1261
+msgid "``project.rsync_project`` for rsyncing the entire host project remotely"
+msgstr ""
+
+#: ../../upgrading.rst:1263
+msgid "Now ``patchwork.transfers.rsync``, with some modifications."
+msgstr ""
+
+#: ../../upgrading.rst:1264
+msgid ""
+"``project.rsync_project`` for uploading host project via archive file and"
+" scp"
+msgstr ""
+
+#: ../../upgrading.rst:1267
+msgid ""
+"This did not seem worth porting; the overall pattern of \"copy my local "
+"bits remotely\" is already arguably an antipattern (vs repeatable deploys"
+" of artifacts, or at least remote checkout of a VCS tag) and if one is "
+"going down that road anyways, rsync is a much smarter choice."
+msgstr ""
+
+#: ../../upgrading.rst:1275
+msgid "``fabric.env`` reference"
+msgstr ""
+
+#: ../../upgrading.rst:1277
+msgid ""
+"Many/most of the members in v1's ``fabric.env`` are covered in the above "
+"per-topic sections; any that are *not* covered elsewhere, live here. All "
+"are explicitly noted as ``env.<name>`` for ease of searching in your "
+"browser or viewer."
+msgstr ""
+
+#: ../../upgrading.rst:1282
+msgid ""
+"A small handful of env vars were never publicly documented & were thus "
+"implicitly private; those are not represented here."
+msgstr ""
+
+#: ../../upgrading.rst:1288
+msgid "``env.abort_exception`` for setting which exception is used to abort"
+msgstr ""
+
+#: ../../upgrading.rst:1290
+msgid ""
+"Aborting as a concept is gone, just raise whatever exception seems most "
+"reasonable to surface to an end user, or use `~invoke.exceptions.Exit`. "
+"See also :ref:`upgrading-utility`."
+msgstr ""
+
+#: ../../upgrading.rst:1293
+msgid "``env.all_hosts`` and ``env.tasks`` listing execution targets"
+msgstr ""
+
+#: ../../upgrading.rst:1294 ../../upgrading.rst:1305
+msgid "Ported/`Pending <https://github.com/pyinvoke/invoke/issues/443>`__"
+msgstr ""
+
+#: ../../upgrading.rst:1295
+msgid ""
+"Fabric's `~invoke.executor.Executor` subclass stores references to all "
+"CLI parsing results (including the value of :option:`--hosts`, the tasks "
+"requested and their args, etc) and the intent is for users to have access"
+" to that information."
+msgstr ""
+
+#: ../../upgrading.rst:1300
+msgid ""
+"However, the details for that API (e.g. exposing the executor via a "
+"task's `~invoke.context.Context`/`fabric.connection.Connection`) are "
+"still in flux."
+msgstr ""
+
+#: ../../upgrading.rst:1303
+msgid ""
+"``env.command`` noting currently executing task name (in hindsight, quite"
+" the misnomer...)"
+msgstr ""
+
+#: ../../upgrading.rst:1306
+msgid ""
+"See the notes for ``env.all_hosts`` above - same applies here re: user "
+"visibility into CLI parsing results."
+msgstr ""
+
+#: ../../upgrading.rst:1308
+msgid ""
+"``env.command_prefixes`` for visibility into (arguably also mutation of) "
+"the shell command prefixes to be applied to ``run``/``sudo``"
+msgstr ""
+
+#: ../../upgrading.rst:1311
+msgid "This is now `~invoke.context.Context.command_prefixes`."
+msgstr ""
+
+#: ../../upgrading.rst:1312
+msgid "``env.cwd`` noting current intended working directory"
+msgstr ""
+
+#: ../../upgrading.rst:1314
+msgid ""
+"This is now `~invoke.context.Context.command_cwds` (a list, not a single "
+"string, to more properly model the intended contextmanager-driven use "
+"case.)"
+msgstr ""
+
+#: ../../upgrading.rst:1318
+msgid ""
+"Note that remote-vs-local context for this data isn't yet set up; see the"
+" notes about ``with cd`` under :ref:`upgrading-commands`."
+msgstr ""
+
+#: ../../upgrading.rst:1320
+msgid ""
+"``env.dedupe_hosts`` controlling whether duplicate hosts in merged host "
+"lists get deduplicated or not"
+msgstr ""
+
+#: ../../upgrading.rst:1323
+msgid ""
+"Not ported yet, will probably get tackled as part of roles/host lists "
+"overhaul."
+msgstr ""
+
+#: ../../upgrading.rst:1325
+msgid ""
+"``env.echo_stdin`` (undocumented) for turning off the default echoing of "
+"standard input"
+msgstr ""
+
+#: ../../upgrading.rst:1328
+msgid ""
+"Is now a config option under the ``run`` tree, with much the same "
+"behavior."
+msgstr ""
+
+#: ../../upgrading.rst:1330
+msgid "``env.local_user`` for read-only access to the discovered local username"
+msgstr ""
+
+#: ../../upgrading.rst:1333
+msgid ""
+"We're not entirely sure why v1 felt this was worth caching in the config;"
+" if you need this info, just import and call "
+"`fabric.util.get_local_user`."
+msgstr ""
+
+#: ../../upgrading.rst:1336
+msgid ""
+"``env.output_prefix`` determining whether or not line-by-line host-string"
+" prefixes are displayed"
+msgstr ""
+
+#: ../../upgrading.rst:1338
+msgid "`Pending <https://github.com/pyinvoke/invoke/issues/15>`__"
+msgstr ""
+
+#: ../../upgrading.rst:1339
+msgid ""
+"Differentiating parallel stdout/err is still a work in progress; we may "
+"end up reusing line-by-line logging and prefixing (ideally via actual "
+"logging) or we may try for something cleaner such as streaming to per-"
+"connection log files."
+msgstr ""
+
+#: ../../upgrading.rst:1343
+msgid "``env.prompts`` controlling prompt auto-response"
+msgstr ""
+
+#: ../../upgrading.rst:1345
+msgid ""
+"Prompt auto-response is now publicly implemented as the "
+"`~invoke.watchers.StreamWatcher` and `~invoke.watchers.Responder` class "
+"hierarchy, instances of which can be handed to ``run`` via kwarg or "
+"stored globally in the config as ``run.watchers``."
+msgstr ""
+
+#: ../../upgrading.rst:1349
+msgid ""
+"``env.real_fabfile`` storing read-only fabfile path which was loaded by "
+"the CLI machinery"
+msgstr ""
+
+#: ../../upgrading.rst:1352
+msgid ""
+"The loaded task `~invoke.collection.Collection` is stored on both the top"
+" level `~invoke.program.Program` object as well as the "
+"`~invoke.executor.Executor` which calls tasks; and "
+"`~invoke.collection.Collection` has a ``loaded_from`` attribute with this"
+" information."
+msgstr ""
+
+#: ../../upgrading.rst:1357
+msgid ""
+"``env.remote_interrupt`` controlling how interrupts (i.e. a local "
+"`KeyboardInterrupt` are caught, forwarded or other"
+msgstr ""
+
+#: ../../upgrading.rst:1360
+msgid ""
+"Invoke's interrupt capture behavior is currently \"always just send the "
+"interrupt character to the subprocess and continue\", allowing "
+"subprocesses to handle ``^C`` however they need to, which is an "
+"improvement over Fabric 1 and roughly equivalent to setting "
+"``env.remote_interrupt = True``."
+msgstr ""
+
+#: ../../upgrading.rst:1366
+msgid ""
+"Allowing users to change this behavior via config is not yet implemented,"
+" and may not be, depending on whether anybody needs it - it was added as "
+"an option in v1 for backwards compat reasons."
+msgstr ""
+
+#: ../../upgrading.rst:1370
+msgid ""
+"It is also technically possible to change interrupt behavior by "
+"subclassing and overriding `invoke.runners.Runner.send_interrupt`."
+msgstr ""
+
+#: ../../upgrading.rst:1372
+msgid ""
+"``env.roles``, ``env.roledefs`` and ``env.effective_roles`` "
+"controlling/exposing what roles are available or currently in play"
+msgstr ""
+
+#: ../../upgrading.rst:1375
+msgid ""
+"As noted in :ref:`upgrading-api`, roles as a concept were ported to "
+"`fabric.group.Group`, but there's no central clearinghouse in which to "
+"store them."
+msgstr ""
+
+#: ../../upgrading.rst:1379
+msgid ""
+"We *may* delegate this to userland forever, but seems likely a common-"
+"best-practice option (such as creating `Groups <fabric.group.Group>` from"
+" some configuration subtree and storing them as a "
+"`~invoke.context.Context` attribute) will appear in early 2.x."
+msgstr ""
+
+#: ../../upgrading.rst:1383
+msgid ""
+"``env.ok_ret_codes`` for overriding the default \"0 good, non-0 bad\" "
+"error detection for subprocess commands"
+msgstr ""
+
+#: ../../upgrading.rst:1385
+msgid "`Pending <https://github.com/pyinvoke/invoke/issues/541>`__"
+msgstr ""
+
+#: ../../upgrading.rst:1386
+msgid ""
+"Not ported yet, but should involve some presumably minor updates to "
+"`invoke.runners.Runner.generate_result` and `~invoke.runners.Result`."
+msgstr ""
+
+#: ../../upgrading.rst:1388
+msgid ""
+"``env.sudo_prefix`` determining the sudo binary name + its flags used "
+"when creating ``sudo`` command strings"
+msgstr ""
+
+#: ../../upgrading.rst:1391
+msgid ""
+"Sudo command construction does not currently look at the config for "
+"anything but the actual sudo prompt."
+msgstr ""
+
+#: ../../upgrading.rst:1393
+msgid ""
+"``env.sudo_prompt`` for setting the prompt string handed to ``sudo`` (and"
+" then expected in return for auto-replying with a configured password)"
+msgstr ""
+
+#: ../../upgrading.rst:1397
+msgid "Is now ``sudo.prompt`` in the configuration system."
+msgstr ""
+
+#: ../../upgrading.rst:1398
+msgid "``env.use_exceptions_for`` to note which actions raise exceptions"
+msgstr ""
+
+#: ../../upgrading.rst:1400
+msgid ""
+"As with most other functionality surrounding Fabric 1's \"jump straight "
+"to `sys.exit`\" design antipattern, this is gone - modern Fabric will not"
+" be hiding any exceptions from user-level code."
+msgstr ""
+
+#: ../../upgrading.rst:1403
+msgid "``env.use_ssh_config`` to enable off-by-default SSH config loading"
+msgstr ""
+
+#: ../../upgrading.rst:1405
+msgid ""
+"SSH config loading is now on by default, but an option remains to disable"
+" it. See :ref:`upgrading-configuration` for more."
+msgstr ""
+
+#: ../../upgrading.rst:1407
+msgid "``env.version`` exposing current Fabric version number"
+msgstr ""
+
+#: ../../upgrading.rst:1409
+msgid ""
+"Just ``import fabric`` and reference ``fabric.__version__`` (string) or "
+"``fabric.__version_info__`` (tuple)."
+msgstr ""
+
+#: ../../upgrading.rst:1414
+msgid "Example upgrade process"
+msgstr ""
+
+#: ../../upgrading.rst:1416
+msgid ""
+"This section goes over upgrading a small but nontrivial Fabric 1 fabfile "
+"to work with modern Fabric. It's not meant to be exhaustive, merely "
+"illustrative; for a full list of how to upgrade individual features or "
+"concepts, see :ref:`upgrade-specifics`."
+msgstr ""
+
+#: ../../upgrading.rst:1422
+msgid "Sample original fabfile"
+msgstr ""
+
+#: ../../upgrading.rst:1424
+msgid ""
+"Here's a (slightly modified to concur with 'modern' Fabric 1 best "
+"practices) copy of Fabric 1's final tutorial snippet, which we will use "
+"as our test case for upgrading::"
+msgstr ""
+
+#: ../../upgrading.rst:1465
+msgid ""
+"We'll port this directly, meaning the result will still be "
+"``fabfile.py``, though we'd like to note that writing your code in a more"
+" library-oriented fashion - even just as functions not wrapped in "
+"``@task`` - can make testing and reusing code easier."
+msgstr ""
+
+#: ../../upgrading.rst:1471
+msgid "Imports"
+msgstr ""
+
+#: ../../upgrading.rst:1473
+msgid ""
+"In modern Fabric, we don't need to import nearly as many functions, due "
+"to the emphasis on object methods instead of global functions. We only "
+"need the following:"
+msgstr ""
+
+#: ../../upgrading.rst:1477
+msgid "`~invoke.exceptions.Exit`, a friendlier way of requesting a `sys.exit`;"
+msgstr ""
+
+#: ../../upgrading.rst:1478
+msgid ""
+"`@task <invoke.tasks.task>`, as before, but coming from Invoke as it's "
+"not SSH-specific;"
+msgstr ""
+
+#: ../../upgrading.rst:1480
+msgid ""
+"``confirm``, which now comes from the Invocations library (also not SSH-"
+"specific; though Invocations is one of the descendants of "
+"``fabric.contrib``, which no longer exists);"
+msgstr ""
+
+#: ../../upgrading.rst:1491
+msgid "Host list"
+msgstr ""
+
+#: ../../upgrading.rst:1493
+msgid ""
+"The idea of a predefined *global* host list is gone; there is currently "
+"no direct replacement. In general, users can set up their own execution "
+"context, creating explicit `fabric.connection.Connection` and/or "
+"`fabric.group.Group` objects as needed; core Fabric is in the process of "
+"building convenience helpers on top of this, but \"create your own "
+"Connections\" will always be there as a backstop."
+msgstr ""
+
+#: ../../upgrading.rst:1500
+msgid ""
+"Speaking of convenience helpers: most of the functionality of ``fab "
+"--hosts`` and ``@hosts`` has been ported over -- the former directly (see"
+" :option:`--hosts`), the latter as a `@task <fabric.tasks.task>` keyword "
+"argument. Thus, for now our example will be turning the global "
+"``env.hosts`` into a lightweight module-level variable declaration, "
+"intended for use in the subsequent calls to ``@task``::"
+msgstr ""
+
+#: ../../upgrading.rst:1510
+msgid "This is an area under active development, so feedback is welcomed."
+msgstr ""
+
+#: ../../upgrading.rst:1517
+msgid "Test task"
+msgstr ""
+
+#: ../../upgrading.rst:1519
+msgid ""
+"The first task in the fabfile uses a good spread of the API. We'll "
+"outline the changes here (though again, all details are in :ref:`upgrade-"
+"specifics`):"
+msgstr ""
+
+#: ../../upgrading.rst:1522
+msgid ""
+"Declaring a function as a task is nearly the same as before: use a "
+"``@task`` decorator (which, in modern Fabric, can take more optional "
+"keyword arguments than its predecessor, including some which replace some"
+" of v1's decorators)."
+msgstr ""
+
+#: ../../upgrading.rst:1525
+msgid ""
+"``@task``-wrapped functions must now take an explicit initial context "
+"argument, whose value will be a `fabric.connection.Connection` object at "
+"runtime."
+msgstr ""
+
+#: ../../upgrading.rst:1528
+msgid ""
+"The use of ``with settings(warn_only=True)`` can be replaced by a simple "
+"kwarg to the ``local`` call."
+msgstr ""
+
+#: ../../upgrading.rst:1530
+msgid ""
+"That ``local`` call is now a method call on the "
+"`fabric.connection.Connection`, `fabric.connection.Connection.local`."
+msgstr ""
+
+#: ../../upgrading.rst:1532
+msgid ""
+"``capture`` is no longer a useful argument; we can now capture and "
+"display at the same time, locally or remotely. If you don't actually "
+"*want* a local subprocess to mirror its stdout/err while it runs, you can"
+" simply say ``hide=True`` (or ``hide=\"stdout\"`` or etc.)"
+msgstr ""
+
+#: ../../upgrading.rst:1536
+msgid ""
+"Result objects are pretty similar between versions; modern Fabric's "
+"results no longer pretend to \"be\" strings, but instead act more like "
+"booleans, acting truthy if the command exited cleanly, and falsey "
+"otherwise. In terms of attributes exhibited, most of the same info is "
+"available, and more besides."
+msgstr ""
+
+#: ../../upgrading.rst:1540
+msgid ""
+"``abort`` is gone; you should use whatever exceptions you feel are "
+"appropriate, or `~invoke.exceptions.Exit` for a `sys.exit` equivalent. "
+"(Or just call `sys.exit` if you want a no-questions-asked immediate exit "
+"that even our CLI machinery won't touch.)"
+msgstr ""
+
+#: ../../upgrading.rst:1545
+msgid "The result::"
+msgstr ""
+
+#: ../../upgrading.rst:1554
+msgid "Other simple tasks"
+msgstr ""
+
+#: ../../upgrading.rst:1556
+msgid ""
+"The next two tasks are simple one-liners, and you've already seen what "
+"replaced the global ``local`` function::"
+msgstr ""
+
+#: ../../upgrading.rst:1568
+msgid "Calling tasks from other tasks"
+msgstr ""
+
+#: ../../upgrading.rst:1570
+msgid ""
+"This is another area that is in flux at the Invoke level, but for now, we"
+" can simply call the other tasks as functions, just as was done in v1. "
+"The main difference is that we want to pass along our context object to "
+"preserve the configuration context (such as loaded config files or CLI "
+"flags)::"
+msgstr ""
+
+#: ../../upgrading.rst:1582
+msgid "Actual remote steps"
+msgstr ""
+
+#: ../../upgrading.rst:1584
+msgid ""
+"Note that up to this point, nothing truly Fabric-related has been in play"
+" - `fabric.connection.Connection.local` is just a rebinding of "
+"`Context.run <invoke.context.Context.run>`, Invoke's local subprocess "
+"execution method. Now we get to the actual deploy step, which invokes "
+"`fabric.connection.Connection.run` instead, executing remotely (on "
+"whichever host the `fabric.connection.Connection` has been bound to)."
+msgstr ""
+
+#: ../../upgrading.rst:1591
+msgid ""
+"``with cd`` is not fully implemented for the remote side of things, but "
+"we expect it will be soon. For now we fall back to command chaining with "
+"``&&``. And, notably, now that we care about selecting host targets, we "
+"refer to our earlier definition of a default host list -- ``my_hosts`` --"
+" when declaring the default host list for this task."
+msgstr ""
+
+#: ../../upgrading.rst:1609
+msgid "The whole thing"
+msgstr ""
+
+#: ../../upgrading.rst:1611
+msgid ""
+"Now we have the entire, upgraded fabfile that will work with modern "
+"Fabric::"
+msgstr ""
+

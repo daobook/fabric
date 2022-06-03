@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 Jeff Forcier
+# This file is distributed under the same license as the Fabric package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Fabric \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-04 01:13+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.1\n"
+
+#: ../../development.rst:3
+msgid "Development"
+msgstr ""
+
+#: ../../development.rst:5
+msgid ""
+"The Fabric development team is headed by `Jeff Forcier "
+"<https://bitprophet.org>`_, aka ``bitprophet``.  However, dozens of other"
+" developers pitch in by submitting patches and ideas via `GitHub issues "
+"and pull requests <https://github.com/fabric/fabric>`_, :ref:`IRC <irc>` "
+"or the `mailing list <http://lists.nongnu.org/mailman/listinfo/fab-"
+"user>`_."
+msgstr ""
+
+#: ../../development.rst:12
+msgid "Get the code"
+msgstr ""
+
+#: ../../development.rst:14
+msgid ""
+"Please see the :ref:`source-code-checkouts` section of the "
+":doc:`installing` page for details on how to obtain Fabric's source code."
+msgstr ""
+
+#: ../../development.rst:18
+msgid "Contributing"
+msgstr ""
+
+#: ../../development.rst:20
+msgid "There are a number of ways to get involved with Fabric:"
+msgstr ""
+
+#: ../../development.rst:22
+msgid ""
+"**Use Fabric and send us feedback!** This is both the easiest and "
+"arguably the most important way to improve the project -- let us know how"
+" you currently use Fabric and how you want to use it. (Please do try to "
+"search the `ticket tracker`_ first, though, when submitting feature "
+"ideas.)"
+msgstr ""
+
+#: ../../development.rst:27
+msgid ""
+"**Report bugs or submit feature requests.** We follow `contribution-"
+"guide.org <https://contribution-guide.org>`_'s guidelines, so please "
+"check them out before visiting the `ticket tracker`_."
+msgstr ""
+
+#: ../../development.rst:33
+msgid ""
+"While we may not always reply promptly, we do try to make time eventually"
+" to inspect all contributions and either incorporate them or explain why "
+"we don't feel the change is a good fit."
+msgstr ""
+
+#: ../../development.rst:39
+msgid "Support of older releases"
+msgstr ""
+
+#: ../../development.rst:41
+msgid ""
+"Major and minor releases do not usually mark the end of the previous line"
+" or lines of development:"
+msgstr ""
+
+#: ../../development.rst:44
+msgid ""
+"Recent minor release branches typically continue to receive critical "
+"bugfixes, often extending back two or three release lines (so e.g. if 2.4"
+" was the currently active release line, 2.3 and perhaps even 2.2 might "
+"get patches)."
+msgstr ""
+
+#: ../../development.rst:48
+msgid ""
+"Depending on the nature of bugs found and the difficulty in backporting "
+"them, older release lines may also continue to get bugfixes -- but "
+"there's no guarantee of any kind. Thus, if a bug were found in 2.4 that "
+"affected 2.1 and could be easily applied, a new 2.1.x version *might* be "
+"released."
+msgstr ""
+

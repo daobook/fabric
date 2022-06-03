@@ -23,3 +23,7 @@ intersphinx_mapping.update({"www": www})
 html_theme_options["extra_nav_links"] = {
     "Main website": "https://www.fabfile.org"
 }
+
+language = 'zh_CN'
+locale_dirs = ['locales/']  # path is example but recommended.
+gettext_compact = False  # optional.

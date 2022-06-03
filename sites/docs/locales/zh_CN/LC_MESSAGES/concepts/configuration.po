@@ -1,0 +1,425 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 Jeff Forcier
+# This file is distributed under the same license as the Fabric package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Fabric \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-04 01:13+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.1\n"
+
+#: ../../concepts/configuration.rst:5
+msgid "Configuration"
+msgstr ""
+
+#: ../../concepts/configuration.rst:8
+msgid "Basics"
+msgstr ""
+
+#: ../../concepts/configuration.rst:10
+msgid ""
+"The heart of Fabric's configuration system (as with much of the rest of "
+"Fabric) relies on Invoke functionality, namely `invoke.config.Config` "
+"(technically, a lightweight subclass, `fabric.config.Config`). For "
+"practical details on what this means re: configuring Fabric's behavior, "
+"please see :ref:`Invoke's configuration documentation "
+"<invoke:configuration>`."
+msgstr ""
+
+#: ../../concepts/configuration.rst:16
+msgid "The primary differences from that document are as follows:"
+msgstr ""
+
+#: ../../concepts/configuration.rst:18
+msgid ""
+"The configuration file paths sought are all named ``fabric.*`` instead of"
+" ``invoke.*`` - e.g. ``/etc/fabric.yml`` instead of ``/etc/invoke.yml``, "
+"``~/.fabric.py`` instead of ``~/.invoke.py``, etc."
+msgstr ""
+
+#: ../../concepts/configuration.rst:21
+msgid ""
+"In addition to :ref:`Invoke's own default configuration values <invoke"
+":default-values>`, Fabric merges in some of its own, such as the fact "
+"that SSH's default port number is 22. See :ref:`default-values` for "
+"details."
+msgstr ""
+
+#: ../../concepts/configuration.rst:24
+msgid ""
+"Fabric has facilities for loading SSH config files, and will "
+"automatically create (or update) a configuration subtree on a per "
+"`Connection <fabric.connection.Connection>` basis, loaded with the "
+"interpreted SSH configuration for that specific host (since an SSH config"
+" file is only ever useful via such a lens). See :ref:`ssh-config`."
+msgstr ""
+
+#: ../../concepts/configuration.rst:29
+msgid ""
+"Fabric plans to offer a framework for managing per-host and per-host-"
+"collection configuration details and overrides, though this is not yet "
+"implemented (it will be analogous to, but improved upon, the "
+"``env.hosts`` and ``env.roles`` structures from Fabric 1.x)."
+msgstr ""
+
+#: ../../concepts/configuration.rst:34
+msgid ""
+"This functionality will supplement that of the SSH config loading "
+"described earlier; we expect most users will prefer to configure as much "
+"as possible via an SSH config file, but not all Fabric settings have "
+"``ssh_config`` analogues, nor do all use cases fit neatly into such "
+"files."
+msgstr ""
+
+#: ../../concepts/configuration.rst:44
+msgid "Default configuration values"
+msgstr ""
+
+#: ../../concepts/configuration.rst:47
+msgid "Overrides of Invoke-level defaults"
+msgstr ""
+
+#: ../../concepts/configuration.rst:49
+msgid ""
+"``run.replace_env``: defaults to ``True``, instead of ``False``, so that "
+"remote commands run with a 'clean', empty environment instead of "
+"inheriting a copy of the current process' environment."
+msgstr ""
+
+#: ../../concepts/configuration.rst:53
+msgid ""
+"This is for security purposes: leaking local environment data remotely by"
+" default would be unsanitary. It's also compatible with the behavior of "
+"OpenSSH."
+msgstr ""
+
+#: ../../concepts/configuration.rst:58
+msgid "The warning under `paramiko.channel.Channel.set_environment_variable`."
+msgstr ""
+
+#: ../../concepts/configuration.rst:61
+msgid ""
+"This is currently accomplished with a keyword argument override, as the "
+"config setting itself was applying to both ``run`` and ``local``. Future "
+"updates will ensure the two methods use separate config values."
+msgstr ""
+
+#: ../../concepts/configuration.rst:66
+msgid "Extensions to Invoke-level defaults"
+msgstr ""
+
+#: ../../concepts/configuration.rst:68
+msgid ""
+"``runners.remote``: In Invoke, the ``runners`` tree has a single subkey, "
+"``local`` (mapping to `~invoke.runners.Local`). Fabric adds this new "
+"subkey, ``remote``, which is mapped to `~fabric.runners.Remote`."
+msgstr ""
+
+#: ../../concepts/configuration.rst:73
+msgid "New default values defined by Fabric"
+msgstr ""
+
+#: ../../concepts/configuration.rst:76
+msgid ""
+"Most of these settings are also available in the constructor of "
+"`.Connection`, if they only need modification on a per-connection basis."
+msgstr ""
+
+#: ../../concepts/configuration.rst:80
+msgid ""
+"Many of these are also configurable via :ref:`ssh_config files <ssh-"
+"config>`. **Such values take precedence over those defined via the core "
+"configuration**, so make sure you're aware of whether you're loading such"
+" files (or :ref:`disable them to be sure <disabling-ssh-config>`)."
+msgstr ""
+
+#: ../../concepts/configuration.rst:85
+msgid ""
+"``connect_kwargs``: Keyword arguments (`dict`) given to "
+"`SSHClient.connect <paramiko.client.SSHClient.connect>` when "
+"`.Connection` performs that method call. This is the primary "
+"configuration vector for many SSH-related options, such as selecting "
+"private keys, toggling forwarding of SSH agents, etc. Default: ``{}``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:90
+msgid ""
+"``forward_agent``: Whether to attempt forwarding of your local SSH "
+"authentication agent to the remote end. Default: ``False`` (same as in "
+"OpenSSH.)"
+msgstr ""
+
+#: ../../concepts/configuration.rst:93
+msgid ""
+"``gateway``: Used as the default value of the ``gateway`` kwarg for "
+"`.Connection`. May be any value accepted by that argument. Default: "
+"``None``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:95
+msgid ""
+"``load_ssh_configs``: Whether to automatically seek out :ref:`SSH config "
+"files <ssh-config>`. When ``False``, no automatic loading occurs. "
+"Default: ``True``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:98
+msgid ""
+"``port``: TCP port number used by `.Connection` objects when not "
+"otherwise specified. Default: ``22``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:100
+msgid ""
+"``inline_ssh_env``: Boolean serving as global default for the value of "
+"`.Connection`'s ``inline_ssh_env`` parameter; see its docs for details. "
+"Default: ``False``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:103
+msgid ""
+"``ssh_config_path``: Runtime SSH config path; see :ref:`ssh-config`. "
+"Default: ``None``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:105
+msgid "``timeouts``: Various timeouts, specifically:"
+msgstr ""
+
+#: ../../concepts/configuration.rst:107
+msgid ""
+"``connect``: Connection timeout, in seconds; defaults to ``None``, "
+"meaning no timeout / block forever."
+msgstr ""
+
+#: ../../concepts/configuration.rst:110
+msgid ""
+"``user``: Username given to the remote ``sshd`` when connecting. Default:"
+" your local system username."
+msgstr ""
+
+#: ../../concepts/configuration.rst:117
+msgid "Loading and using ``ssh_config`` files"
+msgstr ""
+
+#: ../../concepts/configuration.rst:120
+msgid "How files are loaded"
+msgstr ""
+
+#: ../../concepts/configuration.rst:122
+msgid ""
+"Fabric uses Paramiko's SSH config file machinery to load and parse "
+"``ssh_config``-format files (following OpenSSH's behavior re: which files"
+" to load, when possible):"
+msgstr ""
+
+#: ../../concepts/configuration.rst:126
+msgid ""
+"An already-parsed `~paramiko.config.SSHConfig` object may be given to "
+"`.Config.__init__` via its ``ssh_config`` keyword argument; if this value"
+" is given, no files are loaded, even if they exist."
+msgstr ""
+
+#: ../../concepts/configuration.rst:129
+msgid ""
+"A runtime file path may be specified via configuration itself, as the "
+"``ssh_config_path`` key; such a path will be loaded into a new "
+"`~paramiko.config.SSHConfig` object at the end of `.Config.__init__` and "
+"no other files will be sought out."
+msgstr ""
+
+#: ../../concepts/configuration.rst:134
+msgid ""
+"It will be filled in by the ``fab`` CLI tool if the :option:`--ssh-"
+"config` flag is given."
+msgstr ""
+
+#: ../../concepts/configuration.rst:137
+msgid ""
+"If no runtime config (object or path) was given to `.Config.__init__`, it"
+" will automatically seek out and load ``~/.ssh/config`` and/or "
+"``/etc/ssh/ssh_config``, if they exist (and in that order.)"
+msgstr ""
+
+#: ../../concepts/configuration.rst:142
+msgid ""
+"Rules present in both files will result in the user-level file 'winning',"
+" as the first rule found during lookup is always used."
+msgstr ""
+
+#: ../../concepts/configuration.rst:145
+msgid ""
+"If none of the above vectors yielded SSH config data, a blank/empty "
+"`~paramiko.config.SSHConfig` is the final result."
+msgstr ""
+
+#: ../../concepts/configuration.rst:147
+msgid ""
+"Regardless of how the object was generated, it is exposed as "
+"``Config.base_ssh_config``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:153
+msgid "``Connection``'s use of ``ssh_config`` values"
+msgstr ""
+
+#: ../../concepts/configuration.rst:155
+msgid ""
+"`.Connection` objects expose a per-host 'view' of their config's SSH data"
+" (obtained via `~paramiko.config.SSHConfig.lookup`) as "
+"`.Connection.ssh_config`. `.Connection` itself references these values as"
+" described in the following subsections, usually as simple defaults for "
+"the appropriate config key or parameter (``port``, ``forward_agent``, "
+"etc.)"
+msgstr ""
+
+#: ../../concepts/configuration.rst:161
+msgid ""
+"Unless otherwise specified, these values override regular configuration "
+"values for the same keys, but may themselves be overridden by "
+"`.Connection.__init__` parameters."
+msgstr ""
+
+#: ../../concepts/configuration.rst:165
+msgid "Take for example a ``~/.fabric.yaml``:"
+msgstr ""
+
+#: ../../concepts/configuration.rst:171
+msgid ""
+"Absent any other configuration, ``Connection('myhost')`` connects as the "
+"``foo`` user."
+msgstr ""
+
+#: ../../concepts/configuration.rst:174
+msgid "If we also have an ``~/.ssh/config``::"
+msgstr ""
+
+#: ../../concepts/configuration.rst:179
+msgid ""
+"then ``Connection('myhost')`` connects as ``bar`` (the SSH config wins "
+"over the Fabric config.)"
+msgstr ""
+
+#: ../../concepts/configuration.rst:182
+msgid ""
+"*However*, in both cases, ``Connection('myhost', user='biz')`` will "
+"connect as ``biz``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:186
+msgid ""
+"The below sections use capitalized versions of ``ssh_config`` keys for "
+"easier correlation with ``man ssh_config``, **but** the actual "
+"`~paramiko.config.SSHConfig` data structure is normalized to lowercase "
+"keys, since SSH config files are technically case-insensitive."
+msgstr ""
+
+#: ../../concepts/configuration.rst:192
+msgid "Connection parameters"
+msgstr ""
+
+#: ../../concepts/configuration.rst:194
+msgid ""
+"``Hostname``: replaces the original value of ``host`` (which is preserved"
+" as ``.original_host``.)"
+msgstr ""
+
+#: ../../concepts/configuration.rst:196
+msgid ""
+"``Port``: supplies the default value for the ``port`` config option / "
+"parameter."
+msgstr ""
+
+#: ../../concepts/configuration.rst:198
+msgid ""
+"``User``: supplies the default value for the ``user`` config option / "
+"parameter."
+msgstr ""
+
+#: ../../concepts/configuration.rst:200
+msgid ""
+"``ConnectTimeout``: sets the default value for the ``timeouts.connect`` "
+"config option / ``timeout`` parameter."
+msgstr ""
+
+#: ../../concepts/configuration.rst:204
+msgid "Proxying"
+msgstr ""
+
+#: ../../concepts/configuration.rst:206
+msgid "``ProxyCommand``: supplies default (string) value for ``gateway``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:207
+msgid ""
+"``ProxyJump``: supplies default (`Connection "
+"<fabric.connection.Connection>`) value for ``gateway``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:210
+msgid ""
+"Nested-style ``ProxyJump``, i.e. ``user1@hop1.host,user2@hop2.host,...``,"
+" will result in an appropriate series of nested ``gateway`` values under "
+"the hood - as if the user had manually specified ``Connecton(..., "
+"gateway=Connection('user1@hop1.host', "
+"gateway=Connection('user2@hop2.host', gateway=...)))``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:217
+msgid ""
+"If both are specified for a given host, ``ProxyJump`` will override "
+"``ProxyCommand``. This is slightly different from OpenSSH, where the "
+"order the directives are loaded determines which one wins. Doing so on "
+"our end (where we view the config as a dictionary structure) requires "
+"additional work."
+msgstr ""
+
+#: ../../concepts/configuration.rst:228
+msgid "Authentication"
+msgstr ""
+
+#: ../../concepts/configuration.rst:230
+msgid "``ForwardAgent``: controls default behavior of ``forward_agent``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:231
+msgid ""
+"``IdentityFile``: appends to the ``key_filename`` key within "
+"``connect_kwargs`` (similar to :option:`--identity`.)"
+msgstr ""
+
+#: ../../concepts/configuration.rst:240
+msgid "Disabling (most) ``ssh_config`` loading"
+msgstr ""
+
+#: ../../concepts/configuration.rst:242
+msgid ""
+"Users who need tighter control over how their environment gets configured"
+" may want to disable the automatic loading of system/user level SSH "
+"config files; this can prevent hard-to-expect errors such as a new user's"
+" ``~/.ssh/config`` overriding values that are being set in the regular "
+"config hierarchy."
+msgstr ""
+
+#: ../../concepts/configuration.rst:247
+msgid ""
+"To do so, simply set the top level config option ``load_ssh_configs`` to "
+"``False``."
+msgstr ""
+
+#: ../../concepts/configuration.rst:251
+msgid ""
+"Changing this setting does *not* disable loading of runtime-level config "
+"files (e.g. via :option:`-F`). If a user is explicitly telling us to load"
+" such a file, we assume they know what they're doing."
+msgstr ""
+

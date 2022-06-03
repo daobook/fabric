@@ -1,0 +1,244 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 Jeff Forcier
+# This file is distributed under the same license as the Fabric package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Fabric \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-04 01:13+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.1\n"
+
+#: ../../installing.rst:3
+msgid "Installing"
+msgstr ""
+
+#: ../../installing.rst:6
+msgid ""
+"Users looking to install Fabric 1.x should see :doc:`installing-1.x`. "
+"However, :doc:`upgrading <upgrading>` to 2.x is strongly recommended."
+msgstr ""
+
+#: ../../installing.rst:9
+msgid "Fabric is best installed via `pip <https://pip-installer.org>`_::"
+msgstr ""
+
+#: ../../installing.rst:13
+msgid "All advanced ``pip`` use cases work too, such as::"
+msgstr ""
+
+#: ../../installing.rst:17
+msgid "Or cloning the Git repository and running::"
+msgstr ""
+
+#: ../../installing.rst:21
+msgid "within it."
+msgstr ""
+
+#: ../../installing.rst:23
+msgid ""
+"Your operating system may also have a Fabric package available (though "
+"these are typically older and harder to support), typically called "
+"``fabric`` or ``python-fabric``. E.g.::"
+msgstr ""
+
+#: ../../installing.rst:33
+msgid "Installing modern Fabric as ``fabric2``"
+msgstr ""
+
+#: ../../installing.rst:35
+msgid ""
+"Users who are migrating from Fabric 1 to Fabric 2+ may find it useful to "
+"have both versions installed side-by-side. The easiest way to do this is "
+"to use the handy ``fabric2`` PyPI entry::"
+msgstr ""
+
+#: ../../installing.rst:41
+msgid ""
+"This upload is generated from the normal Fabric repository, but is "
+"tweaked at build time so that it installs a ``fabric2`` package instead "
+"of a ``fabric`` one (and a ``fab2`` binary instead of a ``fab`` one.) The"
+" codebase is otherwise unchanged."
+msgstr ""
+
+#: ../../installing.rst:46
+msgid ""
+"Users working off of the Git repository can enable that same tweak with "
+"an environment variable, e.g.::"
+msgstr ""
+
+#: ../../installing.rst:52
+msgid ""
+"The value of the environment variable doesn't matter, as long as it is "
+"not empty."
+msgstr ""
+
+#: ../../installing.rst:56
+msgid "``fabric`` and ``fabric2`` vs ``fabric3``"
+msgstr ""
+
+#: ../../installing.rst:58
+msgid ""
+"Unfortunately, the ``fabric3`` entry on PyPI is an unauthorized fork of "
+"Fabric 1.x which we do not control. Once modern Fabric gets up to 3.x, "
+"4.x etc, we'll likely continue distributing it via both ``fabric`` and "
+"``fabric2`` for convenience; there will never be any official "
+"``fabric3``, ``fabric4`` etc."
+msgstr ""
+
+#: ../../installing.rst:63
+msgid ""
+"In other words, ``fabric2`` is purely there to help users of 1.x cross "
+"the 2.0 \"major rewrite\" barrier; future major versions will *not* be "
+"large rewrites and will only have small sets of backward "
+"incompatibilities."
+msgstr ""
+
+#: ../../installing.rst:68
+msgid "Inability to ``pip install -e`` both versions"
+msgstr ""
+
+#: ../../installing.rst:70
+msgid ""
+"You may encounter issues if *both* versions of Fabric are installed via "
+"``pip install -e``, due to how that functionality works (tl;dr it just "
+"adds the checkout directories to ``sys.path``, regardless of whether you "
+"wanted to \"install\" all packages within them - so Fabric 2+'s "
+"``fabric/`` package still ends up visible to the import system alongside "
+"``fabric2/``)."
+msgstr ""
+
+#: ../../installing.rst:76
+msgid ""
+"Thus, you may only have one of the local copies of Fabric installed in "
+"'editable' fashion at a time, and the other must be repeatedly "
+"reinstalled via ``pip install`` (no ``-e``) if you need to make edits to "
+"it."
+msgstr ""
+
+#: ../../installing.rst:81
+msgid "Order of installations"
+msgstr ""
+
+#: ../../installing.rst:83
+msgid ""
+"Due to the same pip quirk mentioned above, if either of your Fabric "
+"versions are installed in 'editable' mode, you **must** install the "
+"'editable' version first, and then install the 'static' version second."
+msgstr ""
+
+#: ../../installing.rst:87
+msgid ""
+"For example, if you're migrating from some public release of Fabric 1 to "
+"a checkout of modern Fabric::"
+msgstr ""
+
+#: ../../installing.rst:93
+msgid ""
+"You may see some warnings on that second ``pip install`` (eg ``Not "
+"uninstalling fabric`` or ``Can't uninstall 'fabric'``) but as long as it "
+"exits cleanly and says something like ``Successfully installed "
+"fabric-1.14.0``, you should be okay. Double check with e.g. ``pip list`` "
+"and you should have entries for both ``fabric`` and ``fabric2``."
+msgstr ""
+
+#: ../../installing.rst:101
+msgid "Dependencies"
+msgstr ""
+
+#: ../../installing.rst:103
+msgid ""
+"In order for Fabric's installation to succeed, you will need the "
+"following:"
+msgstr ""
+
+#: ../../installing.rst:105
+msgid "the Python programming language, versions 2.7 or 3.4+;"
+msgstr ""
+
+#: ../../installing.rst:106
+msgid ""
+"the `Invoke <https://pyinvoke.org>`_ command-running and task-execution "
+"library;"
+msgstr ""
+
+#: ../../installing.rst:108
+msgid ""
+"and the `Paramiko <https://paramiko.org>`_ SSH library (as well as its "
+"own dependencies; see `its install docs "
+"<https://paramiko.org/installing.html>`_.)"
+msgstr ""
+
+#: ../../installing.rst:112
+msgid "Development dependencies"
+msgstr ""
+
+#: ../../installing.rst:114
+msgid ""
+"If you are interested in doing development work on Fabric (or even just "
+"running the test suite), you'll need the libraries listed in the ``dev-"
+"requirements.txt`` (included in the source distribution.) Usually it's "
+"easy to simply ``pip install -r dev-requirements.txt``."
+msgstr ""
+
+#: ../../installing.rst:122
+msgid "Downloads"
+msgstr ""
+
+#: ../../installing.rst:124
+msgid ""
+"To obtain a tar.gz or zip archive of the Fabric source code, you may "
+"visit `Fabric's PyPI page <https://pypi.org/project/fabric>`_, which "
+"offers manual downloads in addition to being the entry point for ``pip``."
+msgstr ""
+
+#: ../../installing.rst:132
+msgid "Source code checkouts"
+msgstr ""
+
+#: ../../installing.rst:134
+msgid ""
+"The Fabric developers manage the project's source code with the `Git "
+"<http://git-scm.com>`_ DVCS. To follow Fabric's development via Git "
+"instead of downloading official releases, you have the following options:"
+msgstr ""
+
+#: ../../installing.rst:138
+msgid ""
+"Clone the canonical repository straight from `the Fabric organization's "
+"repository on Github <https://github.com/fabric/fabric>`_ (cloning "
+"instructions available on that page)."
+msgstr ""
+
+#: ../../installing.rst:141
+msgid ""
+"Make your own fork of the Github repository by making a Github account, "
+"visiting `fabric/fabric <https://github.com/fabric/fabric>`_ and clicking"
+" the \"fork\" button."
+msgstr ""
+
+#: ../../installing.rst:147
+msgid ""
+"If you've obtained the Fabric source via source control and plan on "
+"updating your checkout in the future, we highly suggest using ``pip "
+"install -e .`` (or ``python setup.py develop``) instead -- it will use "
+"symbolic links instead of file copies, ensuring that imports of the "
+"library or use of the command-line tool will always refer to your "
+"checkout."
+msgstr ""
+
+#: ../../installing.rst:153
+msgid ""
+"For information on the hows and whys of Fabric development, including "
+"which branches may be of interest and how you can help out, please see "
+"the :doc:`development` page."
+msgstr ""
+

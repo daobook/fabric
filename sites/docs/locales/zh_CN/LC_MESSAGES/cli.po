@@ -1,0 +1,182 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 Jeff Forcier
+# This file is distributed under the same license as the Fabric package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Fabric \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-04 01:13+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.1\n"
+
+#: ../../cli.rst:3
+msgid "Command-line interface"
+msgstr ""
+
+#: ../../cli.rst:5
+msgid ""
+"This page documents the details of Fabric's command-line interface, "
+"``fab``."
+msgstr ""
+
+#: ../../cli.rst:9
+msgid "Options & arguments"
+msgstr ""
+
+#: ../../cli.rst:12
+msgid ""
+"By default, ``fab`` honors all of the same CLI options as :ref:`Invoke's "
+"'inv' program <inv>`; only additions and overrides are listed here!"
+msgstr ""
+
+#: ../../cli.rst:15
+msgid ""
+"For example, Fabric implements :option:`--prompt-for-passphrase` and "
+":option:`--prompt-for-login-password` because they are SSH specific, but "
+"it inherits a related option -- :ref:`--prompt-for-sudo-password <prompt-"
+"for-sudo-password>` -- from Invoke, which handles sudo autoresponse "
+"concerns."
+msgstr ""
+
+#: ../../cli.rst:23
+msgid ""
+"Takes a comma-separated string listing hostnames against which tasks "
+"should be executed, in serial. See :ref:`runtime-hosts`."
+msgstr ""
+
+#: ../../cli.rst:28
+msgid ""
+"Overrides the ``key_filename`` value in the ``connect_kwargs`` config "
+"setting (which is read by `.Connection`, and eventually makes its way "
+"into Paramiko; see the docstring for `.Connection` for details.)"
+msgstr ""
+
+#: ../../cli.rst:32
+msgid ""
+"Typically this can be thought of as identical to ``ssh -i <path>``, i.e. "
+"supplying a specific, runtime private key file. Like ``ssh -i``, it "
+"builds an iterable of strings and may be given multiple times."
+msgstr ""
+
+#: ../../cli.rst:36
+msgid "Default: ``[]``."
+msgstr ""
+
+#: ../../cli.rst:40
+msgid ""
+"Causes Fabric to prompt 'up front' for a value to store as the "
+"``connect_kwargs.password`` config setting (used by Paramiko when "
+"authenticating via passwords and, in some versions, also used for key "
+"passphrases.) Useful if you do not want to configure such values in on-"
+"disk conf files or via shell environment variables."
+msgstr ""
+
+#: ../../cli.rst:48
+msgid ""
+"Causes Fabric to prompt 'up front' for a value to store as the "
+"``connect_kwargs.passphrase`` config setting (used by Paramiko to decrypt"
+" private key files.) Useful if you do not want to configure such values "
+"in on-disk conf files or via shell environment variables."
+msgstr ""
+
+#: ../../cli.rst:55
+msgid "Takes a path to load as a runtime SSH config file. See :ref:`ssh-config`."
+msgstr ""
+
+#: ../../cli.rst:59
+msgid ""
+"Takes an integer of seconds after which connection should time out. "
+"Supplies the default value for the ``timeouts.connect`` config setting."
+msgstr ""
+
+#: ../../cli.rst:64
+msgid "Seeking & loading tasks"
+msgstr ""
+
+#: ../../cli.rst:66
+msgid ""
+"``fab`` follows all the same rules as Invoke's :ref:`collection loading "
+"<collection-discovery>`, with the sole exception that the default "
+"collection name sought is ``fabfile`` instead of ``tasks``. Thus, "
+"whenever Invoke's documentation mentions ``tasks`` or ``tasks.py``, "
+"Fabric substitutes ``fabfile`` / ``fabfile.py``."
+msgstr ""
+
+#: ../../cli.rst:72
+msgid ""
+"For example, if your current working directory is "
+"``/home/myuser/projects/mywebapp``, running ``fab --list`` will cause "
+"Fabric to look for ``/home/myuser/projects/mywebapp/fabfile.py`` (or "
+"``/home/myuser/projects/mywebapp/fabfile/__init__.py`` - Python's import "
+"system treats both the same). If it's not found there, "
+"``/home/myuser/projects/fabfile.py`` is sought next; and so forth."
+msgstr ""
+
+#: ../../cli.rst:83
+msgid "Runtime specification of host lists"
+msgstr ""
+
+#: ../../cli.rst:85
+msgid ""
+"While advanced use cases may need to take matters into their own hands, "
+"you can go reasonably far with the core :option:`--hosts` flag, which "
+"specifies one or more hosts the given task(s) should execute against."
+msgstr ""
+
+#: ../../cli.rst:89
+msgid ""
+"By default, execution is a serial process: for each task on the command "
+"line, run it once for each host given to :option:`--hosts`. Imagine tasks"
+" that simply print ``Running <task name> on <host>!``::"
+msgstr ""
+
+#: ../../cli.rst:102
+msgid ""
+"When :option:`--hosts` is not given, ``fab`` behaves similarly to "
+"Invoke's :ref:`command-line interface <inv>`, generating regular "
+"instances of `~invoke.context.Context` instead of `Connections "
+"<.Connection>`."
+msgstr ""
+
+#: ../../cli.rst:107
+msgid "Executing arbitrary/ad-hoc commands"
+msgstr ""
+
+#: ../../cli.rst:109
+msgid ""
+"``fab`` leverages a lesser-known command line convention and may be "
+"called in the following manner::"
+msgstr ""
+
+#: ../../cli.rst:114
+msgid ""
+"where everything after the ``--`` is turned into a temporary "
+"`.Connection.run` call, and is not parsed for ``fab`` options. If you've "
+"specified a host list via an earlier task or the core CLI flags, this "
+"usage will act like a one-line anonymous task."
+msgstr ""
+
+#: ../../cli.rst:119
+msgid "For example, let's say you wanted kernel info for a bunch of systems::"
+msgstr ""
+
+#: ../../cli.rst:123
+msgid "Such a command is equivalent to the following Fabric library code::"
+msgstr ""
+
+#: ../../cli.rst:129
+msgid ""
+"Most of the time you will want to just write out the task in your fabfile"
+" (anything you use once, you're likely to use again) but this feature "
+"provides a handy, fast way to dash off an SSH-borne command while "
+"leveraging predefined connection settings."
+msgstr ""
+

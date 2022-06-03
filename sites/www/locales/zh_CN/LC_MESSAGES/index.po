@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 Jeff Forcier
+# This file is distributed under the same license as the Fabric package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Fabric \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-04 01:13+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.1\n"
+
+#: ../../index.rst:203
+msgid "FAQs"
+msgstr ""
+
+#: ../../index.rst:203
+msgid "Roadmap"
+msgstr ""
+
+#: ../../../../README.rst:1
+msgid "|version| |python| |license| |ci| |coverage|"
+msgstr ""
+
+#: ../../../../README.rst
+msgid "PyPI - Package Version"
+msgstr ""
+
+#: ../../../../README.rst
+msgid "PyPI - Python Version"
+msgstr ""
+
+#: ../../../../README.rst
+msgid "PyPI - License"
+msgstr ""
+
+#: ../../../../README.rst
+msgid "CircleCI"
+msgstr ""
+
+#: ../../../../README.rst
+msgid "Codecov"
+msgstr ""
+
+#: ../../../../README.rst:20
+msgid "Welcome to Fabric!"
+msgstr ""
+
+#: ../../../../README.rst:22
+msgid ""
+"Fabric is a high level Python (2.7, 3.4+) library designed to execute "
+"shell commands remotely over SSH, yielding useful Python objects in "
+"return. It builds on top of `Invoke <https://pyinvoke.org>`_ (subprocess "
+"command execution and command-line features) and `Paramiko "
+"<https://paramiko.org>`_ (SSH protocol implementation), extending their "
+"APIs to complement one another and provide additional functionality."
+msgstr ""
+
+#: ../../../../README.rst:29
+msgid ""
+"To find out what's new in this version of Fabric, please see `the "
+"changelog <https://fabfile.org/changelog.html#{}>`_."
+msgstr ""
+
+#: ../../../../README.rst:32
+msgid ""
+"The project maintainer keeps a `roadmap "
+"<https://bitprophet.org/projects#roadmap>`_ on his website."
+msgstr ""
+
+#: ../../index.rst:3
+msgid ""
+"This website covers project information for Fabric such as the changelog,"
+" contribution guidelines, and so forth. Detailed usage and API "
+"documentation can be found at our code documentation site, "
+"`docs.fabfile.org <https://docs.fabfile.org>`_."
+msgstr ""
+
+#: ../../index.rst:8
+msgid ""
+"Please see below for a high level intro, or the navigation on the left "
+"for the rest of the site content."
+msgstr ""
+
+#: ../../index.rst:12
+msgid "What is Fabric?"
+msgstr ""
+
+#: ../../index.rst:14
+msgid ""
+"Fabric is a high level Python (2.7, 3.4+) library designed to execute "
+"shell commands remotely over SSH, yielding useful Python objects in "
+"return:"
+msgstr ""
+
+#: ../../index.rst:37
+msgid ""
+"It builds on top of `Invoke <https://pyinvoke.org>`_ (subprocess command "
+"execution and command-line features) and `Paramiko "
+"<https://paramiko.org>`_ (SSH protocol implementation), extending their "
+"APIs to complement one another and provide additional functionality."
+msgstr ""
+
+#: ../../index.rst:43
+msgid ""
+"Fabric users may also be interested in two *strictly optional* libraries "
+"which implement best-practice user-level code: `Invocations "
+"<https://invocations.readthedocs.io>`_ (Invoke-only, locally-focused CLI "
+"tasks) and `Patchwork <https://fabric-patchwork.readthedocs.io>`_ "
+"(remote-friendly, typically shell-command-focused, utility functions)."
+msgstr ""
+
+#: ../../index.rst:50
+msgid "How is it used?"
+msgstr ""
+
+#: ../../index.rst:52
+msgid "Core use cases for Fabric include (but are not limited to):"
+msgstr ""
+
+#: ../../index.rst:54
+msgid "Single commands on individual hosts:"
+msgstr ""
+
+#: ../../index.rst:73
+msgid ""
+"Single commands across multiple hosts (via varying methodologies: serial,"
+" parallel, etc):"
+msgstr ""
+
+#: ../../index.rst:99
+msgid "Python code blocks (functions/methods) targeted at individual connections:"
+msgstr ""
+
+#: ../../index.rst:127
+msgid "Python code blocks on multiple hosts:"
+msgstr ""
+
+#: ../../index.rst:169
+msgid ""
+"In addition to these library-oriented use cases, Fabric makes it easy to "
+"integrate with Invoke's command-line task functionality, invoking via a "
+"``fab`` binary stub:"
+msgstr ""
+
+#: ../../index.rst:173
+msgid ""
+"Python functions, methods or entire objects can be used as CLI-"
+"addressable tasks, e.g. ``fab deploy``;"
+msgstr ""
+
+#: ../../index.rst:175
+msgid ""
+"Tasks may indicate other tasks to be run before or after they themselves "
+"execute (pre- or post-tasks);"
+msgstr ""
+
+#: ../../index.rst:177
+msgid ""
+"Tasks are parameterized via regular GNU-style arguments, e.g. ``fab "
+"deploy --env=prod -d``;"
+msgstr ""
+
+#: ../../index.rst:179
+msgid ""
+"Multiple tasks may be given in a single CLI session, e.g. ``fab build "
+"deploy``;"
+msgstr ""
+
+#: ../../index.rst:181
+msgid ""
+"Much more - all other Invoke functionality is supported - see `its "
+"documentation <https://docs.pyinvoke.org>`_ for details."
+msgstr ""
+
+#: ../../index.rst:185
+msgid "I'm a user of Fabric 1, how do I upgrade?"
+msgstr ""
+
+#: ../../index.rst:187
+msgid ""
+"We've packaged modern Fabric in a manner that allows installation "
+"alongside Fabric 1, so you can upgrade at whatever pace your use case "
+"requires. There are multiple possible approaches -- see our "
+":ref:`detailed upgrade documentation <upgrading>` for details."
+msgstr ""
+
+#: ../../index.rst:193
+msgid "What is this website?"
+msgstr ""
+
+#: ../../index.rst:195
+msgid ""
+"``www.fabfile.org`` provides project information for Fabric such as the "
+"changelog, contribution guidelines, development roadmap, news/blog, and "
+"so forth."
+msgstr ""
+
+#: ../../index.rst:199
+msgid ""
+"Detailed conceptual and API documentation can be found at our code "
+"documentation site, `docs.fabfile.org <https://docs.fabfile.org>`_."
+msgstr ""
+

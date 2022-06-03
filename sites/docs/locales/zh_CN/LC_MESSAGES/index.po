@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 Jeff Forcier
+# This file is distributed under the same license as the Fabric package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Fabric \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-04 01:13+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.1\n"
+
+#: ../../index.rst:3
+msgid "Welcome to Fabric's documentation!"
+msgstr ""
+
+#: ../../index.rst:5
+msgid ""
+"This site covers Fabric's usage & API documentation. For basic info on "
+"what Fabric is, including its public changelog & how the project is "
+"maintained, please see `the main project website <http://fabfile.org>`_."
+msgstr ""
+
+#: ../../index.rst:10
+msgid "Getting started"
+msgstr ""
+
+#: ../../index.rst:12
+msgid ""
+"Many core ideas & API calls are explained in the tutorial/getting-started"
+" document:"
+msgstr ""
+
+#: ../../index.rst:21
+msgid "Upgrading from 1.x"
+msgstr ""
+
+#: ../../index.rst:23
+msgid ""
+"Looking to upgrade from Fabric 1.x? See our :ref:`detailed upgrade guide "
+"<upgrading>` on the nonversioned main project site."
+msgstr ""
+
+#: ../../index.rst:29
+msgid "Concepts"
+msgstr ""
+
+#: ../../index.rst:31
+msgid "Dig deeper into specific topics:"
+msgstr ""
+
+#: ../../index.rst:40
+msgid "The ``fab`` CLI tool"
+msgstr ""
+
+#: ../../index.rst:42
+msgid ""
+"Details on the CLI interface to Fabric, how it extends Invoke's CLI "
+"machinery, and examples of shortcuts for executing tasks across hosts or "
+"groups."
+msgstr ""
+
+#: ../../index.rst:51
+msgid "API"
+msgstr ""
+
+#: ../../index.rst:53
+msgid ""
+"Know what you're looking for & just need API details? View our auto-"
+"generated API documentation:"
+msgstr ""
+

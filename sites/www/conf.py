@@ -25,3 +25,7 @@ intersphinx_mapping.update({"docs": (target, None)})
 html_theme_options["extra_nav_links"] = {
     "API Docs": "https://docs.fabfile.org"
 }
+
+language = 'zh_CN'
+locale_dirs = ['locales/']  # path is example but recommended.
+gettext_compact = False  # optional.
