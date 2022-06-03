@@ -102,7 +102,7 @@ Available tasks:
 
         def loads_fabric_config_files_not_invoke_ones(self):
             for type_ in ("yaml", "yml", "json", "py"):
-                with cd(os.path.join(support, "{}_conf".format(type_))):
+                with cd(os.path.join(support, f"{type_}_conf")):
                     # This task, in each subdir, expects data present in a
                     # fabric.<ext> nearby to show up in the config.
                     make_program().run("fab expect-conf-value")

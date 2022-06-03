@@ -103,7 +103,7 @@ class Connection_:
                     assert c.user == get_local_user()
                     assert c.host == addr
                     assert c.port == 123
-                    c2 = Connection("somebody@{}".format(addr), port=123)
+                    c2 = Connection(f"somebody@{addr}", port=123)
                     assert c2.user == "somebody"
                     assert c2.host == addr
                     assert c2.port == 123
@@ -263,7 +263,7 @@ class Connection_:
 
         class ssh_config:
             def _runtime_config(self, overrides=None, basename="runtime"):
-                confname = "{}.conf".format(basename)
+                confname = f"{basename}.conf"
                 runtime_path = join(support, "ssh_config", confname)
                 if overrides is None:
                     overrides = {}
@@ -862,10 +862,7 @@ class Connection_:
                     "connect_kwargs": {"key_filename": ["configured.key"]}
                 }
             conf = Config(**config_kwargs)
-            connect_kwargs = {}
-            if kwarg:
-                # Stitch in connect_kwargs value
-                connect_kwargs = {"key_filename": ["kwarg.key"]}
+            connect_kwargs = {"key_filename": ["kwarg.key"]} if kwarg else {}
             # Tie in all sources that were configured & open()
             Connection(
                 "runtime", config=conf, connect_kwargs=connect_kwargs
@@ -1002,12 +999,7 @@ class Connection_:
                     "watchers",
                 ):
                     continue
-                with pytest.raises(
-                    TypeError,
-                    match=r"unexpected keyword arguments: \['{}'\]".format(
-                        key
-                    ),
-                ):
+                with pytest.raises(TypeError, match=f"unexpected keyword arguments: \\['{key}'\\]"):
                     Connection("host").shell(**{key: "whatever"})
 
         @patch(remote_shell_path)
@@ -1060,7 +1052,7 @@ class Connection_:
             # still work correctly at our level.
             cxn = Connection("host")
             cxn.sudo("foo")
-            cmd = "sudo -S -p '{}' foo".format(cxn.config.sudo.prompt)
+            cmd = f"sudo -S -p '{cxn.config.sudo.prompt}' foo"
             # NOTE: this is another spot where Mock.call_args is inexplicably
             # None despite call_args_list being populated. WTF. (Also,
             # Remote.return_value is two different Mocks now, despite Remote's
@@ -1208,16 +1200,12 @@ class Connection_:
             )
 
         def _thread_error(self, which):
+
             class Sentinel(Exception):
                 pass
 
             try:
-                self._forward_local(
-                    {
-                        "local_port": 1234,
-                        "{}_exception".format(which): Sentinel,
-                    }
-                )
+                self._forward_local({"local_port": 1234, f"{which}_exception": Sentinel})
             except ThreadException as e:
                 # NOTE: ensures that we're getting what we expected and not
                 # some deeper, test-bug related error

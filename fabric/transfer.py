@@ -249,27 +249,25 @@ class Transfer(object):
                 raise ValueError(
                     "Must give non-empty remote path when local is a file-like object!"  # noqa
                 )
-            else:
-                remote = local_base
-                debug("Massaged empty remote path into {!r}".format(remote))
+            remote = local_base
+            debug("Massaged empty remote path into {!r}".format(remote))
         elif self.is_remote_dir(remote):
             # non-empty local_base implies a) text file path or b) FLO which
             # had a non-empty .name attribute. huzzah!
             if local_base:
                 remote = posixpath.join(remote, local_base)
+            elif is_file_like:
+                raise ValueError(
+                    "Can't put a file-like-object into a directory unless it has a non-empty .name attribute!"  # noqa
+                )
             else:
-                if is_file_like:
-                    raise ValueError(
-                        "Can't put a file-like-object into a directory unless it has a non-empty .name attribute!"  # noqa
+                # TODO: can we ever really end up here? implies we want to
+                # reorganize all this logic so it has fewer potential holes
+                raise ValueError(
+                    "Somehow got an empty local file basename ({!r}) when uploading to a directory ({!r})!".format(  # noqa
+                        local_base, remote
                     )
-                else:
-                    # TODO: can we ever really end up here? implies we want to
-                    # reorganize all this logic so it has fewer potential holes
-                    raise ValueError(
-                        "Somehow got an empty local file basename ({!r}) when uploading to a directory ({!r})!".format(  # noqa
-                            local_base, remote
-                        )
-                    )
+                )
 
         prejoined_remote = remote
         remote = posixpath.join(

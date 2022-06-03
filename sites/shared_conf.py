@@ -8,8 +8,6 @@ import alabaster
 
 # Alabaster theme + mini-extension
 html_theme_path = [alabaster.get_path()]
-extensions = ["alabaster", "sphinx.ext.intersphinx"]
-
 # Paths relative to invoking conf.py - not this shared file
 html_static_path = [join("..", "_shared_static")]
 html_theme = "alabaster"
@@ -34,14 +32,13 @@ html_sidebars = {
     "**": ["about.html", "navigation.html", "searchbox.html", "donate.html"]
 }
 
-# Enable & configure doctest
-extensions.append("sphinx.ext.doctest")
+extensions = ["alabaster", "sphinx.ext.intersphinx", "sphinx.ext.doctest"]
 doctest_global_setup = r"""
 from fabric.testing.base import MockRemote, MockSFTP, Session, Command
 """
 
 on_rtd = os.environ.get("READTHEDOCS") == "True"
-on_dev = not (on_rtd or in_ci())
+on_dev = not on_rtd and not in_ci()
 
 # Invoke (docs + www)
 inv_target = join(

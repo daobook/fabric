@@ -541,10 +541,7 @@ class Connection(Context):
         # "seriously please no gatewaying". So, this must always be a vanilla
         # truth test and not eg "is not None".
         if self.gateway:
-            # Displaying type because gw params would probs be too verbose
-            val = "proxyjump"
-            if isinstance(self.gateway, string_types):
-                val = "proxycommand"
+            val = "proxycommand" if isinstance(self.gateway, string_types) else "proxyjump"
             bits.append(("gw", val))
         return "<Connection {}>".format(
             " ".join("{}={}".format(*x) for x in bits)
@@ -557,9 +554,11 @@ class Connection(Context):
         return (self.host, self.user, self.port)
 
     def __eq__(self, other):
-        if not isinstance(other, Connection):
-            return False
-        return self._identity() == other._identity()
+        return (
+            self._identity() == other._identity()
+            if isinstance(other, Connection)
+            else False
+        )
 
     def __lt__(self, other):
         return self._identity() < other._identity()
@@ -803,14 +802,11 @@ class Connection(Context):
         # doesn't make this mode break horribly. Then override a few that need
         # to change, like pty.
         allowed = ("encoding", "env", "in_stream", "replace_env", "watchers")
-        new_kwargs = {}
-        for key, value in self.config.global_defaults()["run"].items():
-            if key in allowed:
-                # Use allowed kwargs if given, otherwise also fill them from
-                # defaults
-                new_kwargs[key] = kwargs.pop(key, self.config.run[key])
-            else:
-                new_kwargs[key] = value
+        new_kwargs = {
+            key: kwargs.pop(key, self.config.run[key]) if key in allowed else value
+            for key, value in self.config.global_defaults()["run"].items()
+        }
+
         new_kwargs.update(pty=True)
         # At this point, any leftover kwargs would be ignored, so yell instead
         if kwargs:

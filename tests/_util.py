@@ -26,8 +26,7 @@ def support_path():
 
 def load(name):
     with support_path():
-        imported = __import__(name)
-        return imported
+        return __import__(name)
 
 
 # TODO: this could become a fixture in conftest.py, presumably, and just yield
@@ -36,7 +35,7 @@ def load(name):
 def expect(invocation, out, program=None, test="equals"):
     if program is None:
         program = make_program()
-    program.run("fab {}".format(invocation), exit=False)
+    program.run(f"fab {invocation}", exit=False)
     output = sys.stdout.getvalue()
     if test == "equals":
         assert output == out

@@ -112,5 +112,5 @@ class ConnectionCall(invoke.Call):
     def __repr__(self):
         ret = super(ConnectionCall, self).__repr__()
         if self.init_kwargs:
-            ret = ret[:-1] + ", host='{}'>".format(self.init_kwargs["host"])
+            ret = ret[:-1] + f""", host='{self.init_kwargs["host"]}'>"""
         return ret

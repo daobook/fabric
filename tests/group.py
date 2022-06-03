@@ -161,8 +161,7 @@ class SerialGroup_:
             cxns[2]: getattr(cxns[2], method).return_value,
         }
         failed = {cxns[1]: onoz}
-        expected = succeeded.copy()
-        expected.update(failed)
+        expected = succeeded | failed
         assert result == expected
         assert result.succeeded == succeeded
         assert result.failed == failed
@@ -283,8 +282,7 @@ class ThreadingGroup_:
             cxns[2]: getattr(cxns[2], method).return_value,
         }
         failed = {cxns[1]: onoz}
-        expected = succeeded.copy()
-        expected.update(failed)
+        expected = succeeded | failed
         assert result == expected
         assert result.succeeded == succeeded
         assert result.failed == failed
