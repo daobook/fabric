@@ -97,8 +97,7 @@ class TunnelManager(ExceptionHandlingThread):
         for tunnel in tunnels:
             tunnel.finished.set()
             tunnel.join()
-            wrapper = tunnel.exception()
-            if wrapper:
+            if wrapper := tunnel.exception():
                 exceptions.append(wrapper)
         # Handle exceptions
         if exceptions:

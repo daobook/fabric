@@ -23,9 +23,7 @@ def no_user_ssh_config():
     # TODO: ideally this should expand to cover system config paths too, but
     # that's even less likely to be an issue.
     def no_config_for_you(path):
-        if path == expanduser("~/.ssh/config"):
-            return False
-        return isfile(path)
+        return False if path == expanduser("~/.ssh/config") else isfile(path)
 
     with patch("fabric.config.os.path.isfile", no_config_for_you):
         yield

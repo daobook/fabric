@@ -17,8 +17,8 @@ from . import Config, Executor
 class Fab(Program):
     def print_version(self):
         super(Fab, self).print_version()
-        print("Paramiko {}".format(paramiko))
-        print("Invoke {}".format(invoke))
+        print(f"Paramiko {paramiko}")
+        print(f"Invoke {invoke}")
 
     def core_args(self):
         core_args = super(Fab, self).core_args()
@@ -122,12 +122,9 @@ class Fab(Program):
         # data. Still feels correct; just might be cleaner to have even more
         # Config API members around this sort of thing. Shrug.
         connect_kwargs = {}
-        path = self.args["identity"].value
-        if path:
+        if path := self.args["identity"].value:
             connect_kwargs["key_filename"] = path
-        # Ditto for connect timeout
-        timeout = self.args["connect-timeout"].value
-        if timeout:
+        if timeout := self.args["connect-timeout"].value:
             connect_kwargs["timeout"] = timeout
         # Secrets prompts that want to happen at handoff time instead of
         # later/at user-time.

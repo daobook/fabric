@@ -14,7 +14,7 @@ _words = "/usr/share/dict/words"
 
 def _worker(queue, cxn, start, num_words, count, expected):
     tail = num_words - start
-    cmd = "tail -n {} {} | head -n {}".format(tail, _words, count)
+    cmd = f"tail -n {tail} {_words} | head -n {count}"
     stdout = cxn.run(cmd, hide=True).stdout
     result = [x.strip() for x in stdout.splitlines()]
     queue.put((cxn, result, expected))

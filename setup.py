@@ -36,8 +36,9 @@ if env_wants_v2 or only_v2_present:
     package_name = "fabric2"
     binary_name = "fab2"
 packages = setuptools.find_packages(
-    include=[package_name, "{}.*".format(package_name)]
+    include=[package_name, f"{package_name}.*"]
 )
+
 
 # Version info -- read without importing
 _locals = {}
@@ -72,9 +73,7 @@ setuptools.setup(
     },
     packages=packages,
     entry_points={
-        "console_scripts": [
-            "{} = {}.main:program.run".format(binary_name, package_name)
-        ]
+        "console_scripts": [f"{binary_name} = {package_name}.main:program.run"]
     },
     classifiers=[
         "Development Status :: 5 - Production/Stable",

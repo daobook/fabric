@@ -133,7 +133,7 @@ class Connection_:
         cxn = Connection("localhost")
         with open(path) as fd:
             words = [x.strip() for x in fd.readlines()]
-        stdout = cxn.run("cat {}".format(path), hide=True).stdout
+        stdout = cxn.run(f"cat {path}", hide=True).stdout
         lines = [x.strip() for x in stdout.splitlines()]
         # When bug present, # lines received is significantly fewer than the
         # true count in the file (by thousands).

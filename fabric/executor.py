@@ -116,8 +116,7 @@ class Executor(invoke.Executor):
         # Generate a custom ConnectionCall that has init_kwargs (used for
         # creating the Connection at runtime) set to the requested params.
         new_call_kwargs = dict(init_kwargs=connection_init_kwargs)
-        clone = call.clone(into=ConnectionCall, with_=new_call_kwargs)
-        return clone
+        return call.clone(into=ConnectionCall, with_=new_call_kwargs)
 
     def dedupe(self, tasks):
         # Don't perform deduping, we will often have "duplicate" tasks w/
