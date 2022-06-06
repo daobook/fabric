@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Command-line interface &#8212; Fabric  文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="config" href="api/config.html" />
+    <link rel="prev" title="Networking" href="concepts/networking.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="command-line-interface">
+<h1>Command-line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this heading">¶</a></h1>
+<p>This page documents the details of Fabric’s command-line interface, <code class="docutils literal notranslate"><span class="pre">fab</span></code>.</p>
+<section id="options-arguments">
+<h2>Options &amp; arguments<a class="headerlink" href="#options-arguments" title="Permalink to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">fab</span></code> honors all of the same CLI options as <span class="xref std std-ref">Invoke’s
+‘inv’ program</span>; only additions and overrides are listed here!</p>
+<p>For example, Fabric implements <a class="reference internal" href="#cmdoption-prompt-for-passphrase"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prompt-for-passphrase</span></code></a> and
+<a class="reference internal" href="#cmdoption-prompt-for-login-password"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prompt-for-login-password</span></code></a> because they are SSH specific, but
+it inherits a related option – <span class="xref std std-ref">–prompt-for-sudo-password</span> – from Invoke, which handles sudo autoresponse
+concerns.</p>
+</div>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-H">
+<span id="cmdoption-h"></span><span id="cmdoption-hosts"></span><span class="sig-name descname"><span class="pre">-H</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--hosts</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-H" title="永久链接至目标">¶</a></dt>
+<dd><p>Takes a comma-separated string listing hostnames against which tasks
+should be executed, in serial. See <a class="reference internal" href="#runtime-hosts"><span class="std std-ref">Runtime specification of host lists</span></a>.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-i">
+<span id="cmdoption-identity"></span><span class="sig-name descname"><span class="pre">-i</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--identity</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-i" title="永久链接至目标">¶</a></dt>
+<dd><p>Overrides the <code class="docutils literal notranslate"><span class="pre">key_filename</span></code> value in the <code class="docutils literal notranslate"><span class="pre">connect_kwargs</span></code> config
+setting (which is read by <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>, and eventually makes its way into
+Paramiko; see the docstring for <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> for details.)</p>
+<p>Typically this can be thought of as identical to <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">-i</span> <span class="pre">&lt;path&gt;</span></code>, i.e.
+supplying a specific, runtime private key file. Like <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">-i</span></code>, it builds
+an iterable of strings and may be given multiple times.</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-prompt-for-login-password">
+<span class="sig-name descname"><span class="pre">--prompt-for-login-password</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-prompt-for-login-password" title="永久链接至目标">¶</a></dt>
+<dd><p>Causes Fabric to prompt ‘up front’ for a value to store as the
+<code class="docutils literal notranslate"><span class="pre">connect_kwargs.password</span></code> config setting (used by Paramiko when
+authenticating via passwords and, in some versions, also used for key
+passphrases.) Useful if you do not want to configure such values in on-disk
+conf files or via shell environment variables.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-prompt-for-passphrase">
+<span class="sig-name descname"><span class="pre">--prompt-for-passphrase</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-prompt-for-passphrase" title="永久链接至目标">¶</a></dt>
+<dd><p>Causes Fabric to prompt ‘up front’ for a value to store as the
+<code class="docutils literal notranslate"><span class="pre">connect_kwargs.passphrase</span></code> config setting (used by Paramiko to decrypt
+private key files.) Useful if you do not want to configure such values in
+on-disk conf files or via shell environment variables.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-S">
+<span id="cmdoption-s"></span><span id="cmdoption-ssh-config"></span><span class="sig-name descname"><span class="pre">-S</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--ssh-config</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-S" title="永久链接至目标">¶</a></dt>
+<dd><p>Takes a path to load as a runtime SSH config file. See <a class="reference internal" href="concepts/configuration.html#ssh-config"><span class="std std-ref">Loading and using ssh_config files</span></a>.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-t">
+<span id="cmdoption-connect-timeout"></span><span class="sig-name descname"><span class="pre">-t</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--connect-timeout</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-t" title="永久链接至目标">¶</a></dt>
+<dd><p>Takes an integer of seconds after which connection should time out.
+Supplies the default value for the <code class="docutils literal notranslate"><span class="pre">timeouts.connect</span></code> config setting.</p>
+</dd></dl>
+
+</section>
+<section id="seeking-loading-tasks">
+<h2>Seeking &amp; loading tasks<a class="headerlink" href="#seeking-loading-tasks" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">fab</span></code> follows all the same rules as Invoke’s <span class="xref std std-ref">collection loading</span>, with the sole exception that the default collection
+name sought is <code class="docutils literal notranslate"><span class="pre">fabfile</span></code> instead of <code class="docutils literal notranslate"><span class="pre">tasks</span></code>. Thus, whenever Invoke’s
+documentation mentions <code class="docutils literal notranslate"><span class="pre">tasks</span></code> or <code class="docutils literal notranslate"><span class="pre">tasks.py</span></code>, Fabric substitutes
+<code class="docutils literal notranslate"><span class="pre">fabfile</span></code> / <code class="docutils literal notranslate"><span class="pre">fabfile.py</span></code>.</p>
+<p>For example, if your current working directory is
+<code class="docutils literal notranslate"><span class="pre">/home/myuser/projects/mywebapp</span></code>, running <code class="docutils literal notranslate"><span class="pre">fab</span> <span class="pre">--list</span></code> will cause Fabric to
+look for <code class="docutils literal notranslate"><span class="pre">/home/myuser/projects/mywebapp/fabfile.py</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">/home/myuser/projects/mywebapp/fabfile/__init__.py</span></code> - Python’s import system
+treats both the same). If it’s not found there,
+<code class="docutils literal notranslate"><span class="pre">/home/myuser/projects/fabfile.py</span></code> is sought next; and so forth.</p>
+</section>
+<section id="runtime-specification-of-host-lists">
+<span id="runtime-hosts"></span><h2>Runtime specification of host lists<a class="headerlink" href="#runtime-specification-of-host-lists" title="Permalink to this heading">¶</a></h2>
+<p>While advanced use cases may need to take matters into their own hands, you can
+go reasonably far with the core <a class="reference internal" href="#cmdoption-H"><code class="xref std std-option docutils literal notranslate"><span class="pre">--hosts</span></code></a> flag, which specifies one or
+more hosts the given task(s) should execute against.</p>
+<p>By default, execution is a serial process: for each task on the command line,
+run it once for each host given to <a class="reference internal" href="#cmdoption-H"><code class="xref std std-option docutils literal notranslate"><span class="pre">--hosts</span></code></a>. Imagine tasks that simply
+print <code class="docutils literal notranslate"><span class="pre">Running</span> <span class="pre">&lt;task</span> <span class="pre">name&gt;</span> <span class="pre">on</span> <span class="pre">&lt;host&gt;!</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ fab --hosts host1,host2,host3 taskA taskB
+Running taskA on host1!
+Running taskA on host2!
+Running taskA on host3!
+Running taskB on host1!
+Running taskB on host2!
+Running taskB on host3!
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>When <a class="reference internal" href="#cmdoption-H"><code class="xref std std-option docutils literal notranslate"><span class="pre">--hosts</span></code></a> is not given, <code class="docutils literal notranslate"><span class="pre">fab</span></code> behaves similarly to Invoke’s
+<span class="xref std std-ref">command-line interface</span>, generating regular instances of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code> instead of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connections</span></code>.</p>
+</div>
+</section>
+<section id="executing-arbitrary-ad-hoc-commands">
+<h2>Executing arbitrary/ad-hoc commands<a class="headerlink" href="#executing-arbitrary-ad-hoc-commands" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">fab</span></code> leverages a lesser-known command line convention and may be called in
+the following manner:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ fab [options] -- [shell command]
+</pre></div>
+</div>
+<p>where everything after the <code class="docutils literal notranslate"><span class="pre">--</span></code> is turned into a temporary <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.run</span></code>
+call, and is not parsed for <code class="docutils literal notranslate"><span class="pre">fab</span></code> options. If you’ve specified a host list
+via an earlier task or the core CLI flags, this usage will act like a one-line
+anonymous task.</p>
+<p>For example, let’s say you wanted kernel info for a bunch of systems:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ fab -H host1,host2,host3 -- uname -a
+</pre></div>
+</div>
+<p>Such a command is equivalent to the following Fabric library code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Group</span>
+
+<span class="n">Group</span><span class="p">(</span><span class="s1">&#39;host1&#39;</span><span class="p">,</span> <span class="s1">&#39;host2&#39;</span><span class="p">,</span> <span class="s1">&#39;host3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;uname -a&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Most of the time you will want to just write out the task in your fabfile
+(anything you use once, you’re likely to use again) but this feature provides a
+handy, fast way to dash off an SSH-borne command while leveraging predefined
+connection settings.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fabric</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Pythonic remote execution</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fabric&repo=fabric&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>导航</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="concepts/authentication.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts/networking.html">Networking</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command-line interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#options-arguments">Options &amp; arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#seeking-loading-tasks">Seeking &amp; loading tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-specification-of-host-lists">Runtime specification of host lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executing-arbitrary-ad-hoc-commands">Executing arbitrary/ad-hoc commands</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/config.html"><code class="docutils literal notranslate"><span class="pre">config</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/connection.html"><code class="docutils literal notranslate"><span class="pre">connection</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/exceptions.html"><code class="docutils literal notranslate"><span class="pre">exceptions</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/executor.html"><code class="docutils literal notranslate"><span class="pre">executor</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/group.html"><code class="docutils literal notranslate"><span class="pre">group</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/runners.html"><code class="docutils literal notranslate"><span class="pre">runners</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/tasks.html"><code class="docutils literal notranslate"><span class="pre">tasks</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/testing.html"><code class="docutils literal notranslate"><span class="pre">testing</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/transfer.html"><code class="docutils literal notranslate"><span class="pre">transfer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/tunnels.html"><code class="docutils literal notranslate"><span class="pre">tunnels</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code></a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.fabfile.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Fabric is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-fabric?utm_source=pypi-fabric&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/cli.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Development &#8212; Fabric  文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="Upgrading from 1.x" href="upgrading.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="development">
+<h1>Development<a class="headerlink" href="#development" title="Permalink to this heading">¶</a></h1>
+<p>The Fabric development team is headed by <a class="reference external" href="https://bitprophet.org">Jeff Forcier</a>, aka <code class="docutils literal notranslate"><span class="pre">bitprophet</span></code>.  However, dozens of other
+developers pitch in by submitting patches and ideas via <a class="reference external" href="https://github.com/fabric/fabric">GitHub issues and pull
+requests</a>, <a class="reference internal" href="contact.html#irc"><span class="std std-ref">IRC</span></a> or the <a class="reference external" href="http://lists.nongnu.org/mailman/listinfo/fab-user">mailing
+list</a>.</p>
+<section id="get-the-code">
+<h2>Get the code<a class="headerlink" href="#get-the-code" title="Permalink to this heading">¶</a></h2>
+<p>Please see the <a class="reference internal" href="installing.html#source-code-checkouts"><span class="std std-ref">Source code checkouts</span></a> section of the <a class="reference internal" href="installing.html"><span class="doc">Installing</span></a>
+page for details on how to obtain Fabric’s source code.</p>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">¶</a></h2>
+<p>There are a number of ways to get involved with Fabric:</p>
+<ul class="simple">
+<li><p><strong>Use Fabric and send us feedback!</strong> This is both the easiest and arguably
+the most important way to improve the project – let us know how you
+currently use Fabric and how you want to use it. (Please do try to search the
+<a class="reference external" href="https://github.com/fabric/fabric/issues">ticket tracker</a> first, though,
+when submitting feature ideas.)</p></li>
+<li><p><strong>Report bugs or submit feature requests.</strong> We follow <a class="reference external" href="https://contribution-guide.org">contribution-guide.org</a>’s guidelines, so please check them out
+before visiting the <a class="reference external" href="https://github.com/fabric/fabric/issues">ticket tracker</a>.</p></li>
+</ul>
+<p>While we may not always reply promptly, we do try to make time eventually to
+inspect all contributions and either incorporate them or explain why we don’t
+feel the change is a good fit.</p>
+</section>
+<section id="support-of-older-releases">
+<h2>Support of older releases<a class="headerlink" href="#support-of-older-releases" title="Permalink to this heading">¶</a></h2>
+<p>Major and minor releases do not usually mark the end of the previous line or
+lines of development:</p>
+<ul class="simple">
+<li><p>Recent minor release branches typically continue to receive critical
+bugfixes, often extending back two or three release lines (so e.g. if 2.4 was
+the currently active release line, 2.3 and perhaps even 2.2 might get
+patches).</p></li>
+<li><p>Depending on the nature of bugs found and the difficulty in backporting them,
+older release lines may also continue to get bugfixes – but there’s no
+guarantee of any kind. Thus, if a bug were found in 2.4 that affected 2.1 and
+could be easily applied, a new 2.1.x version <em>might</em> be released.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fabric</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Pythonic remote execution</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fabric&repo=fabric&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>导航</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog-v1.html">Changelog (1.x)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-1.x.html">Installing (1.x)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrading from 1.x</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#get-the-code">Get the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#support-of-older-releases">Support of older releases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://docs.fabfile.org">API Docs</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Fabric is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-fabric?utm_source=pypi-fabric&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/development.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

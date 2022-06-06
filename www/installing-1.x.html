@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Installing (1.x) &#8212; Fabric  文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Upgrading from 1.x" href="upgrading.html" />
+    <link rel="prev" title="Installing" href="installing.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="installing-1-x">
+<h1>Installing (1.x)<a class="headerlink" href="#installing-1-x" title="Permalink to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Installing Fabric 2.0 or above? Looking for non-PyPI downloads or source
+code checkout instructions? See <a class="reference internal" href="installing.html"><span class="doc">Installing</span></a>.</p>
+</div>
+<p>This document includes legacy notes on installing Fabric 1.x. Users are
+strongly encouraged to upgrade to 2.x when possible.</p>
+<section id="basic-installation">
+<h2>Basic installation<a class="headerlink" href="#basic-installation" title="Permalink to this heading">¶</a></h2>
+<p>Fabric is best installed via <a class="reference external" href="http://pip-installer.org">pip</a>; to ensure you
+get Fabric 1 instead of the new but incompatible Fabric 2, specify <code class="docutils literal notranslate"><span class="pre">&lt;2.0</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install &#39;fabric&lt;2.0&#39;
+</pre></div>
+</div>
+<p>All advanced <code class="docutils literal notranslate"><span class="pre">pip</span></code> use cases work too, such as installing the latest copy of
+the <code class="docutils literal notranslate"><span class="pre">v1</span></code> development branch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -e &#39;git+https://github.com/fabric/fabric@v1#egg=fabric&#39;
+</pre></div>
+</div>
+<p>Or cloning the Git repository and running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git checkout v1
+$ pip install -e .
+</pre></div>
+</div>
+<p>within it.</p>
+<p>Your operating system may also have a Fabric package available (though these
+are typically older and harder to support), typically called <code class="docutils literal notranslate"><span class="pre">fabric</span></code> or
+<code class="docutils literal notranslate"><span class="pre">python-fabric</span></code>. E.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install fabric
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Make sure to confirm which major version is currently packaged!</p>
+</div>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
+<p>In order for Fabric’s installation to succeed, you will need four primary pieces of software:</p>
+<ul class="simple">
+<li><p>the Python programming language;</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> packaging/installation library;</p></li>
+<li><p>the Python <a class="reference external" href="http://paramiko.org">Paramiko</a> SSH library;</p></li>
+<li><p>and Paramiko’s dependency, <a class="reference external" href="https://cryptography.io">Cryptography</a>.</p></li>
+</ul>
+<p>and, if using parallel execution mode,</p>
+<ul class="simple">
+<li><p>the <a class="reference internal" href="#multiprocessing">multiprocessing</a> library.</p></li>
+</ul>
+<p>Please read on for important details on each dependency – there are a few
+gotchas.</p>
+<section id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this heading">¶</a></h3>
+<p>Fabric requires <a class="reference external" href="http://python.org">Python</a> version 2.5+.</p>
+</section>
+<section id="setuptools">
+<h3>setuptools<a class="headerlink" href="#setuptools" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference external" href="https://pypi.org/project/setuptools">Setuptools</a> comes with most Python installations by default; if yours
+doesn’t, you’ll need to grab it. In such situations it’s typically packaged as
+<code class="docutils literal notranslate"><span class="pre">python-setuptools</span></code>, <code class="docutils literal notranslate"><span class="pre">py26-setuptools</span></code> or similar.</p>
+</section>
+<section id="multiprocessing">
+<h3><code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code><a class="headerlink" href="#multiprocessing" title="Permalink to this heading">¶</a></h3>
+<p>An optional dependency, the <code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code> library is included in Python’s
+standard library in version 2.6 and higher. If you’re using Python 2.5 and want
+to make use of Fabric’s parallel execution features you’ll need to install it
+manually; the recommended route, as usual, is via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.  Please see the
+<a class="reference external" href="https://pypi.org/project/multiprocessing/">multiprocessing PyPI page</a> for
+details.</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Early versions of Python 2.6 (in our testing, 2.6.0 through 2.6.2) ship
+with a buggy <code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code> module that appears to cause Fabric to
+hang at the end of sessions involving large numbers of concurrent hosts.
+If you encounter this problem, either use <code class="docutils literal notranslate"><span class="pre">env.pool_size</span></code> / <code class="docutils literal notranslate"><span class="pre">-z</span></code> to
+limit the amount of concurrency, or upgrade to Python
+&gt;=2.6.3.</p>
+<p>Python 2.5 is unaffected, as it requires the PyPI version of
+<code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code>, which is newer than that shipped with Python &lt;2.6.3.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fabric</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Pythonic remote execution</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fabric&repo=fabric&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>导航</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog-v1.html">Changelog (1.x)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing (1.x)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-installation">Basic installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setuptools">setuptools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiprocessing"><code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrading from 1.x</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://docs.fabfile.org">API Docs</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Fabric is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-fabric?utm_source=pypi-fabric&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/installing-1.x.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

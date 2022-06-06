@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Installing &#8212; Fabric  文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Installing (1.x)" href="installing-1.x.html" />
+    <link rel="prev" title="Frequently Asked/Answered Questions (FAQ)" href="faq.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="installing">
+<h1>Installing<a class="headerlink" href="#installing" title="Permalink to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Users looking to install Fabric 1.x should see <a class="reference internal" href="installing-1.x.html"><span class="doc">Installing (1.x)</span></a>.
+However, <a class="reference internal" href="upgrading.html"><span class="doc">upgrading</span></a> to 2.x is strongly recommended.</p>
+</div>
+<p>Fabric is best installed via <a class="reference external" href="https://pip-installer.org">pip</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install fabric
+</pre></div>
+</div>
+<p>All advanced <code class="docutils literal notranslate"><span class="pre">pip</span></code> use cases work too, such as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -e git+https://github.com/fabric/fabric
+</pre></div>
+</div>
+<p>Or cloning the Git repository and running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -e .
+</pre></div>
+</div>
+<p>within it.</p>
+<p>Your operating system may also have a Fabric package available (though these
+are typically older and harder to support), typically called <code class="docutils literal notranslate"><span class="pre">fabric</span></code> or
+<code class="docutils literal notranslate"><span class="pre">python-fabric</span></code>. E.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install fabric
+</pre></div>
+</div>
+<section id="installing-modern-fabric-as-fabric2">
+<span id="installing-as-fabric2"></span><h2>Installing modern Fabric as <code class="docutils literal notranslate"><span class="pre">fabric2</span></code><a class="headerlink" href="#installing-modern-fabric-as-fabric2" title="Permalink to this heading">¶</a></h2>
+<p>Users who are migrating from Fabric 1 to Fabric 2+ may find it useful to have
+both versions installed side-by-side. The easiest way to do this is to use the
+handy <code class="docutils literal notranslate"><span class="pre">fabric2</span></code> PyPI entry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install fabric2
+</pre></div>
+</div>
+<p>This upload is generated from the normal Fabric repository, but is tweaked at
+build time so that it installs a <code class="docutils literal notranslate"><span class="pre">fabric2</span></code> package instead of a <code class="docutils literal notranslate"><span class="pre">fabric</span></code>
+one (and a <code class="docutils literal notranslate"><span class="pre">fab2</span></code> binary instead of a <code class="docutils literal notranslate"><span class="pre">fab</span></code> one.) The codebase is otherwise
+unchanged.</p>
+<p>Users working off of the Git repository can enable that same tweak with an
+environment variable, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ PACKAGE_AS_FABRIC2=yes pip install -e .
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The value of the environment variable doesn’t matter, as long as it is not
+empty.</p>
+</div>
+<section id="fabric-and-fabric2-vs-fabric3">
+<h3><code class="docutils literal notranslate"><span class="pre">fabric</span></code> and <code class="docutils literal notranslate"><span class="pre">fabric2</span></code> vs <code class="docutils literal notranslate"><span class="pre">fabric3</span></code><a class="headerlink" href="#fabric-and-fabric2-vs-fabric3" title="Permalink to this heading">¶</a></h3>
+<p>Unfortunately, the <code class="docutils literal notranslate"><span class="pre">fabric3</span></code> entry on PyPI is an unauthorized fork of Fabric
+1.x which we do not control. Once modern Fabric gets up to 3.x, 4.x etc, we’ll
+likely continue distributing it via both <code class="docutils literal notranslate"><span class="pre">fabric</span></code> and <code class="docutils literal notranslate"><span class="pre">fabric2</span></code> for
+convenience; there will never be any official <code class="docutils literal notranslate"><span class="pre">fabric3</span></code>, <code class="docutils literal notranslate"><span class="pre">fabric4</span></code> etc.</p>
+<p>In other words, <code class="docutils literal notranslate"><span class="pre">fabric2</span></code> is purely there to help users of 1.x cross the 2.0
+“major rewrite” barrier; future major versions will <em>not</em> be large rewrites and
+will only have small sets of backward incompatibilities.</p>
+</section>
+<section id="inability-to-pip-install-e-both-versions">
+<h3>Inability to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span></code> both versions<a class="headerlink" href="#inability-to-pip-install-e-both-versions" title="Permalink to this heading">¶</a></h3>
+<p>You may encounter issues if <em>both</em> versions of Fabric are installed via <code class="docutils literal notranslate"><span class="pre">pip</span>
+<span class="pre">install</span> <span class="pre">-e</span></code>, due to how that functionality works (tl;dr it just adds the
+checkout directories to <code class="docutils literal notranslate"><span class="pre">sys.path</span></code>, regardless of whether you wanted to
+“install” all packages within them - so Fabric 2+’s <code class="docutils literal notranslate"><span class="pre">fabric/</span></code> package still
+ends up visible to the import system alongside <code class="docutils literal notranslate"><span class="pre">fabric2/</span></code>).</p>
+<p>Thus, you may only have one of the local copies of Fabric installed in
+‘editable’ fashion at a time, and the other must be repeatedly reinstalled via
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> (no <code class="docutils literal notranslate"><span class="pre">-e</span></code>) if you need to make edits to it.</p>
+</section>
+<section id="order-of-installations">
+<h3>Order of installations<a class="headerlink" href="#order-of-installations" title="Permalink to this heading">¶</a></h3>
+<p>Due to the same pip quirk mentioned above, if either of your Fabric versions
+are installed in ‘editable’ mode, you <strong>must</strong> install the ‘editable’ version
+first, and then install the ‘static’ version second.</p>
+<p>For example, if you’re migrating from some public release of Fabric 1 to a
+checkout of modern Fabric:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ PACKAGE_AS_FABRIC2=yes pip install -e /path/to/fabric2
+$ pip install fabric==1.14.0
+</pre></div>
+</div>
+<p>You may see some warnings on that second <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> (eg <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">uninstalling</span>
+<span class="pre">fabric</span></code> or <code class="docutils literal notranslate"><span class="pre">Can't</span> <span class="pre">uninstall</span> <span class="pre">'fabric'</span></code>) but as long as it exits cleanly and
+says something like <code class="docutils literal notranslate"><span class="pre">Successfully</span> <span class="pre">installed</span> <span class="pre">fabric-1.14.0</span></code>, you should be
+okay. Double check with e.g. <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">list</span></code> and you should have entries for both
+<code class="docutils literal notranslate"><span class="pre">fabric</span></code> and <code class="docutils literal notranslate"><span class="pre">fabric2</span></code>.</p>
+</section>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
+<p>In order for Fabric’s installation to succeed, you will need the following:</p>
+<ul class="simple">
+<li><p>the Python programming language, versions 2.7 or 3.4+;</p></li>
+<li><p>the <a class="reference external" href="https://pyinvoke.org">Invoke</a> command-running and task-execution
+library;</p></li>
+<li><p>and the <a class="reference external" href="https://paramiko.org">Paramiko</a> SSH library (as well as its own
+dependencies; see <a class="reference external" href="https://paramiko.org/installing.html">its install docs</a>.)</p></li>
+</ul>
+<section id="development-dependencies">
+<h3>Development dependencies<a class="headerlink" href="#development-dependencies" title="Permalink to this heading">¶</a></h3>
+<p>If you are interested in doing development work on Fabric (or even just running
+the test suite), you’ll need the libraries listed in the
+<code class="docutils literal notranslate"><span class="pre">dev-requirements.txt</span></code> (included in the source distribution.) Usually it’s
+easy to simply <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">dev-requirements.txt</span></code>.</p>
+</section>
+</section>
+<section id="downloads">
+<span id="id1"></span><h2>Downloads<a class="headerlink" href="#downloads" title="Permalink to this heading">¶</a></h2>
+<p>To obtain a tar.gz or zip archive of the Fabric source code, you may visit
+<a class="reference external" href="https://pypi.org/project/fabric">Fabric’s PyPI page</a>, which offers manual
+downloads in addition to being the entry point for <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+</section>
+<section id="source-code-checkouts">
+<span id="id2"></span><h2>Source code checkouts<a class="headerlink" href="#source-code-checkouts" title="Permalink to this heading">¶</a></h2>
+<p>The Fabric developers manage the project’s source code with the <a class="reference external" href="http://git-scm.com">Git</a> DVCS. To follow Fabric’s development via Git instead of
+downloading official releases, you have the following options:</p>
+<ul class="simple">
+<li><p>Clone the canonical repository straight from <a class="reference external" href="https://github.com/fabric/fabric">the Fabric organization’s
+repository on Github</a> (cloning
+instructions available on that page).</p></li>
+<li><p>Make your own fork of the Github repository by making a Github account,
+visiting <a class="reference external" href="https://github.com/fabric/fabric">fabric/fabric</a> and clicking the
+“fork” button.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>If you’ve obtained the Fabric source via source control and plan on
+updating your checkout in the future, we highly suggest using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span>
+<span class="pre">-e</span> <span class="pre">.</span></code> (or <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></code>) instead – it will use symbolic
+links instead of file copies, ensuring that imports of the library or use
+of the command-line tool will always refer to your checkout.</p>
+</div>
+<p>For information on the hows and whys of Fabric development, including which
+branches may be of interest and how you can help out, please see the
+<a class="reference internal" href="development.html"><span class="doc">Development</span></a> page.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fabric</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Pythonic remote execution</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fabric&repo=fabric&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>导航</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog-v1.html">Changelog (1.x)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-modern-fabric-as-fabric2">Installing modern Fabric as <code class="docutils literal notranslate"><span class="pre">fabric2</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fabric-and-fabric2-vs-fabric3"><code class="docutils literal notranslate"><span class="pre">fabric</span></code> and <code class="docutils literal notranslate"><span class="pre">fabric2</span></code> vs <code class="docutils literal notranslate"><span class="pre">fabric3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inability-to-pip-install-e-both-versions">Inability to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span></code> both versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#order-of-installations">Order of installations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#development-dependencies">Development dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#source-code-checkouts">Source code checkouts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installing-1.x.html">Installing (1.x)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrading from 1.x</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://docs.fabfile.org">API Docs</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Fabric is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-fabric?utm_source=pypi-fabric&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/installing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

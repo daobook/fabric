@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Frequently Asked/Answered Questions (FAQ) &#8212; Fabric  文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Installing" href="installing.html" />
+    <link rel="prev" title="Changelog (1.x)" href="changelog-v1.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="frequently-asked-answered-questions-faq">
+<h1>Frequently Asked/Answered Questions (FAQ)<a class="headerlink" href="#frequently-asked-answered-questions-faq" title="Permalink to this heading">¶</a></h1>
+<p>These are some of the most commonly encountered problems or frequently asked
+questions which we receive from users. They aren’t intended as a substitute for
+reading the rest of the documentation, so please make sure you check it out if
+your question is not answered here.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Most API examples and links are for version 2 and up; FAQs specific to
+version 1 will typically be marked as such.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Many questions about shell command execution and task behavior are answered
+on <a class="reference external" href="http://www.pyinvoke.org/faq.html">Invoke’s FAQ page</a> - please check
+there also!</p>
+</div>
+<section id="explicitly-set-env-variables-are-not-being-set-correctly-on-the-remote-end">
+<span id="remote-env-vars-dont-work"></span><h2>Explicitly set env variables are not being set correctly on the remote end!<a class="headerlink" href="#explicitly-set-env-variables-are-not-being-set-correctly-on-the-remote-end" title="Permalink to this heading">¶</a></h2>
+<p>If your attempts to set environment variables for things like <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.run</span></code> appear to silently fail, you’re almost
+certainly talking to an SSH server which is setting a highly restrictive
+<a class="reference external" href="https://man.openbsd.org/sshd_config#AcceptEnv">AcceptEnv</a>.</p>
+<p>To fix, you can either modify the server’s configuration to allow the env vars
+you’re setting, or use the <code class="docutils literal notranslate"><span class="pre">inline_ssh_env</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>
+parameter (or the <span class="xref std std-ref">global config option</span> of the same
+name) to force Fabric to send env vars prefixed before your command strings
+instead.</p>
+</section>
+<section id="the-remote-shell-environment-doesn-t-match-interactive-shells">
+<h2>The remote shell environment doesn’t match interactive shells!<a class="headerlink" href="#the-remote-shell-environment-doesn-t-match-interactive-shells" title="Permalink to this heading">¶</a></h2>
+<p>You may find environment variables (or the behavior they trigger) differ
+interactively vs scripted via Fabric. For example, a program that’s on your
+<code class="docutils literal notranslate"><span class="pre">$PATH</span></code> when you manually <code class="docutils literal notranslate"><span class="pre">ssh</span></code> in might not be visible when using
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.run</span></code>; or special per-program env
+vars such as those for Python, pip, Java etc are not taking effect; etc.</p>
+<p>The root cause of this is typically because the SSH server runs non-interactive
+commands via a very limited shell call: <code class="docutils literal notranslate"><span class="pre">/path/to/shell</span> <span class="pre">-c</span> <span class="pre">&quot;command&quot;</span></code> (for
+example, <a class="reference external" href="https://github.com/fabric/fabric/issues/1519#issuecomment-411247228">OpenSSH</a>). Most
+shells, when run this way, are not considered to be either <strong>interactive</strong> or
+<strong>login</strong> shells; and this then impacts which startup files get loaded.</p>
+<p>Users typically only modify shell files related to interactive operation (such
+as <code class="docutils literal notranslate"><span class="pre">~/.bash_profile</span></code> or <code class="docutils literal notranslate"><span class="pre">/etc/zshrc</span></code>); such changes do not take effect when
+the SSH server is running one-off commands.</p>
+<p>To work around this, consult your shell’s documentation to see if it offers any
+non-login, non-interactive config files; for example, <code class="docutils literal notranslate"><span class="pre">zsh</span></code> lets you
+configure <code class="docutils literal notranslate"><span class="pre">/etc/zshrc</span></code> or <code class="docutils literal notranslate"><span class="pre">~/.zshenv</span></code> for this purpose.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><code class="docutils literal notranslate"><span class="pre">bash</span></code> does not appear to offer standard non-login/non-interactive
+startup files, even in version 4. However, it may attempt to determine if
+it’s being run by a remote-execution daemon and will apparently source
+<code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> if so; check to see if this is the case on your target
+systems.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Another workaround for <code class="docutils literal notranslate"><span class="pre">bash</span></code> users is to reply on its <code class="docutils literal notranslate"><span class="pre">$BASH_ENV</span></code>
+functionality, which names a file path as the startup file to load:</p>
+<ul class="simple">
+<li><p>configure your SSH server to <code class="docutils literal notranslate"><span class="pre">AcceptEnv</span> <span class="pre">BASH_ENV</span></code>, so that you can
+actually set that env var for the remote session at the top level (most
+SSH servers disallow this method by default).</p></li>
+<li><p>decide which file this should be, though if you’re already modifying
+files like <code class="docutils literal notranslate"><span class="pre">~/.bash_profile</span></code> or <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>, you may want to just
+point at that exact path.</p></li>
+<li><p>set the Fabric configuration value <code class="docutils literal notranslate"><span class="pre">run.env</span></code> to aim at the above path,
+e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;BASH_ENV&quot;:</span> <span class="pre">&quot;~/.bash_profile&quot;}</span></code>.</p></li>
+</ul>
+</div>
+</section>
+<section id="my-cd-workon-export-etc-calls-don-t-seem-to-work">
+<span id="one-shell-per-command"></span><h2>My (<code class="docutils literal notranslate"><span class="pre">cd</span></code>/<code class="docutils literal notranslate"><span class="pre">workon</span></code>/<code class="docutils literal notranslate"><span class="pre">export</span></code>/etc) calls don’t seem to work!<a class="headerlink" href="#my-cd-workon-export-etc-calls-don-t-seem-to-work" title="Permalink to this heading">¶</a></h2>
+<p>While Fabric can be used for many shell-script-like tasks, there’s a slightly
+unintuitive catch: each <code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">sudo</span></code> call (or the <code class="docutils literal notranslate"><span class="pre">run</span></code>/<code class="docutils literal notranslate"><span class="pre">sudo</span></code> functions in
+v1) has its own distinct shell session. This is required in order for Fabric to
+reliably figure out, after your command has run, what its standard out/error
+and return codes were.</p>
+<p>Unfortunately, it means that code like the following doesn’t behave as you
+might assume:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;cd /path/to/application&quot;</span><span class="p">)</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;./update.sh&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If that were a shell script, the second <code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>
+call would have executed with a current working directory of
+<code class="docutils literal notranslate"><span class="pre">/path/to/application/</span></code> – but because both commands are run in their own
+distinct session over SSH, it actually tries to execute <code class="docutils literal notranslate"><span class="pre">$HOME/update.sh</span></code>
+instead (since your remote home directory is the default working directory).</p>
+<p>A simple workaround is to make use of shell logic operations such as <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>,
+which link multiple expressions together (provided the left hand side executed
+without error) like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;cd /path/to/application &amp;&amp; ./update.sh&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>You might also get away with an absolute path and skip directory changing
+altogether:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;/path/to/application/update.sh&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However, this requires that the command in question makes no assumptions
+about your current working directory!</p>
+</div>
+</section>
+<section id="why-do-i-sometimes-see-err-stdin-is-not-a-tty">
+<h2>Why do I sometimes see <code class="docutils literal notranslate"><span class="pre">err:</span> <span class="pre">stdin:</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">a</span> <span class="pre">tty</span></code>?<a class="headerlink" href="#why-do-i-sometimes-see-err-stdin-is-not-a-tty" title="Permalink to this heading">¶</a></h2>
+<p>See <span class="xref std std-ref">Invoke’s FAQ</span> for this; even for Fabric v1,
+which is not based on Invoke, the answer is the same.</p>
+</section>
+<section id="why-can-t-i-run-programs-in-the-background-with-it-makes-fabric-hang">
+<span id="faq-daemonize"></span><h2>Why can’t I run programs in the background with <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>? It makes Fabric hang.<a class="headerlink" href="#why-can-t-i-run-programs-in-the-background-with-it-makes-fabric-hang" title="Permalink to this heading">¶</a></h2>
+<p>Because SSH executes a new shell session on the remote end for each invocation
+of <code class="docutils literal notranslate"><span class="pre">run</span></code> or <code class="docutils literal notranslate"><span class="pre">sudo</span></code> (<a class="reference internal" href="#one-shell-per-command"><span class="std std-ref">see also</span></a>), backgrounded
+processes may prevent the calling shell from exiting until the processes stop
+running, which in turn prevents Fabric from continuing on with its own
+execution.</p>
+<p>The key to fixing this is to ensure that your process’ standard pipes are all
+disassociated from the calling shell, which may be done in a number of ways
+(listed in order of robustness):</p>
+<ul>
+<li><p>Use a pre-existing daemonization technique if one exists for the program at
+hand – for example, calling an init script instead of directly invoking a
+server binary.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Or leverage a process manager such as <code class="docutils literal notranslate"><span class="pre">supervisord</span></code>, <code class="docutils literal notranslate"><span class="pre">upstart</span></code> or
+<code class="docutils literal notranslate"><span class="pre">systemd</span></code> - such tools let you define what it means to “run” one of
+your background processes, then issue init-script-like
+start/stop/restart/status commands. They offer many advantages over
+classic init scripts as well.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, <code class="docutils literal notranslate"><span class="pre">screen</span></code> or <code class="docutils literal notranslate"><span class="pre">dtach</span></code> to fully detach the process from the
+running shell; these tools have the benefit of allowing you to reattach to
+the process later on if needed (though they are more ad-hoc than
+<code class="docutils literal notranslate"><span class="pre">supervisord</span></code>-like tools).</p></li>
+<li><p>Run the program under <code class="docutils literal notranslate"><span class="pre">nohup</span></code> or similar “in-shell” tools - note that this
+approach has seen limited success for most users.</p></li>
+</ul>
+</section>
+<section id="i-m-sometimes-incorrectly-asked-for-a-passphrase-instead-of-a-password">
+<h2>I’m sometimes incorrectly asked for a passphrase instead of a password.<a class="headerlink" href="#i-m-sometimes-incorrectly-asked-for-a-passphrase-instead-of-a-password" title="Permalink to this heading">¶</a></h2>
+<p>Due to a bug of sorts in our SSH layer, it’s not currently possible for Fabric
+to always accurately detect the type of authentication needed. We have to try
+and guess whether we’re being asked for a private key passphrase or a remote
+server password, and in some cases our guess ends up being wrong.</p>
+<p>The most common such situation is where you, the local user, appear to have an
+SSH keychain agent running, but the remote server is not able to honor your SSH
+key, e.g. you haven’t yet transferred the public key over or are using an
+incorrect username. In this situation, Fabric will prompt you with “Please
+enter passphrase for private key”, but the text you enter is actually being
+sent to the remote end’s password authentication.</p>
+<p>We hope to address this in future releases by contributing to the
+aforementioned SSH library.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fabric</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Pythonic remote execution</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fabric&repo=fabric&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>导航</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog-v1.html">Changelog (1.x)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FAQs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#explicitly-set-env-variables-are-not-being-set-correctly-on-the-remote-end">Explicitly set env variables are not being set correctly on the remote end!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-remote-shell-environment-doesn-t-match-interactive-shells">The remote shell environment doesn’t match interactive shells!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#my-cd-workon-export-etc-calls-don-t-seem-to-work">My (<code class="docutils literal notranslate"><span class="pre">cd</span></code>/<code class="docutils literal notranslate"><span class="pre">workon</span></code>/<code class="docutils literal notranslate"><span class="pre">export</span></code>/etc) calls don’t seem to work!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-do-i-sometimes-see-err-stdin-is-not-a-tty">Why do I sometimes see <code class="docutils literal notranslate"><span class="pre">err:</span> <span class="pre">stdin:</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">a</span> <span class="pre">tty</span></code>?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-can-t-i-run-programs-in-the-background-with-it-makes-fabric-hang">Why can’t I run programs in the background with <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>? It makes Fabric hang.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-m-sometimes-incorrectly-asked-for-a-passphrase-instead-of-a-password">I’m sometimes incorrectly asked for a passphrase instead of a password.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-1.x.html">Installing (1.x)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrading from 1.x</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://docs.fabfile.org">API Docs</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Fabric is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-fabric?utm_source=pypi-fabric&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/faq.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

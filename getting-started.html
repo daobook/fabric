@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Getting started &#8212; Fabric  文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Authentication" href="concepts/authentication.html" />
+    <link rel="prev" title="Welcome to Fabric’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
+<p>Welcome! This tutorial highlights Fabric’s core features; for further details,
+see the links within, or the documentation index which has links to conceptual
+and API doc sections.</p>
+<section id="a-note-about-imports">
+<h2>A note about imports<a class="headerlink" href="#a-note-about-imports" title="Permalink to this heading">¶</a></h2>
+<p>Fabric composes a couple of other libraries as well as providing its own layer
+on top; user code will most often import from the <code class="docutils literal notranslate"><span class="pre">fabric</span></code> package, but
+you’ll sometimes import directly from <code class="docutils literal notranslate"><span class="pre">invoke</span></code> or <code class="docutils literal notranslate"><span class="pre">paramiko</span></code> too:</p>
+<ul>
+<li><p><a class="reference external" href="https://www.pyinvoke.org">Invoke</a>  implements CLI parsing, task organization,
+and shell command execution (a generic framework plus specific implementation
+for local commands.)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Anything that isn’t specific to remote systems tends to live in Invoke,
+and it is often used standalone by programmers who don’t need any remote
+functionality.</p></li>
+<li><p>Fabric users will frequently import Invoke objects, in cases where Fabric
+itself has no need to subclass or otherwise modify what Invoke provides.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><a class="reference external" href="https://www.paramiko.org">Paramiko</a> implements low/mid level SSH
+functionality - SSH and SFTP sessions, key management, etc.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Fabric mostly uses this under the hood; users will only rarely import
+from Paramiko directly.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Fabric glues the other libraries together and provides its own high level
+objects too, e.g.:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Subclassing Invoke’s context and command-runner classes, wrapping them
+around Paramiko-level primitives;</p></li>
+<li><p>Extending Invoke’s configuration system by using Paramiko’s
+<code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> parsing machinery;</p></li>
+<li><p>Implementing new high-level primitives of its own, such as
+port-forwarding context managers. (These may, in time, migrate downwards
+into Paramiko.)</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="run-commands-via-connections-and-run">
+<h2>Run commands via Connections and <code class="docutils literal notranslate"><span class="pre">run</span></code><a class="headerlink" href="#run-commands-via-connections-and-run" title="Permalink to this heading">¶</a></h2>
+<p>The most basic use of Fabric is to execute a shell command on a remote system
+via SSH, then (optionally) interrogate the result. By default, the remote
+program’s output is printed directly to your terminal, <em>and</em> captured. A basic
+example:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;uname -s&#39;</span><span class="p">)</span>
+<span class="go">Linux</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Linux&#39;</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">exited</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">ok</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">command</span>
+<span class="go">&#39;uname -s&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">connection</span>
+<span class="go">&lt;Connection host=web1&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">host</span>
+<span class="go">&#39;web1&#39;</span>
+</pre></div>
+</div>
+<p>Meet <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>, which represents an SSH connection and provides the core of
+Fabric’s API, such as <code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>. <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects need at least a
+hostname to be created successfully, and may be further parameterized by
+username and/or port number. You can give these explicitly via args/kwargs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Connection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;deploy&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">2202</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or by stuffing a <code class="docutils literal notranslate"><span class="pre">[user&#64;]host[:port]</span></code> string into the <code class="docutils literal notranslate"><span class="pre">host</span></code> argument
+(though this is purely convenience; always use kwargs whenever ambiguity
+appears!):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;deploy@web1:2202&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects’ methods (like <code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>) usually return
+instances of <code class="xref py py-obj docutils literal notranslate"><span class="pre">invoke.runners.Result</span></code> (or subclasses thereof) exposing the sorts
+of details seen above: what was requested, what happened while the remote
+action occurred, and what the final result was.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Many lower-level SSH connection arguments (such as private keys and
+timeouts) can be given directly to the SSH backend by using the
+<span class="xref std std-ref">connect_kwargs argument</span>.</p>
+</div>
+</section>
+<section id="superuser-privileges-via-auto-response">
+<h2>Superuser privileges via auto-response<a class="headerlink" href="#superuser-privileges-via-auto-response" title="Permalink to this heading">¶</a></h2>
+<p>Need to run things as the remote system’s superuser? You could invoke the
+<code class="docutils literal notranslate"><span class="pre">sudo</span></code> program via <code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>, and (if your remote system isn’t
+configured with passwordless sudo) respond to the password prompt by hand, as
+below. (Note how we need to request a remote pseudo-terminal; most <code class="docutils literal notranslate"><span class="pre">sudo</span></code>
+implementations get grumpy at password-prompt time otherwise.)</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;db1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;sudo useradd mydbuser&#39;</span><span class="p">,</span> <span class="n">pty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">[sudo] password:</span>
+<span class="go">&lt;Result cmd=&#39;sudo useradd mydbuser&#39; exited=0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;id -u mydbuser&#39;</span><span class="p">)</span>
+<span class="go">1001</span>
+<span class="go">&lt;Result cmd=&#39;id -u mydbuser&#39; exited=0&gt;</span>
+</pre></div>
+</div>
+<p>Giving passwords by hand every time can get old; thankfully Invoke’s powerful
+command-execution functionality includes the ability to <span class="xref std std-ref">auto-respond</span> to program output with pre-defined input. We can use this for
+<code class="docutils literal notranslate"><span class="pre">sudo</span></code>:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">invoke</span> <span class="kn">import</span> <span class="n">Responder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sudopass</span> <span class="o">=</span> <span class="n">Responder</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\[sudo\] password:&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">response</span><span class="o">=</span><span class="s1">&#39;mypassword</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;sudo whoami&#39;</span><span class="p">,</span> <span class="n">pty</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">watchers</span><span class="o">=</span><span class="p">[</span><span class="n">sudopass</span><span class="p">])</span>
+<span class="go">[sudo] password:</span>
+<span class="go">root</span>
+<span class="go">&lt;Result cmd=&#39;sudo whoami&#39; exited=0&gt;</span>
+</pre></div>
+</div>
+<p>It’s difficult to show in a snippet, but when the above was executed, the user
+didn’t need to type anything; <code class="docutils literal notranslate"><span class="pre">mypassword</span></code> was sent to the remote program
+automatically. Much easier!</p>
+<section id="the-sudo-helper">
+<h3>The <code class="docutils literal notranslate"><span class="pre">sudo</span></code> helper<a class="headerlink" href="#the-sudo-helper" title="Permalink to this heading">¶</a></h3>
+<p>Using watchers/responders works well here, but it’s a lot of boilerplate to set
+up every time - especially as real-world use cases need more work to detect
+failed/incorrect passwords.</p>
+<p>To help with that, Invoke provides a <code class="xref py py-obj docutils literal notranslate"><span class="pre">Context.sudo</span></code> method which handles most of the boilerplate for
+you (as <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> subclasses <code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code>, it gets this method
+for free.) <code class="xref py py-obj docutils literal notranslate"><span class="pre">sudo</span></code> doesn’t do anything users can’t do
+themselves - but as always, common problems are best solved with commonly
+shared solutions.</p>
+<p>All the user needs to do is ensure the <code class="docutils literal notranslate"><span class="pre">sudo.password</span></code> <a class="reference internal" href="concepts/configuration.html"><span class="doc">configuration
+value</span></a> is filled in (via config file, environment
+variable, or <code class="xref std std-option docutils literal notranslate"><span class="pre">--prompt-for-sudo-password</span></code>) and <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.sudo</span></code>
+handles the rest. For the sake of clarity, here’s an example where a
+library/shell user performs their own <a class="reference external" href="https://docs.python.org/3/library/getpass.html#module-getpass" title="(在 Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getpass</span></code></a>-based password prompt:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">getpass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">Config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sudo_pass</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;What&#39;s your sudo password?&quot;</span><span class="p">)</span>
+<span class="go">What&#39;s your sudo password?</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">overrides</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sudo&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">sudo_pass</span><span class="p">}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;db1&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">sudo</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="n">hide</span><span class="o">=</span><span class="s1">&#39;stderr&#39;</span><span class="p">)</span>
+<span class="go">root</span>
+<span class="go">&lt;Result cmd=&quot;...whoami&quot; exited=0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">sudo</span><span class="p">(</span><span class="s1">&#39;useradd mydbuser&#39;</span><span class="p">)</span>
+<span class="go">&lt;Result cmd=&quot;...useradd mydbuser&quot; exited=0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;id -u mydbuser&#39;</span><span class="p">)</span>
+<span class="go">1001</span>
+<span class="go">&lt;Result cmd=&#39;id -u mydbuser&#39; exited=0&gt;</span>
+</pre></div>
+</div>
+<p>We filled in the sudo password up-front at runtime in this example; in
+real-world situations, you might also supply it via the configuration system
+(perhaps using environment variables, to avoid polluting config files), or
+ideally, use a secrets management system.</p>
+</section>
+</section>
+<section id="transfer-files">
+<h2>Transfer files<a class="headerlink" href="#transfer-files" title="Permalink to this heading">¶</a></h2>
+<p>Besides shell command execution, the other common use of SSH connections is
+file transfer; <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.put</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.get</span></code> exist to fill this need.
+For example, say you had an archive file you wanted to upload:</p>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="n">remote</span><span class="o">=</span><span class="s1">&#39;/opt/mydata/&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Uploaded </span><span class="si">{0.local}</span><span class="s2"> to </span><span class="si">{0.remote}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="go">Uploaded /local/myfiles.tgz to /opt/mydata/</span>
+</pre></div>
+</div>
+<p>These methods typically follow the behavior of <code class="docutils literal notranslate"><span class="pre">cp</span></code> and <code class="docutils literal notranslate"><span class="pre">scp</span></code>/<code class="docutils literal notranslate"><span class="pre">sftp</span></code> in
+terms of argument evaluation - for example, in the above snippet, we omitted
+the filename part of the remote path argument.</p>
+</section>
+<section id="multiple-actions">
+<h2>Multiple actions<a class="headerlink" href="#multiple-actions" title="Permalink to this heading">¶</a></h2>
+<p>One-liners are good examples but aren’t always realistic use cases - one
+typically needs multiple steps to do anything interesting. At the most basic
+level, you could do this by calling <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> methods multiple times:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="s1">&#39;/opt/mydata&#39;</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You could (but don’t have to) turn such blocks of code into functions,
+parameterized with a <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> object from the caller, to encourage reuse:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">upload_and_unpack</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="s1">&#39;/opt/mydata&#39;</span><span class="p">)</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you’ll see below, such functions can be handed to other API methods to
+enable more complex use cases as well.</p>
+</section>
+<section id="multiple-servers">
+<h2>Multiple servers<a class="headerlink" href="#multiple-servers" title="Permalink to this heading">¶</a></h2>
+<p>Most real use cases involve doing things on more than one server. The
+straightforward approach could be to iterate over a list or tuple of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> arguments (or <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects themselves, perhaps via
+<code class="docutils literal notranslate"><span class="pre">map</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">host</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="s1">&#39;web2&#39;</span><span class="p">,</span> <span class="s1">&#39;mac1&#39;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="n">host</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;uname -s&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="go">web1: Linux</span>
+<span class="go">web2: Linux</span>
+<span class="go">mac1: Darwin</span>
+</pre></div>
+</div>
+<p>This approach works, but as use cases get more complex it can be
+useful to think of a collection of hosts as a single object. Enter <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code>, a
+class wrapping one-or-more <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects and offering a similar API;
+specifically, you’ll want to use one of its concrete subclasses like
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">SerialGroup</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">ThreadingGroup</span></code>.</p>
+<p>The previous example, using <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">SerialGroup</span></code> specifically), looks like
+this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">SerialGroup</span> <span class="k">as</span> <span class="n">Group</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="s1">&#39;web2&#39;</span><span class="p">,</span> <span class="s1">&#39;mac1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;uname -s&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">&lt;GroupResult: {</span>
+<span class="go">    &lt;Connection &#39;web1&#39;&gt;: &lt;CommandResult &#39;uname -s&#39;&gt;,</span>
+<span class="go">    &lt;Connection &#39;web2&#39;&gt;: &lt;CommandResult &#39;uname -s&#39;&gt;,</span>
+<span class="go">    &lt;Connection &#39;mac1&#39;&gt;: &lt;CommandResult &#39;uname -s&#39;&gt;,</span>
+<span class="go">}&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">connection</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0.host}</span><span class="s2">: </span><span class="si">{1.stdout}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="go">web1: Linux</span>
+<span class="go">web2: Linux</span>
+<span class="go">mac1: Darwin</span>
+</pre></div>
+</div>
+<p>Where <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> methods return single <code class="docutils literal notranslate"><span class="pre">Result</span></code> objects (e.g.
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">fabric.runners.Result</span></code>), <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> methods return <code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupResult</span></code> - <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(在 Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>-like
+objects offering access to individual per-connection results as well as
+metadata about the entire run.</p>
+<p>When any individual connections within the <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> encounter errors, the
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupResult</span></code> is lightly wrapped in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupException</span></code>, which is raised. Thus
+the aggregate behavior resembles that of individual <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> methods,
+returning a value on success or raising an exception on failure.</p>
+</section>
+<section id="bringing-it-all-together">
+<h2>Bringing it all together<a class="headerlink" href="#bringing-it-all-together" title="Permalink to this heading">¶</a></h2>
+<p>Finally, we arrive at the most realistic use case: you’ve got a bundle of
+commands and/or file transfers and you want to apply it to multiple servers.
+You <em>could</em> use multiple <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> method calls to do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">SerialGroup</span> <span class="k">as</span> <span class="n">Group</span>
+<span class="n">pool</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="s1">&#39;web2&#39;</span><span class="p">,</span> <span class="s1">&#39;web3&#39;</span><span class="p">)</span>
+<span class="n">pool</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="s1">&#39;/opt/mydata&#39;</span><span class="p">)</span>
+<span class="n">pool</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That approach falls short as soon as logic becomes necessary - for example, if
+you only wanted to perform the copy-and-untar above when <code class="docutils literal notranslate"><span class="pre">/opt/mydata</span></code> is
+empty. Performing that sort of check requires execution on a per-server basis.</p>
+<p>You could fill that need by using iterables of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects (though
+this foregoes some benefits of using <code class="xref py py-obj docutils literal notranslate"><span class="pre">Groups</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="k">for</span> <span class="n">host</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="s1">&#39;web2&#39;</span><span class="p">,</span> <span class="s1">&#39;web3&#39;</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;test -f /opt/mydata/myfile&#39;</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">failed</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="s1">&#39;/opt/mydata&#39;</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, remember how we used a function in that earlier example? You can
+go that route instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">SerialGroup</span> <span class="k">as</span> <span class="n">Group</span>
+
+<span class="k">def</span> <span class="nf">upload_and_unpack</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;test -f /opt/mydata/myfile&#39;</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">failed</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="s1">&#39;/opt/mydata&#39;</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="n">Group</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="s1">&#39;web2&#39;</span><span class="p">,</span> <span class="s1">&#39;web3&#39;</span><span class="p">):</span>
+    <span class="n">upload_and_unpack</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The only convenience this final approach lacks is a useful analogue to
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Group.run</span></code> - if you want to track the results of all the
+<code class="docutils literal notranslate"><span class="pre">upload_and_unpack</span></code> call as an aggregate, you have to do that yourself. Look
+to future feature releases for more in this space!</p>
+</section>
+<section id="addendum-the-fab-command-line-tool">
+<h2>Addendum: the <code class="docutils literal notranslate"><span class="pre">fab</span></code> command-line tool<a class="headerlink" href="#addendum-the-fab-command-line-tool" title="Permalink to this heading">¶</a></h2>
+<p>It’s often useful to run Fabric code from a shell, e.g. deploying applications
+or running sysadmin jobs on arbitrary servers. You could use regular
+<span class="xref std std-ref">Invoke tasks</span> with Fabric library
+code in them, but another option is Fabric’s own “network-oriented” tool,
+<code class="docutils literal notranslate"><span class="pre">fab</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">fab</span></code> wraps Invoke’s CLI mechanics with features like host selection, letting
+you quickly run tasks on various servers - without having to define <code class="docutils literal notranslate"><span class="pre">host</span></code>
+kwargs on all your tasks or similar.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This mode was the primary API of Fabric 1.x; as of 2.0 it’s just a
+convenience. Whenever your use case falls outside these shortcuts, it
+should be easy to revert to the library API directly (with or without
+Invoke’s less opinionated CLI tasks wrapped around it).</p>
+</div>
+<p>For a final code example, let’s adapt the previous example into a <code class="docutils literal notranslate"><span class="pre">fab</span></code> task
+module called <code class="docutils literal notranslate"><span class="pre">fabfile.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">task</span>
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">upload_and_unpack</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;test -f /opt/mydata/myfile&#39;</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">failed</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="s1">&#39;/opt/mydata&#39;</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Not hard - all we did was copy our temporary task function into a file and slap
+a decorator on it. <code class="xref py py-obj docutils literal notranslate"><span class="pre">task</span></code> tells the CLI machinery to expose the
+task on the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ fab --list
+Available tasks:
+
+  upload_and_unpack
+</pre></div>
+</div>
+<p>Then, when <code class="docutils literal notranslate"><span class="pre">fab</span></code> actually invokes a task, it knows how to stitch together
+arguments controlling target servers, and run the task once per server. To run
+the task once on a single server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ fab -H web1 upload_and_unpack
+</pre></div>
+</div>
+<p>When this occurs, <code class="docutils literal notranslate"><span class="pre">c</span></code> inside the task is set, effectively, to
+<code class="docutils literal notranslate"><span class="pre">Connection(&quot;web1&quot;)</span></code> - as in earlier examples. Similarly, you can give more
+than one host, which runs the task multiple times, each time with a different
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> instance handed in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ fab -H web1,web2,web3 upload_and_unpack
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fabric</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Pythonic remote execution</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fabric&repo=fabric&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>导航</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#a-note-about-imports">A note about imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-commands-via-connections-and-run">Run commands via Connections and <code class="docutils literal notranslate"><span class="pre">run</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#superuser-privileges-via-auto-response">Superuser privileges via auto-response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transfer-files">Transfer files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-actions">Multiple actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-servers">Multiple servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bringing-it-all-together">Bringing it all together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#addendum-the-fab-command-line-tool">Addendum: the <code class="docutils literal notranslate"><span class="pre">fab</span></code> command-line tool</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="concepts/authentication.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts/networking.html">Networking</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-line interface</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/config.html"><code class="docutils literal notranslate"><span class="pre">config</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/connection.html"><code class="docutils literal notranslate"><span class="pre">connection</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/exceptions.html"><code class="docutils literal notranslate"><span class="pre">exceptions</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/executor.html"><code class="docutils literal notranslate"><span class="pre">executor</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/group.html"><code class="docutils literal notranslate"><span class="pre">group</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/runners.html"><code class="docutils literal notranslate"><span class="pre">runners</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/tasks.html"><code class="docutils literal notranslate"><span class="pre">tasks</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/testing.html"><code class="docutils literal notranslate"><span class="pre">testing</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/transfer.html"><code class="docutils literal notranslate"><span class="pre">transfer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/tunnels.html"><code class="docutils literal notranslate"><span class="pre">tunnels</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code></a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.fabfile.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Fabric is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-fabric?utm_source=pypi-fabric&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/getting-started.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

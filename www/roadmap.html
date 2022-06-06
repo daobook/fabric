@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Development roadmap &#8212; Fabric  文档</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="Contact" href="contact.html" />
+    <link rel="prev" title="Troubleshooting" href="troubleshooting.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="development-roadmap">
+<span id="roadmap"></span><h1>Development roadmap<a class="headerlink" href="#development-roadmap" title="Permalink to this heading">¶</a></h1>
+<p>This document outlines Fabric’s intended development path. Please make sure
+you’re reading <a class="reference external" href="https://fabfile.org/roadmap.html">the latest version</a> of this
+document, and also see the page about <a class="reference internal" href="upgrading.html#upgrading"><span class="std std-ref">upgrading</span></a> if you are
+migrating from version 1 to versions 2 or above.</p>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>The primary project maintainer keeps an overall <a class="reference external" href="https://bitprophet.org/projects#roadmap">roadmap</a> on his website, which can help
+contextualize when Fabric may get its next update.</p>
+</div>
+<section id="fabric-2-and-above">
+<h2>Fabric 2 and above<a class="headerlink" href="#fabric-2-and-above" title="Permalink to this heading">¶</a></h2>
+<p>Modern Fabric versions (2+) receive active feature and bugfix development:</p>
+<ul class="simple">
+<li><p><strong>2.0</strong>: Initial public release, arguably a technology preview and a
+packaging/upgrade trial. Intent is to act as a jolt for users of 1.x who
+aren’t pinning their dependencies (sorry, folks!), enable installation
+via PyPI so users don’t have to install via Git to start upgrading, and
+generally get everything above-board and iterating in classic semantic
+versioning fashion.</p></li>
+<li><p><strong>2.1, 2.2, 2.3, etc</strong>: Implement the most pressing “missing features”,
+including features which were present in 1.0 (see <a class="reference internal" href="upgrading.html#upgrading"><span class="std std-ref">Upgrading from 1.x</span></a> for
+details on these) as well as any brand new features we’ve been wanting in 2.x
+for a while (though most of these will come via Invoke and/or Paramiko
+releases – see note below for more).</p></li>
+<li><p><strong>3.0, 4.0, etc</strong>: Subsequent major releases will <strong>not</strong> be full-on rewrites
+as 2.0 was, but will be <em>small</em> (feature-release-sized) releases that just
+happen to contain one or more backwards incompatible API changes. These will
+be clearly marked in the changelog and reflected in the upgrading
+documentation.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Many features that you may use via Fabric will only need development in the
+libraries Fabric wraps – <a class="reference external" href="https://pyinvoke.org">Invoke</a> and <a class="reference external" href="https://paramiko.org">Paramiko</a> – and unless Fabric itself needs changes to match,
+you can often get new features by upgrading only one of the three. Make
+sure to check the other projects’ changelogs periodically!</p>
+</div>
+</section>
+<section id="fabric-1-x">
+<h2>Fabric 1.x<a class="headerlink" href="#fabric-1-x" title="Permalink to this heading">¶</a></h2>
+<p>Fabric 1.x has reached a tipping point regarding internal tech debt, lack of
+testability &amp; ability to make improvements without harming backwards
+compatibility. As such, the 1.x line now receives bugfixes only. We
+<strong>strongly</strong> encourage all users to <a class="reference internal" href="upgrading.html#upgrading"><span class="std std-ref">upgrade</span></a> to Fabric 2.x.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fabric</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Pythonic remote execution</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fabric&repo=fabric&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>导航</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog-v1.html">Changelog (1.x)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-1.x.html">Installing (1.x)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrading from 1.x</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Roadmap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fabric-2-and-above">Fabric 2 and above</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fabric-1-x">Fabric 1.x</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://docs.fabfile.org">API Docs</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Fabric is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-fabric?utm_source=pypi-fabric&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/roadmap.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

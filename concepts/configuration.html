@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Configuration &#8212; Fabric  文档</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Networking" href="networking.html" />
+    <link rel="prev" title="Authentication" href="authentication.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="configuration">
+<span id="fab-configuration"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h1>
+<section id="basics">
+<h2>Basics<a class="headerlink" href="#basics" title="Permalink to this heading">¶</a></h2>
+<p>The heart of Fabric’s configuration system (as with much of the rest of Fabric)
+relies on Invoke functionality, namely <code class="xref py py-obj docutils literal notranslate"><span class="pre">invoke.config.Config</span></code> (technically, a
+lightweight subclass, <code class="xref py py-obj docutils literal notranslate"><span class="pre">fabric.config.Config</span></code>). For practical details on
+what this means re: configuring Fabric’s behavior, please see <span class="xref std std-ref">Invoke’s
+configuration documentation</span>.</p>
+<p>The primary differences from that document are as follows:</p>
+<ul>
+<li><p>The configuration file paths sought are all named <code class="docutils literal notranslate"><span class="pre">fabric.*</span></code> instead of
+<code class="docutils literal notranslate"><span class="pre">invoke.*</span></code> - e.g. <code class="docutils literal notranslate"><span class="pre">/etc/fabric.yml</span></code> instead of <code class="docutils literal notranslate"><span class="pre">/etc/invoke.yml</span></code>,
+<code class="docutils literal notranslate"><span class="pre">~/.fabric.py</span></code> instead of <code class="docutils literal notranslate"><span class="pre">~/.invoke.py</span></code>, etc.</p></li>
+<li><p>In addition to <span class="xref std std-ref">Invoke’s own default configuration values</span>, Fabric merges in some of its own, such as the fact
+that SSH’s default port number is 22. See <a class="reference internal" href="#default-values"><span class="std std-ref">Default configuration values</span></a> for details.</p></li>
+<li><p>Fabric has facilities for loading SSH config files, and will automatically
+create (or update) a configuration subtree on a per <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> basis, loaded with the interpreted SSH
+configuration for that specific host (since an SSH config file is only ever
+useful via such a lens). See <a class="reference internal" href="#ssh-config"><span class="std std-ref">Loading and using ssh_config files</span></a>.</p></li>
+<li><p>Fabric plans to offer a framework for managing per-host and
+per-host-collection configuration details and overrides, though this is not
+yet implemented (it will be analogous to, but improved upon, the
+<code class="docutils literal notranslate"><span class="pre">env.hosts</span></code> and <code class="docutils literal notranslate"><span class="pre">env.roles</span></code> structures from Fabric 1.x).</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>This functionality will supplement that of the SSH config loading
+described earlier; we expect most users will prefer to configure as much
+as possible via an SSH config file, but not all Fabric settings have
+<code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> analogues, nor do all use cases fit neatly into such
+files.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="default-configuration-values">
+<span id="default-values"></span><h2>Default configuration values<a class="headerlink" href="#default-configuration-values" title="Permalink to this heading">¶</a></h2>
+<section id="overrides-of-invoke-level-defaults">
+<h3>Overrides of Invoke-level defaults<a class="headerlink" href="#overrides-of-invoke-level-defaults" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">run.replace_env</span></code>: defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>, instead of <code class="docutils literal notranslate"><span class="pre">False</span></code>, so that
+remote commands run with a ‘clean’, empty environment instead of inheriting
+a copy of the current process’ environment.</p>
+<p>This is for security purposes: leaking local environment data remotely by
+default would be unsanitary. It’s also compatible with the behavior of
+OpenSSH.</p>
+<div class="admonition seealso">
+<p class="admonition-title">参见</p>
+<p>The warning under <code class="xref py py-obj docutils literal notranslate"><span class="pre">paramiko.channel.Channel.set_environment_variable</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This is currently accomplished with a keyword argument override, as the
+config setting itself was applying to both <code class="docutils literal notranslate"><span class="pre">run</span></code> and <code class="docutils literal notranslate"><span class="pre">local</span></code>. Future
+updates will ensure the two methods use separate config values.</p>
+</div>
+</li>
+</ul>
+</section>
+<section id="extensions-to-invoke-level-defaults">
+<h3>Extensions to Invoke-level defaults<a class="headerlink" href="#extensions-to-invoke-level-defaults" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">runners.remote</span></code>: In Invoke, the <code class="docutils literal notranslate"><span class="pre">runners</span></code> tree has a single subkey,
+<code class="docutils literal notranslate"><span class="pre">local</span></code> (mapping to <code class="xref py py-obj docutils literal notranslate"><span class="pre">Local</span></code>). Fabric adds this new subkey,
+<code class="docutils literal notranslate"><span class="pre">remote</span></code>, which is mapped to <code class="xref py py-obj docutils literal notranslate"><span class="pre">Remote</span></code>.</p></li>
+</ul>
+</section>
+<section id="new-default-values-defined-by-fabric">
+<h3>New default values defined by Fabric<a class="headerlink" href="#new-default-values-defined-by-fabric" title="Permalink to this heading">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Most of these settings are also available in the constructor of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>, if they only need modification on a per-connection basis.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Many of these are also configurable via <a class="reference internal" href="#ssh-config"><span class="std std-ref">ssh_config files</span></a>. <strong>Such values take precedence over those defined via the
+core configuration</strong>, so make sure you’re aware of whether you’re loading
+such files (or <a class="reference internal" href="#disabling-ssh-config"><span class="std std-ref">disable them to be sure</span></a>).</p>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">connect_kwargs</span></code>: Keyword arguments (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(在 Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>) given to <code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHClient.connect</span></code> when <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> performs that method
+call. This is the primary configuration vector for many SSH-related options,
+such as selecting private keys, toggling forwarding of SSH agents, etc.
+Default: <code class="docutils literal notranslate"><span class="pre">{}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">forward_agent</span></code>: Whether to attempt forwarding of your local SSH
+authentication agent to the remote end. Default: <code class="docutils literal notranslate"><span class="pre">False</span></code> (same as in
+OpenSSH.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gateway</span></code>: Used as the default value of the <code class="docutils literal notranslate"><span class="pre">gateway</span></code> kwarg for
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>. May be any value accepted by that argument. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load_ssh_configs</span></code>: Whether to automatically seek out <a class="reference internal" href="#ssh-config"><span class="std std-ref">SSH config
+files</span></a>. When <code class="docutils literal notranslate"><span class="pre">False</span></code>, no automatic loading occurs. Default:
+<code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">port</span></code>: TCP port number used by <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects when not otherwise
+specified. Default: <code class="docutils literal notranslate"><span class="pre">22</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inline_ssh_env</span></code>: Boolean serving as global default for the value of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>’s <code class="docutils literal notranslate"><span class="pre">inline_ssh_env</span></code> parameter; see its docs for details.
+Default: <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ssh_config_path</span></code>: Runtime SSH config path; see <a class="reference internal" href="#ssh-config"><span class="std std-ref">Loading and using ssh_config files</span></a>. Default:
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeouts</span></code>: Various timeouts, specifically:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">connect</span></code>: Connection timeout, in seconds; defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+meaning no timeout / block forever.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>: Username given to the remote <code class="docutils literal notranslate"><span class="pre">sshd</span></code> when connecting. Default:
+your local system username.</p></li>
+</ul>
+</section>
+</section>
+<section id="loading-and-using-ssh-config-files">
+<span id="ssh-config"></span><h2>Loading and using <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> files<a class="headerlink" href="#loading-and-using-ssh-config-files" title="Permalink to this heading">¶</a></h2>
+<section id="how-files-are-loaded">
+<h3>How files are loaded<a class="headerlink" href="#how-files-are-loaded" title="Permalink to this heading">¶</a></h3>
+<p>Fabric uses Paramiko’s SSH config file machinery to load and parse
+<code class="docutils literal notranslate"><span class="pre">ssh_config</span></code>-format files (following OpenSSH’s behavior re: which files to
+load, when possible):</p>
+<ul>
+<li><p>An already-parsed <code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig</span></code> object may be given to
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.__init__</span></code> via its <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> keyword argument; if this value is
+given, no files are loaded, even if they exist.</p></li>
+<li><p>A runtime file path may be specified via configuration itself, as the
+<code class="docutils literal notranslate"><span class="pre">ssh_config_path</span></code> key; such a path will be loaded into a new
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig</span></code> object at the end of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.__init__</span></code> and no
+other files will be sought out.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>It will be filled in by the <code class="docutils literal notranslate"><span class="pre">fab</span></code> CLI tool if the
+<a class="reference internal" href="../cli.html#cmdoption-S"><code class="xref std std-option docutils literal notranslate"><span class="pre">--ssh-config</span></code></a> flag is given.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>If no runtime config (object or path) was given to <code class="xref py py-obj docutils literal notranslate"><span class="pre">Config.__init__</span></code>, it
+will automatically seek out and load <code class="docutils literal notranslate"><span class="pre">~/.ssh/config</span></code> and/or
+<code class="docutils literal notranslate"><span class="pre">/etc/ssh/ssh_config</span></code>, if they exist (and in that order.)</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Rules present in both files will result in the user-level file ‘winning’,
+as the first rule found during lookup is always used.</p>
+</div>
+</li>
+<li><p>If none of the above vectors yielded SSH config data, a blank/empty
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig</span></code> is the final result.</p></li>
+<li><p>Regardless of how the object was generated, it is exposed as
+<code class="docutils literal notranslate"><span class="pre">Config.base_ssh_config</span></code>.</p></li>
+</ul>
+</section>
+<section id="connection-s-use-of-ssh-config-values">
+<span id="connection-ssh-config"></span><h3><code class="docutils literal notranslate"><span class="pre">Connection</span></code>’s use of <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> values<a class="headerlink" href="#connection-s-use-of-ssh-config-values" title="Permalink to this heading">¶</a></h3>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects expose a per-host ‘view’ of their config’s SSH data
+(obtained via <code class="xref py py-obj docutils literal notranslate"><span class="pre">lookup</span></code>) as <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.ssh_config</span></code>.
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> itself references these values as described in the following
+subsections, usually as simple defaults for the appropriate config key or
+parameter (<code class="docutils literal notranslate"><span class="pre">port</span></code>, <code class="docutils literal notranslate"><span class="pre">forward_agent</span></code>, etc.)</p>
+<p>Unless otherwise specified, these values override regular configuration values
+for the same keys, but may themselves be overridden by <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.__init__</span></code>
+parameters.</p>
+<p>Take for example a <code class="docutils literal notranslate"><span class="pre">~/.fabric.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foo</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Absent any other configuration, <code class="docutils literal notranslate"><span class="pre">Connection('myhost')</span></code> connects as the
+<code class="docutils literal notranslate"><span class="pre">foo</span></code> user.</p>
+<p>If we also have an <code class="docutils literal notranslate"><span class="pre">~/.ssh/config</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="o">*</span>
+    <span class="n">User</span> <span class="n">bar</span>
+</pre></div>
+</div>
+<p>then <code class="docutils literal notranslate"><span class="pre">Connection('myhost')</span></code> connects as <code class="docutils literal notranslate"><span class="pre">bar</span></code> (the SSH config wins over
+the Fabric config.)</p>
+<p><em>However</em>, in both cases, <code class="docutils literal notranslate"><span class="pre">Connection('myhost',</span> <span class="pre">user='biz')</span></code> will connect as
+<code class="docutils literal notranslate"><span class="pre">biz</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The below sections use capitalized versions of <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> keys for
+easier correlation with <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">ssh_config</span></code>, <strong>but</strong> the actual
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig</span></code> data structure is normalized to lowercase
+keys, since SSH config files are technically case-insensitive.</p>
+</div>
+<section id="connection-parameters">
+<h4>Connection parameters<a class="headerlink" href="#connection-parameters" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Hostname</span></code>: replaces the original value of <code class="docutils literal notranslate"><span class="pre">host</span></code> (which is preserved as
+<code class="docutils literal notranslate"><span class="pre">.original_host</span></code>.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Port</span></code>: supplies the default value for the <code class="docutils literal notranslate"><span class="pre">port</span></code> config option /
+parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">User</span></code>: supplies the default value for the <code class="docutils literal notranslate"><span class="pre">user</span></code> config option /
+parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ConnectTimeout</span></code>: sets the default value for the <code class="docutils literal notranslate"><span class="pre">timeouts.connect</span></code>
+config option / <code class="docutils literal notranslate"><span class="pre">timeout</span></code> parameter.</p></li>
+</ul>
+</section>
+<section id="proxying">
+<h4>Proxying<a class="headerlink" href="#proxying" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code>: supplies default (string) value for <code class="docutils literal notranslate"><span class="pre">gateway</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ProxyJump</span></code>: supplies default (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>)
+value for <code class="docutils literal notranslate"><span class="pre">gateway</span></code>.</p>
+<ul>
+<li><p>Nested-style <code class="docutils literal notranslate"><span class="pre">ProxyJump</span></code>, i.e. <code class="docutils literal notranslate"><span class="pre">user1&#64;hop1.host,user2&#64;hop2.host,...</span></code>,
+will result in an appropriate series of nested <code class="docutils literal notranslate"><span class="pre">gateway</span></code> values under the
+hood - as if the user had manually specified <code class="docutils literal notranslate"><span class="pre">Connecton(...,</span>
+<span class="pre">gateway=Connection('user1&#64;hop1.host',</span>
+<span class="pre">gateway=Connection('user2&#64;hop2.host',</span> <span class="pre">gateway=...)))</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>If both are specified for a given host, <code class="docutils literal notranslate"><span class="pre">ProxyJump</span></code> will override
+<code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code>. This is slightly different from OpenSSH, where the order
+the directives are loaded determines which one wins. Doing so on our end
+(where we view the config as a dictionary structure) requires additional
+work.</p>
+</div>
+</section>
+<section id="authentication">
+<h4>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ForwardAgent</span></code>: controls default behavior of <code class="docutils literal notranslate"><span class="pre">forward_agent</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IdentityFile</span></code>: appends to the <code class="docutils literal notranslate"><span class="pre">key_filename</span></code> key within
+<code class="docutils literal notranslate"><span class="pre">connect_kwargs</span></code> (similar to <a class="reference internal" href="../cli.html#cmdoption-i"><code class="xref std std-option docutils literal notranslate"><span class="pre">--identity</span></code></a>.)</p></li>
+</ul>
+</section>
+</section>
+<section id="disabling-most-ssh-config-loading">
+<span id="disabling-ssh-config"></span><h3>Disabling (most) <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> loading<a class="headerlink" href="#disabling-most-ssh-config-loading" title="Permalink to this heading">¶</a></h3>
+<p>Users who need tighter control over how their environment gets configured may
+want to disable the automatic loading of system/user level SSH config files;
+this can prevent hard-to-expect errors such as a new user’s <code class="docutils literal notranslate"><span class="pre">~/.ssh/config</span></code>
+overriding values that are being set in the regular config hierarchy.</p>
+<p>To do so, simply set the top level config option <code class="docutils literal notranslate"><span class="pre">load_ssh_configs</span></code> to
+<code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Changing this setting does <em>not</em> disable loading of runtime-level config
+files (e.g. via <code class="xref std std-option docutils literal notranslate"><span class="pre">-F</span></code>). If a user is explicitly telling us to load
+such a file, we assume they know what they’re doing.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Fabric</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Pythonic remote execution</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=fabric&repo=fabric&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>导航</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Getting started</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basics">Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-configuration-values">Default configuration values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loading-and-using-ssh-config-files">Loading and using <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-line interface</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/config.html"><code class="docutils literal notranslate"><span class="pre">config</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/connection.html"><code class="docutils literal notranslate"><span class="pre">connection</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/exceptions.html"><code class="docutils literal notranslate"><span class="pre">exceptions</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/executor.html"><code class="docutils literal notranslate"><span class="pre">executor</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/group.html"><code class="docutils literal notranslate"><span class="pre">group</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/runners.html"><code class="docutils literal notranslate"><span class="pre">runners</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/tasks.html"><code class="docutils literal notranslate"><span class="pre">tasks</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/testing.html"><code class="docutils literal notranslate"><span class="pre">testing</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/transfer.html"><code class="docutils literal notranslate"><span class="pre">transfer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/tunnels.html"><code class="docutils literal notranslate"><span class="pre">tunnels</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code></a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://www.fabfile.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">快速搜索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="转向" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Fabric is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-fabric?utm_source=pypi-fabric&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/concepts/configuration.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>
