@@ -36,6 +36,7 @@ jobs:
       # build with: sphinx-build -nW --keep-going -b html . ./_build/html
       - name: 🔧 Build HTML
         run: |
+          mkdir build
           invoke www
           invoke docs
           cp -rf sites/docs/_build/ build/html
