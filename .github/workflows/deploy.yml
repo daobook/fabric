@@ -38,8 +38,8 @@ jobs:
         run: |
           invoke www
           invoke docs
-          cp -rf sites/docs/_build/ _build/
-          cp -rf sites/www/_build/ _build/www/
+          cp -rf sites/docs/_build/ build/html
+          cp -rf sites/www/_build/ build/html/www
 
       - name: 🚀 Deploy to GitHub pages
         uses: peaceiris/actions-gh-pages@v3.6.1
