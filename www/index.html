@@ -37,23 +37,14 @@
   <p><a class="reference external" href="https://pypi.org/project/fabric/"><img alt="PyPI - Package Version" src="https://img.shields.io/pypi/v/fabric" /></a> <a class="reference external" href="https://pypi.org/project/fabric/"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/fabric" /></a> <a class="reference external" href="https://github.com/fabric/fabric/blob/main/LICENSE"><img alt="PyPI - License" src="https://img.shields.io/pypi/l/fabric" /></a> <a class="reference external" href="https://app.circleci.com/pipelines/github/fabric/fabric"><img alt="CircleCI" src="https://img.shields.io/circleci/build/github/fabric/fabric/main" /></a> <a class="reference external" href="https://app.codecov.io/gh/fabric/fabric"><img alt="Codecov" src="https://img.shields.io/codecov/c/gh/fabric/fabric" /></a></p>
 <section id="welcome-to-fabric">
 <h1>Welcome to Fabric!<a class="headerlink" href="#welcome-to-fabric" title="Permalink to this heading">¶</a></h1>
-<p>Fabric is a high level Python (2.7, 3.4+) library designed to execute shell
-commands remotely over SSH, yielding useful Python objects in return. It builds
-on top of <a class="reference external" href="https://pyinvoke.org">Invoke</a> (subprocess command execution and
-command-line features) and <a class="reference external" href="https://paramiko.org">Paramiko</a> (SSH protocol
-implementation), extending their APIs to complement one another and provide
-additional functionality.</p>
-<p>To find out what’s new in this version of Fabric, please see <a class="reference external" href="https://fabfile.org/changelog.html#{}">the changelog</a>.</p>
-<p>The project maintainer keeps a <a class="reference external" href="https://bitprophet.org/projects#roadmap">roadmap</a> on his website.</p>
-<p>This website covers project information for Fabric such as the changelog,
-contribution guidelines, and so forth. Detailed usage and API documentation can
-be found at our code documentation site, <a class="reference external" href="https://docs.fabfile.org">docs.fabfile.org</a>.</p>
-<p>Please see below for a high level intro, or the navigation on the left for the
-rest of the site content.</p>
+<p>Fabric 是高级 Python(2.7, 3.4+) 库，用于通过 SSH 远程执行 shell 命令，并返回有用的 Python 对象。它构建在 <a class="reference external" href="https://pyinvoke.org">Invoke</a> (子进程命令执行和命令行特性) 和 Paramiko (SSH 协议实现)之上，扩展它们的 api 以相互补充并提供额外的功能。</p>
+<p>要了解这个版本的 Fabric 的新特性，请查看 <a class="reference external" href="https://fabfile.org/changelog.html#{}">the changelog</a>。</p>
+<p>项目维护者在他的网站上保持一个 <a class="reference external" href="https://bitprophet.org/projects#roadmap">路线图</a>。</p>
+<p>该网站涵盖了 Fabric 的项目信息，如变更日志、贡献指南等。详细的用法和 API 文档可以在我们的代码文档网站上找到，<a class="reference external" href="https://docs.fabfile.org">docs.fabfile.org</a></p>
+<p>请参阅下面的高级介绍，或左侧的导航为网站的其余内容。</p>
 <section id="what-is-fabric">
-<h2>What is Fabric?<a class="headerlink" href="#what-is-fabric" title="Permalink to this heading">¶</a></h2>
-<p>Fabric is a high level Python (2.7, 3.4+) library designed to execute shell
-commands remotely over SSH, yielding useful Python objects in return:</p>
+<h2>Fabric 是什么？<a class="headerlink" href="#what-is-fabric" title="Permalink to this heading">¶</a></h2>
+<p>Fabric 是高级 Python(2.7, 3.4+) 库，用于通过 SSH 远程执行 shell 命令，返回有用的 Python 对象：</p>
 <div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;web1.example.com&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;uname -s&#39;</span><span class="p">,</span> <span class="n">hide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Ran </span><span class="si">{0.command!r}</span><span class="s2"> on </span><span class="si">{0.connection.host}</span><span class="s2">, got stdout:</span><span class="se">\n</span><span class="si">{0.stdout}</span><span class="s2">&quot;</span>

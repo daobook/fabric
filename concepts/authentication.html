@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Authentication &#8212; Fabric  文档</title>
+    <title>身份验证 &#8212; Fabric  文档</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -18,7 +18,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Configuration" href="configuration.html" />
-    <link rel="prev" title="Getting started" href="../getting-started.html" />
+    <link rel="prev" title="快速上手" href="../getting-started.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -36,45 +36,25 @@
           <div class="body" role="main">
             
   <section id="authentication">
-<h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h1>
-<p>Even in the ‘vanilla’ OpenSSH client, authenticating to remote servers involves
-multiple potential sources for secrets and configuration; Fabric not only
-supports most of those, but has more of its own. This document outlines the
-available methods for setting authentication secrets.</p>
+<h1>身份验证<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h1>
+<p>即使在 ‘普通的’ OpenSSH 客户端中，对远程服务器的身份验证也涉及到多个潜在的机密和配置来源；Fabric 不仅支持其中的大部分功能，还拥有更多自己的功能。本文档概述了设置身份验证密钥的可用方法。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>Since Fabric itself tries not to reinvent too much Paramiko functionality,
-most of the time configuring authentication values boils down to “how to
-set keyword argument values for <code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHClient.connect</span></code>”, which in turn means to set values
-inside either the <code class="docutils literal notranslate"><span class="pre">connect_kwargs</span></code> <a class="reference internal" href="configuration.html"><span class="doc">config</span></a> subtree, or the <code class="docutils literal notranslate"><span class="pre">connect_kwargs</span></code> keyword
-argument of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>.</p>
+<p>由于 Fabric 本身并没有尝试重新创造太多 Paramiko 功能，所以大部分配置身份验证值的时间都归结为“如何为 <code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHClient.connect</span></code> 设置关键字参数值”，这反过来意味着在 <code class="docutils literal notranslate"><span class="pre">connect_kwargs</span></code>  <a class="reference internal" href="configuration.html"><span class="doc">config</span></a> 子树，或 <code class="docutils literal notranslate"><span class="pre">connect_kwargs</span></code> 关键字参数中设置值。</p>
 </div>
 <section id="private-key-files">
-<h2>Private key files<a class="headerlink" href="#private-key-files" title="Permalink to this heading">¶</a></h2>
-<p>Private keys stored on-disk are probably the most common auth mechanism for
-SSH. Fabric offers multiple methods of configuring which paths to use, most of
-which end up merged into one list of paths handed to
-<code class="docutils literal notranslate"><span class="pre">SSHClient.connect(key_filename=[...])</span></code>, in the following order:</p>
+<h2>私钥文件<a class="headerlink" href="#private-key-files" title="Permalink to this heading">¶</a></h2>
+<p>存储在磁盘上的私钥可能是 SSH 最常见的身份验证机制。Fabric 提供了多种方法来配置要使用的路径，其中大多数最终会合并成一个路径列表，然后按以下顺序交给 <code class="docutils literal notranslate"><span class="pre">SSHClient.connect(key_filename=[...])</span></code> ：</p>
 <ul class="simple">
-<li><p>If a <code class="docutils literal notranslate"><span class="pre">key_filename</span></code> key exists in the <code class="docutils literal notranslate"><span class="pre">connect_kwargs</span></code> argument to
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>, they come first in the list. (This is basically the “runtime”
-option for non-CLI users.)</p></li>
-<li><p>The config setting <code class="docutils literal notranslate"><span class="pre">connect_kwargs.key_filename</span></code> can be set in a number of
-ways (as per the <a class="reference internal" href="configuration.html"><span class="doc">config docs</span></a>) including via
-the <a class="reference internal" href="../cli.html#cmdoption-i"><code class="xref std std-option docutils literal notranslate"><span class="pre">--identity</span></code></a> CLI flag (which sets the <code class="docutils literal notranslate"><span class="pre">overrides</span></code> level of the
-config; so when this flag is used, key filename values from other config
-sources will be overridden.) This value comes next in the overall list.</p></li>
-<li><p>Using an <a class="reference internal" href="configuration.html#ssh-config"><span class="std std-ref">ssh_config</span></a> file with <code class="docutils literal notranslate"><span class="pre">IdentityFile</span></code>
-directives lets you share configuration with other SSH clients; such values
-come last.</p></li>
+<li><p>如果在 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 的  <code class="docutils literal notranslate"><span class="pre">connect_kwargs</span></code> 参数中存在 <code class="docutils literal notranslate"><span class="pre">key_filename</span></code> 键，则它们在列表中首先出现。(这基本上是非 CLI 用户的运行时选项。)</p></li>
+<li><p>配置设置 <code class="docutils literal notranslate"><span class="pre">connect_kwargs.key_filename</span></code> 可以通过多种方式设置(根据 <a class="reference internal" href="configuration.html"><span class="doc">config docs</span></a>)，包括通过 <a class="reference internal" href="../cli.html#cmdoption-i"><code class="xref std std-option docutils literal notranslate"><span class="pre">--identity</span></code></a> CLI 标志(它设置配置的 <code class="docutils literal notranslate"><span class="pre">overrides</span></code> 级别；因此，当使用此标志时，来自其他配置源的键文件名值将被覆盖。)这个值在整个列表中排名第二。</p></li>
+<li><p>使用 <a class="reference internal" href="configuration.html#ssh-config"><span class="std std-ref">ssh_config</span></a> 文件与 <code class="docutils literal notranslate"><span class="pre">IdentityFile</span></code> 指令让你与其他 SSH 客户端共享配置；这些值排在最后。</p></li>
 </ul>
 <section id="encryption-passphrases">
-<h3>Encryption passphrases<a class="headerlink" href="#encryption-passphrases" title="Permalink to this heading">¶</a></h3>
-<p>If your private key file is protected via a passphrase, it can be supplied in a
-handful of ways:</p>
+<h3>加密密码<a class="headerlink" href="#encryption-passphrases" title="Permalink to this heading">¶</a></h3>
+<p>如果你的私钥文件是通过密码保护的，它可以通过几种方式提供：</p>
 <ul>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">connect_kwargs.passphrase</span></code> config option is the most direct way to
-supply a passphrase to be used automatically.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">connect_kwargs.passphrase</span></code> 配置选项是提供 passphrase 自动使用的最直接的方式。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
 <p>Using actual on-disk config files for this type of material isn’t always
@@ -159,11 +139,11 @@ tree.</p>
 
 <h3>导航</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">快速上手</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Authentication</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#private-key-files">Private key files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">身份验证</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#private-key-files">私钥文件</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#private-key-objects">Private key objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ssh-agents">SSH agents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#passwords">Passwords</a></li>
@@ -194,7 +174,7 @@ tree.</p>
 <hr />
 <ul>
     
-    <li class="toctree-l1"><a href="https://www.fabfile.org">Main website</a></li>
+    <li class="toctree-l1"><a href="https://daobook.github.io/fabric/www/">Main website</a></li>
     
 </ul>
 

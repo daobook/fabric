@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Getting started &#8212; Fabric  文档</title>
+    <title>快速上手 &#8212; Fabric  文档</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -17,8 +17,8 @@
     <script src="_static/translations.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
-    <link rel="next" title="Authentication" href="concepts/authentication.html" />
-    <link rel="prev" title="Welcome to Fabric’s documentation!" href="index.html" />
+    <link rel="next" title="身份验证" href="concepts/authentication.html" />
+    <link rel="prev" title="欢迎加入 Fabric 文档！" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -36,60 +36,41 @@
           <div class="body" role="main">
             
   <section id="getting-started">
-<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
-<p>Welcome! This tutorial highlights Fabric’s core features; for further details,
-see the links within, or the documentation index which has links to conceptual
-and API doc sections.</p>
+<h1>快速上手<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
+<p>欢迎！本教程重点介绍了 Fabric 的核心特性；要了解更多的细节，请参见内部的链接，或文档索引，其中有概念文档和 API 文档部分的链接。</p>
 <section id="a-note-about-imports">
-<h2>A note about imports<a class="headerlink" href="#a-note-about-imports" title="Permalink to this heading">¶</a></h2>
-<p>Fabric composes a couple of other libraries as well as providing its own layer
-on top; user code will most often import from the <code class="docutils literal notranslate"><span class="pre">fabric</span></code> package, but
-you’ll sometimes import directly from <code class="docutils literal notranslate"><span class="pre">invoke</span></code> or <code class="docutils literal notranslate"><span class="pre">paramiko</span></code> too:</p>
+<h2>关于导入的说明<a class="headerlink" href="#a-note-about-imports" title="Permalink to this heading">¶</a></h2>
+<p>Fabric 由几个其他库组成，并在其上提供自己的层；用户代码通常从 <code class="docutils literal notranslate"><span class="pre">fabric</span></code> 包中导入，但有时也可以直接从 <code class="docutils literal notranslate"><span class="pre">invoke</span></code> 或 <code class="docutils literal notranslate"><span class="pre">paramiko</span></code> 中导入</p>
 <ul>
-<li><p><a class="reference external" href="https://www.pyinvoke.org">Invoke</a>  implements CLI parsing, task organization,
-and shell command execution (a generic framework plus specific implementation
-for local commands.)</p>
+<li><p><a class="reference external" href="https://www.pyinvoke.org">Invoke</a> 实现了 CLI 解析、任务组织和 shell 命令执行（通用框架加上本地命令的特定实现）。</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Anything that isn’t specific to remote systems tends to live in Invoke,
-and it is often used standalone by programmers who don’t need any remote
-functionality.</p></li>
-<li><p>Fabric users will frequently import Invoke objects, in cases where Fabric
-itself has no need to subclass or otherwise modify what Invoke provides.</p></li>
+<li><p>任何与远程系统无关的内容都存在于 Invoke 中，并且通常由不需要任何远程功能的程序员独立使用。</p></li>
+<li><p>Fabric 用户将经常导入 Invoke 对象，在 Fabric 本身不需要子类化或修改 Invoke 提供的内容的情况下。</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p><a class="reference external" href="https://www.paramiko.org">Paramiko</a> implements low/mid level SSH
-functionality - SSH and SFTP sessions, key management, etc.</p>
+<li><p><a class="reference external" href="https://www.paramiko.org">Paramiko</a> 实现了低/中级 SSH 功能- SSH 和 SFTP 会话，密钥管理，等等。</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Fabric mostly uses this under the hood; users will only rarely import
-from Paramiko directly.</p></li>
+<li><p>Fabric 主要在底层使用；用户很少会直接从 Paramiko 导入。</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p>Fabric glues the other libraries together and provides its own high level
-objects too, e.g.:</p>
+<li><p>Fabric 将其他库粘合在一起，并提供自己的高级对象，例如：</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Subclassing Invoke’s context and command-runner classes, wrapping them
-around Paramiko-level primitives;</p></li>
-<li><p>Extending Invoke’s configuration system by using Paramiko’s
-<code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> parsing machinery;</p></li>
-<li><p>Implementing new high-level primitives of its own, such as
-port-forwarding context managers. (These may, in time, migrate downwards
-into Paramiko.)</p></li>
+<li><p>子类化 Invoke 的上下文和命令运行类，将它们包装在 paramiko 级原语中；</p></li>
+<li><p>通过使用 Paramiko 的 <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code>  解析机制来扩展 Invoke 的配置系统</p></li>
+<li><p>实现自己的新的高级原语，比如端口转发上下文管理器。（假以时日，它们可能会向下迁移到 Paramiko。）</p></li>
 </ul>
 </div></blockquote>
 </li>
 </ul>
 </section>
 <section id="run-commands-via-connections-and-run">
-<h2>Run commands via Connections and <code class="docutils literal notranslate"><span class="pre">run</span></code><a class="headerlink" href="#run-commands-via-connections-and-run" title="Permalink to this heading">¶</a></h2>
-<p>The most basic use of Fabric is to execute a shell command on a remote system
-via SSH, then (optionally) interrogate the result. By default, the remote
-program’s output is printed directly to your terminal, <em>and</em> captured. A basic
-example:</p>
+<h2>通过  Connections 和 <code class="docutils literal notranslate"><span class="pre">run</span></code> 运行命令<a class="headerlink" href="#run-commands-via-connections-and-run" title="Permalink to this heading">¶</a></h2>
+<p>Fabric 最基本的用途是通过 SSH 在远程系统上执行 shell 命令，然后（可选地）查询结果。默认情况下，远程程序的输出直接打印到终端，并被捕获。基本的例子：</p>
 <div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;uname -s&#39;</span><span class="p">)</span>
@@ -108,37 +89,23 @@ example:</p>
 <span class="go">&#39;web1&#39;</span>
 </pre></div>
 </div>
-<p>Meet <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code>, which represents an SSH connection and provides the core of
-Fabric’s API, such as <code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>. <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects need at least a
-hostname to be created successfully, and may be further parameterized by
-username and/or port number. You can give these explicitly via args/kwargs:</p>
+<p>满足 <code class="docutils literal notranslate"><span class="pre">.Connection</span></code>，它代表 SSH 连接，并提供 Fabric 的核心 API，如 <code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code>。<code class="docutils literal notranslate"><span class="pre">.Connection</span></code> 对象至少需要主机名才能成功创建，并且可以通过用户名和/或端口号进一步参数化。你可以通过 args/kwargs 明确地给出这些参数:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Connection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;deploy&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">2202</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Or by stuffing a <code class="docutils literal notranslate"><span class="pre">[user&#64;]host[:port]</span></code> string into the <code class="docutils literal notranslate"><span class="pre">host</span></code> argument
-(though this is purely convenience; always use kwargs whenever ambiguity
-appears!):</p>
+<p>或者将 <code class="docutils literal notranslate"><span class="pre">[user&#64;]host[:port]</span></code> 字符串填充到 <code class="docutils literal notranslate"><span class="pre">host</span></code> 参数中（尽管这纯粹是为了方便；每当出现歧义时，总是使用 kwargs！）</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;deploy@web1:2202&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects’ methods (like <code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>) usually return
-instances of <code class="xref py py-obj docutils literal notranslate"><span class="pre">invoke.runners.Result</span></code> (or subclasses thereof) exposing the sorts
-of details seen above: what was requested, what happened while the remote
-action occurred, and what the final result was.</p>
+<p><code class="docutils literal notranslate"><span class="pre">.Connection</span></code> 对象的方法（如 <code class="docutils literal notranslate"><span class="pre">~.Connection.run</span></code> ）通常返回 <code class="xref py py-obj docutils literal notranslate"><span class="pre">invoke.runners.Result</span></code> 的实例（或其子类），这些实例揭示了上面所看到的各种细节：请求了什么，当远程操作发生时发生了什么，以及最终结果是什么。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>Many lower-level SSH connection arguments (such as private keys and
-timeouts) can be given directly to the SSH backend by using the
-<span class="xref std std-ref">connect_kwargs argument</span>.</p>
+<p>通过使用 connect_kwargs 参数，可以将许多较低级的 SSH 连接参数（如私钥和超时）直接提供给 SSH 后端。</p>
 </div>
 </section>
 <section id="superuser-privileges-via-auto-response">
-<h2>Superuser privileges via auto-response<a class="headerlink" href="#superuser-privileges-via-auto-response" title="Permalink to this heading">¶</a></h2>
-<p>Need to run things as the remote system’s superuser? You could invoke the
-<code class="docutils literal notranslate"><span class="pre">sudo</span></code> program via <code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>, and (if your remote system isn’t
-configured with passwordless sudo) respond to the password prompt by hand, as
-below. (Note how we need to request a remote pseudo-terminal; most <code class="docutils literal notranslate"><span class="pre">sudo</span></code>
-implementations get grumpy at password-prompt time otherwise.)</p>
+<h2>超级用户特权通过自动响应<a class="headerlink" href="#superuser-privileges-via-auto-response" title="Permalink to this heading">¶</a></h2>
+<p>需要以远程系统的超级用户身份运行程序吗？您可以通过 <code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code> 调用 <code class="docutils literal notranslate"><span class="pre">sudo</span></code> 程序，并且（如果您的远程系统没有配置无密码的 sudo）手动响应密码提示，如下所示。（注意，我们需要请求远程伪终端；大多数 <code class="docutils literal notranslate"><span class="pre">sudo</span></code> 的实现在密码提示时间会变得暴躁。）</p>
 <div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;db1&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;sudo useradd mydbuser&#39;</span><span class="p">,</span> <span class="n">pty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -149,9 +116,7 @@ implementations get grumpy at password-prompt time otherwise.)</p>
 <span class="go">&lt;Result cmd=&#39;id -u mydbuser&#39; exited=0&gt;</span>
 </pre></div>
 </div>
-<p>Giving passwords by hand every time can get old; thankfully Invoke’s powerful
-command-execution functionality includes the ability to <span class="xref std std-ref">auto-respond</span> to program output with pre-defined input. We can use this for
-<code class="docutils literal notranslate"><span class="pre">sudo</span></code>:</p>
+<p>每次手写密码都会变旧；幸运的是，Invoke 强大的命令执行功能包括 <span class="xref std std-ref">auto-respond</span>  对带有预定义输入的程序输出的能力。我们可以用这个来表示 <code class="docutils literal notranslate"><span class="pre">sudo</span></code>：</p>
 <div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">invoke</span> <span class="kn">import</span> <span class="n">Responder</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">)</span>
@@ -165,24 +130,12 @@ command-execution functionality includes the ability to <span class="xref std st
 <span class="go">&lt;Result cmd=&#39;sudo whoami&#39; exited=0&gt;</span>
 </pre></div>
 </div>
-<p>It’s difficult to show in a snippet, but when the above was executed, the user
-didn’t need to type anything; <code class="docutils literal notranslate"><span class="pre">mypassword</span></code> was sent to the remote program
-automatically. Much easier!</p>
+<p>这很难在代码片段中显示出来，但当执行上述命令时，用户不需要输入任何东西；<code class="docutils literal notranslate"><span class="pre">mypassword</span></code> 被自动发送到远程程序。容易得多！</p>
 <section id="the-sudo-helper">
-<h3>The <code class="docutils literal notranslate"><span class="pre">sudo</span></code> helper<a class="headerlink" href="#the-sudo-helper" title="Permalink to this heading">¶</a></h3>
-<p>Using watchers/responders works well here, but it’s a lot of boilerplate to set
-up every time - especially as real-world use cases need more work to detect
-failed/incorrect passwords.</p>
-<p>To help with that, Invoke provides a <code class="xref py py-obj docutils literal notranslate"><span class="pre">Context.sudo</span></code> method which handles most of the boilerplate for
-you (as <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> subclasses <code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code>, it gets this method
-for free.) <code class="xref py py-obj docutils literal notranslate"><span class="pre">sudo</span></code> doesn’t do anything users can’t do
-themselves - but as always, common problems are best solved with commonly
-shared solutions.</p>
-<p>All the user needs to do is ensure the <code class="docutils literal notranslate"><span class="pre">sudo.password</span></code> <a class="reference internal" href="concepts/configuration.html"><span class="doc">configuration
-value</span></a> is filled in (via config file, environment
-variable, or <code class="xref std std-option docutils literal notranslate"><span class="pre">--prompt-for-sudo-password</span></code>) and <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.sudo</span></code>
-handles the rest. For the sake of clarity, here’s an example where a
-library/shell user performs their own <a class="reference external" href="https://docs.python.org/3/library/getpass.html#module-getpass" title="(在 Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getpass</span></code></a>-based password prompt:</p>
+<h3><code class="docutils literal notranslate"><span class="pre">sudo</span></code> 辅助函数<a class="headerlink" href="#the-sudo-helper" title="Permalink to this heading">¶</a></h3>
+<p>在这里使用 watchers/responders 很有效，但是每次都需要设置很多模板——尤其是在现实的用例中需要做更多的工作来检测失败/错误的密码时。</p>
+<p>为了帮助实现这一点，Invoke 提供了 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Context.sudo</span></code> 方法，它为你处理大部分样板文件（像 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 的子类 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code>，它会免费获得这个方法。） <code class="xref py py-obj docutils literal notranslate"><span class="pre">sudo</span></code> 不会做任何用户自己做不到的事情，但和以往一样，共同的解决方案能最好地解决共同的问题。</p>
+<p>用户需要做的就是确保 sudo password <a class="reference internal" href="concepts/configuration.html"><span class="doc">configuration value</span></a>  （通过配置文件、环境变量或 <code class="xref std std-option docutils literal notranslate"><span class="pre">--prompt-for-sudo-password</span></code> 和 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.sudo</span></code> 填写剩下的工作。为了清晰起见，这里有示例，library/shell 用户执行自己的基于 getpass 的密码提示：</p>
 <div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">getpass</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">Config</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sudo_pass</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;What&#39;s your sudo password?&quot;</span><span class="p">)</span>
@@ -199,54 +152,40 @@ library/shell user performs their own <a class="reference external" href="https:
 <span class="go">&lt;Result cmd=&#39;id -u mydbuser&#39; exited=0&gt;</span>
 </pre></div>
 </div>
-<p>We filled in the sudo password up-front at runtime in this example; in
-real-world situations, you might also supply it via the configuration system
-(perhaps using environment variables, to avoid polluting config files), or
-ideally, use a secrets management system.</p>
+<p>在这个例子中，我们在运行时预先填写了 sudo 密码；在现实环境中，你也可以通过配置系统（可能使用环境变量，以避免污染配置文件）提供它，或者理想情况下，使用秘密管理系统。</p>
 </section>
 </section>
 <section id="transfer-files">
-<h2>Transfer files<a class="headerlink" href="#transfer-files" title="Permalink to this heading">¶</a></h2>
-<p>Besides shell command execution, the other common use of SSH connections is
-file transfer; <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.put</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.get</span></code> exist to fill this need.
-For example, say you had an archive file you wanted to upload:</p>
+<h2>传输文件<a class="headerlink" href="#transfer-files" title="Permalink to this heading">¶</a></h2>
+<p>除了执行 shell 命令，SSH 连接的另一个常见用途是文件传输；<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.put</span></code> 和 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection.get</span></code> “存在”来满足这种需求。例如，假设你有一个存档文件想要上传：</p>
 <div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="n">remote</span><span class="o">=</span><span class="s1">&#39;/opt/mydata/&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Uploaded </span><span class="si">{0.local}</span><span class="s2"> to </span><span class="si">{0.remote}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
 <span class="go">Uploaded /local/myfiles.tgz to /opt/mydata/</span>
 </pre></div>
 </div>
-<p>These methods typically follow the behavior of <code class="docutils literal notranslate"><span class="pre">cp</span></code> and <code class="docutils literal notranslate"><span class="pre">scp</span></code>/<code class="docutils literal notranslate"><span class="pre">sftp</span></code> in
-terms of argument evaluation - for example, in the above snippet, we omitted
-the filename part of the remote path argument.</p>
+<p>这些方法在参数求值方面通常遵循 <code class="docutils literal notranslate"><span class="pre">cp</span></code> 和 <code class="docutils literal notranslate"><span class="pre">scp</span></code>/<code class="docutils literal notranslate"><span class="pre">sftp</span></code>  的行为——例如，在上面的代码片段中，我们省略了远程路径参数的文件名部分。</p>
 </section>
 <section id="multiple-actions">
-<h2>Multiple actions<a class="headerlink" href="#multiple-actions" title="Permalink to this heading">¶</a></h2>
-<p>One-liners are good examples but aren’t always realistic use cases - one
-typically needs multiple steps to do anything interesting. At the most basic
-level, you could do this by calling <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> methods multiple times:</p>
+<h2>多动作<a class="headerlink" href="#multiple-actions" title="Permalink to this heading">¶</a></h2>
+<p>一行程序是很好的例子，但并不总是现实的用例——一个程序通常需要多个步骤才能做任何有趣的事情。在最基本的层面上，您可以通过调用 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 来实现多次连接方法:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="s1">&#39;/opt/mydata&#39;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You could (but don’t have to) turn such blocks of code into functions,
-parameterized with a <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> object from the caller, to encourage reuse:</p>
+<p>你可以(但不必)把这样的代码块转换成函数，用参数化 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 对象，以鼓励重用:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">upload_and_unpack</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
     <span class="n">c</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="s1">&#39;/opt/mydata&#39;</span><span class="p">)</span>
     <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>As you’ll see below, such functions can be handed to other API methods to
-enable more complex use cases as well.</p>
+<p>正如你将在下面看到的，这样的函数也可以交给其他 API 方法来实现更复杂的用例。</p>
 </section>
 <section id="multiple-servers">
-<h2>Multiple servers<a class="headerlink" href="#multiple-servers" title="Permalink to this heading">¶</a></h2>
-<p>Most real use cases involve doing things on more than one server. The
-straightforward approach could be to iterate over a list or tuple of
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> arguments (or <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects themselves, perhaps via
-<code class="docutils literal notranslate"><span class="pre">map</span></code>):</p>
+<h2>多服务器<a class="headerlink" href="#multiple-servers" title="Permalink to this heading">¶</a></h2>
+<p>大多数真实的用例都涉及在不止一台服务器上执行任务。简单的方法是遍历 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 参数的列表或元组(或 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 对象本身，可能通过 <code class="docutils literal notranslate"><span class="pre">map</span></code>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">host</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="s1">&#39;web2&#39;</span><span class="p">,</span> <span class="s1">&#39;mac1&#39;</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="n">host</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;uname -s&#39;</span><span class="p">)</span>
@@ -258,13 +197,8 @@ straightforward approach could be to iterate over a list or tuple of
 <span class="go">mac1: Darwin</span>
 </pre></div>
 </div>
-<p>This approach works, but as use cases get more complex it can be
-useful to think of a collection of hosts as a single object. Enter <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code>, a
-class wrapping one-or-more <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects and offering a similar API;
-specifically, you’ll want to use one of its concrete subclasses like
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">SerialGroup</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">ThreadingGroup</span></code>.</p>
-<p>The previous example, using <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">SerialGroup</span></code> specifically), looks like
-this:</p>
+<p>这种方法是可行的，但随着用例变得更加复杂，将主机集合视为单个对象可能会很有用。输入 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code>，包含一个或多个 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 对象的类，并提供类似的 API；具体来说，你会想要使用它的具体子类，比如 <code class="xref py py-obj docutils literal notranslate"><span class="pre">SerialGroup</span></code> 或 <code class="xref py py-obj docutils literal notranslate"><span class="pre">ThreadingGroup</span></code>。</p>
+<p>上一个例子中，使用了 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> (特别是 <code class="xref py py-obj docutils literal notranslate"><span class="pre">SerialGroup</span></code>)，看起来像这样:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">SerialGroup</span> <span class="k">as</span> <span class="n">Group</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="s1">&#39;web2&#39;</span><span class="p">,</span> <span class="s1">&#39;mac1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;uname -s&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
@@ -282,31 +216,20 @@ this:</p>
 <span class="go">mac1: Darwin</span>
 </pre></div>
 </div>
-<p>Where <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> methods return single <code class="docutils literal notranslate"><span class="pre">Result</span></code> objects (e.g.
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">fabric.runners.Result</span></code>), <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> methods return <code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupResult</span></code> - <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(在 Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>-like
-objects offering access to individual per-connection results as well as
-metadata about the entire run.</p>
-<p>When any individual connections within the <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> encounter errors, the
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupResult</span></code> is lightly wrapped in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupException</span></code>, which is raised. Thus
-the aggregate behavior resembles that of individual <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> methods,
-returning a value on success or raising an exception on failure.</p>
+<p>这里 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 方法返回单个 <code class="docutils literal notranslate"><span class="pre">Result</span></code> 对象(例如 <code class="xref py py-obj docutils literal notranslate"><span class="pre">fabric.runners.Result</span></code>)，<code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> 方法返回 <code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupResult</span></code> 类似于 <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(在 Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> 的对象，提供对每个连接结果以及整个运行的元数据的访问。</p>
+<p>当任何个人内部连接 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> 遇到错误，被轻包装在 <code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupResult</span></code> 将引发 <code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupException</span></code>。因此，集体行为类似于个体的 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 方法，成功时返回值，失败时引发异常。</p>
 </section>
 <section id="bringing-it-all-together">
-<h2>Bringing it all together<a class="headerlink" href="#bringing-it-all-together" title="Permalink to this heading">¶</a></h2>
-<p>Finally, we arrive at the most realistic use case: you’ve got a bundle of
-commands and/or file transfers and you want to apply it to multiple servers.
-You <em>could</em> use multiple <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> method calls to do this:</p>
+<h2>把它们放在一起<a class="headerlink" href="#bringing-it-all-together" title="Permalink to this heading">¶</a></h2>
+<p>最后，我们得出了最现实的用例：你有一堆命令和/或文件传输，你想把它应用到多个服务器上。你 <em>可以</em> 使用 multiple <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code> 方法调用来完成此操作:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">SerialGroup</span> <span class="k">as</span> <span class="n">Group</span>
 <span class="n">pool</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="s1">&#39;web2&#39;</span><span class="p">,</span> <span class="s1">&#39;web3&#39;</span><span class="p">)</span>
 <span class="n">pool</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;myfiles.tgz&#39;</span><span class="p">,</span> <span class="s1">&#39;/opt/mydata&#39;</span><span class="p">)</span>
 <span class="n">pool</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>That approach falls short as soon as logic becomes necessary - for example, if
-you only wanted to perform the copy-and-untar above when <code class="docutils literal notranslate"><span class="pre">/opt/mydata</span></code> is
-empty. Performing that sort of check requires execution on a per-server basis.</p>
-<p>You could fill that need by using iterables of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> objects (though
-this foregoes some benefits of using <code class="xref py py-obj docutils literal notranslate"><span class="pre">Groups</span></code>):</p>
+<p>当需要逻辑时，这种方法就会出现问题—例如，如果您只想在 <code class="docutils literal notranslate"><span class="pre">/opt/mydata</span></code> 为空时执行上面的 copy-and-untar 操作。执行这种检查需要在每个服务器上执行。</p>
+<p>你可以通过使用 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code> 的可迭代对象来满足这个需求。(尽管这放弃了使用 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Groups</span></code> 的一些好处):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="k">for</span> <span class="n">host</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;web1&#39;</span><span class="p">,</span> <span class="s1">&#39;web2&#39;</span><span class="p">,</span> <span class="s1">&#39;web3&#39;</span><span class="p">):</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
@@ -315,8 +238,7 @@ this foregoes some benefits of using <code class="xref py py-obj docutils litera
         <span class="n">c</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;tar -C /opt/mydata -xzvf /opt/mydata/myfiles.tgz&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Alternatively, remember how we used a function in that earlier example? You can
-go that route instead:</p>
+<p>另外，还记得我们在前面的例子中是如何使用函数的吗？你可以走那条路:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fabric</span> <span class="kn">import</span> <span class="n">SerialGroup</span> <span class="k">as</span> <span class="n">Group</span>
 
 <span class="k">def</span> <span class="nf">upload_and_unpack</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
@@ -328,27 +250,15 @@ go that route instead:</p>
     <span class="n">upload_and_unpack</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The only convenience this final approach lacks is a useful analogue to
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">Group.run</span></code> - if you want to track the results of all the
-<code class="docutils literal notranslate"><span class="pre">upload_and_unpack</span></code> call as an aggregate, you have to do that yourself. Look
-to future feature releases for more in this space!</p>
+<p>这种最后的方法唯一缺乏的便利是对 <code class="xref py py-obj docutils literal notranslate"><span class="pre">Group.run</span></code> 的有用模拟——如果你想跟踪所有 <code class="docutils literal notranslate"><span class="pre">upload_and_unpack</span></code> 调用的结果作为一个聚合，你必须自己做。期待未来的功能发布，在这个领域获得更多!</p>
 </section>
 <section id="addendum-the-fab-command-line-tool">
-<h2>Addendum: the <code class="docutils literal notranslate"><span class="pre">fab</span></code> command-line tool<a class="headerlink" href="#addendum-the-fab-command-line-tool" title="Permalink to this heading">¶</a></h2>
-<p>It’s often useful to run Fabric code from a shell, e.g. deploying applications
-or running sysadmin jobs on arbitrary servers. You could use regular
-<span class="xref std std-ref">Invoke tasks</span> with Fabric library
-code in them, but another option is Fabric’s own “network-oriented” tool,
-<code class="docutils literal notranslate"><span class="pre">fab</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">fab</span></code> wraps Invoke’s CLI mechanics with features like host selection, letting
-you quickly run tasks on various servers - without having to define <code class="docutils literal notranslate"><span class="pre">host</span></code>
-kwargs on all your tasks or similar.</p>
+<h2>附录：<code class="docutils literal notranslate"><span class="pre">fab</span></code> 命令行工具<a class="headerlink" href="#addendum-the-fab-command-line-tool" title="Permalink to this heading">¶</a></h2>
+<p>从 shell 运行 Fabric 代码通常很有用，例如部署应用程序或在任意服务器上运行系统管理任务。您可以使用带有 Fabric 库代码的 <span class="xref std std-ref">Invoke tasks</span>，但另一个选择是 Fabric 自己的面向网络的工具 <code class="docutils literal notranslate"><span class="pre">fab</span></code>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">fab</span></code> 将 Invoke 的 CLI 机制与主机选择等功能包装在一起，让您可以在不同的服务器上快速运行任务，而不必在所有任务或类似的任务上定义 <code class="docutils literal notranslate"><span class="pre">host</span></code> kwargs。</p>
 <div class="admonition note">
 <p class="admonition-title">备注</p>
-<p>This mode was the primary API of Fabric 1.x; as of 2.0 it’s just a
-convenience. Whenever your use case falls outside these shortcuts, it
-should be easy to revert to the library API directly (with or without
-Invoke’s less opinionated CLI tasks wrapped around it).</p>
+<p>这种模式是 Fabric 1.x 的主要 API；对于 2.0 版本来说，这只是一种方便。无论何时你的用例落在这些快捷方式之外，它应该很容易直接恢复到库API(有或没有调用的不太固执的CLI任务包装它)。</p>
 </div>
 <p>For a final code example, let’s adapt the previous example into a <code class="docutils literal notranslate"><span class="pre">fab</span></code> task
 module called <code class="docutils literal notranslate"><span class="pre">fabfile.py</span></code>:</p>
@@ -420,20 +330,20 @@ than one host, which runs the task multiple times, each time with a different
 
 <h3>导航</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#a-note-about-imports">A note about imports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#run-commands-via-connections-and-run">Run commands via Connections and <code class="docutils literal notranslate"><span class="pre">run</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#superuser-privileges-via-auto-response">Superuser privileges via auto-response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#transfer-files">Transfer files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiple-actions">Multiple actions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiple-servers">Multiple servers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bringing-it-all-together">Bringing it all together</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#addendum-the-fab-command-line-tool">Addendum: the <code class="docutils literal notranslate"><span class="pre">fab</span></code> command-line tool</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">快速上手</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#a-note-about-imports">关于导入的说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-commands-via-connections-and-run">通过  Connections 和 <code class="docutils literal notranslate"><span class="pre">run</span></code> 运行命令</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#superuser-privileges-via-auto-response">超级用户特权通过自动响应</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transfer-files">传输文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-actions">多动作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-servers">多服务器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bringing-it-all-together">把它们放在一起</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#addendum-the-fab-command-line-tool">附录：<code class="docutils literal notranslate"><span class="pre">fab</span></code> 命令行工具</a></li>
 </ul>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="concepts/authentication.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts/authentication.html">身份验证</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts/networking.html">Networking</a></li>
 </ul>
@@ -458,7 +368,7 @@ than one host, which runs the task multiple times, each time with a different
 <hr />
 <ul>
     
-    <li class="toctree-l1"><a href="https://www.fabfile.org">Main website</a></li>
+    <li class="toctree-l1"><a href="https://daobook.github.io/fabric/www/">Main website</a></li>
     
 </ul>
 
