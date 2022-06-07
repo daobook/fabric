@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../index.rst:3
 msgid "Welcome to Fabric's documentation!"
-msgstr ""
+msgstr "欢迎加入 Fabric 文档！"
 
 #: ../../index.rst:5
 msgid ""
@@ -27,16 +27,19 @@ msgid ""
 "what Fabric is, including its public changelog & how the project is "
 "maintained, please see `the main project website <http://fabfile.org>`_."
 msgstr ""
+"这个网站涵盖了 Fabric 的使用和 API 文档。"
+"关于 Fabric 的基本信息，包括它的公共变更日志和项目是如何维护的，请参见 `主项目网站 <http://fabfile.org>`_。"
 
 #: ../../index.rst:10
 msgid "Getting started"
-msgstr ""
+msgstr "快速上手"
 
 #: ../../index.rst:12
 msgid ""
 "Many core ideas & API calls are explained in the tutorial/getting-started"
 " document:"
 msgstr ""
+"许多核心理念和 API 调用在教程/入门文档中都有解释："
 
 #: ../../index.rst:21
 msgid "Upgrading from 1.x"
@@ -50,15 +53,15 @@ msgstr ""
 
 #: ../../index.rst:29
 msgid "Concepts"
-msgstr ""
+msgstr "概念"
 
 #: ../../index.rst:31
 msgid "Dig deeper into specific topics:"
-msgstr ""
+msgstr "深入挖掘特定的话题："
 
 #: ../../index.rst:40
 msgid "The ``fab`` CLI tool"
-msgstr ""
+msgstr "``fab`` CLI 工具"
 
 #: ../../index.rst:42
 msgid ""
@@ -66,6 +69,7 @@ msgid ""
 "machinery, and examples of shortcuts for executing tasks across hosts or "
 "groups."
 msgstr ""
+"Fabric 的 CLI 界面的详细信息，它如何扩展 Invoke 的 CLI 机制，以及跨主机或组执行任务的快捷方式的示例。"
 
 #: ../../index.rst:51
 msgid "API"
@@ -76,4 +80,4 @@ msgid ""
 "Know what you're looking for & just need API details? View our auto-"
 "generated API documentation:"
 msgstr ""
-
+"知道你在寻找什么&只需要 API 细节？查看我们的自动生成 API 文档："

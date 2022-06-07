@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../concepts/authentication.rst:3
 msgid "Authentication"
-msgstr ""
+msgstr "身份验证"
 
 #: ../../concepts/authentication.rst:5
 msgid ""
@@ -28,6 +28,8 @@ msgid ""
 " not only supports most of those, but has more of its own. This document "
 "outlines the available methods for setting authentication secrets."
 msgstr ""
+"即使在 ‘普通的’ OpenSSH 客户端中，对远程服务器的身份验证也涉及到多个潜在的机密和配置来源；"
+"Fabric 不仅支持其中的大部分功能，还拥有更多自己的功能。本文档概述了设置身份验证密钥的可用方法。"
 
 #: ../../concepts/authentication.rst:11
 msgid ""
@@ -39,10 +41,14 @@ msgid ""
 "</concepts/configuration>` subtree, or the ``connect_kwargs`` keyword "
 "argument of `.Connection`."
 msgstr ""
+"由于 Fabric 本身并没有尝试重新创造太多 Paramiko 功能，"
+"所以大部分配置身份验证值的时间都归结为“如何为 `SSHClient.connect "
+"<paramiko.client.SSHClient.connect>` 设置关键字参数值”，这反过来意味着在 ``connect_kwargs``  :doc:`config "
+"</concepts/configuration>` 子树，或 ``connect_kwargs`` 关键字参数中设置值。"
 
 #: ../../concepts/authentication.rst:20
 msgid "Private key files"
-msgstr ""
+msgstr "私钥文件"
 
 #: ../../concepts/authentication.rst:22
 msgid ""
@@ -51,6 +57,8 @@ msgid ""
 "use, most of which end up merged into one list of paths handed to "
 "``SSHClient.connect(key_filename=[...])``, in the following order:"
 msgstr ""
+"存储在磁盘上的私钥可能是 SSH 最常见的身份验证机制。"
+"Fabric 提供了多种方法来配置要使用的路径，其中大多数最终会合并成一个路径列表，然后按以下顺序交给 ``SSHClient.connect(key_filename=[...])`` ："
 
 #: ../../concepts/authentication.rst:27
 msgid ""
@@ -58,6 +66,7 @@ msgid ""
 "`.Connection`, they come first in the list. (This is basically the "
 "\"runtime\" option for non-CLI users.)"
 msgstr ""
+"如果在 `.Connection` 的  ``connect_kwargs`` 参数中存在 ``key_filename`` 键，则它们在列表中首先出现。(这基本上是非 CLI 用户的运行时选项。)"
 
 #: ../../concepts/authentication.rst:30
 msgid ""
@@ -68,6 +77,9 @@ msgid ""
 "filename values from other config sources will be overridden.) This value"
 " comes next in the overall list."
 msgstr ""
+"配置设置 ``connect_kwargs.key_filename`` 可以通过多种方式设置(根据 :doc:`config docs </concepts/configuration>`)，"
+"包括通过 :option:`--identity` CLI 标志(它设置配置的 ``overrides`` 级别；"
+"因此，当使用此标志时，来自其他配置源的键文件名值将被覆盖。)这个值在整个列表中排名第二。"
 
 #: ../../concepts/authentication.rst:35
 msgid ""
@@ -75,22 +87,25 @@ msgid ""
 "directives lets you share configuration with other SSH clients; such "
 "values come last."
 msgstr ""
+"使用 :ref:`ssh_config <ssh-config>` 文件与 ``IdentityFile`` 指令让你与其他 SSH 客户端共享配置；这些值排在最后。"
 
 #: ../../concepts/authentication.rst:40
 msgid "Encryption passphrases"
-msgstr ""
+msgstr "加密密码"
 
 #: ../../concepts/authentication.rst:42
 msgid ""
 "If your private key file is protected via a passphrase, it can be "
 "supplied in a handful of ways:"
 msgstr ""
+"如果你的私钥文件是通过密码保护的，它可以通过几种方式提供："
 
 #: ../../concepts/authentication.rst:45
 msgid ""
 "The ``connect_kwargs.passphrase`` config option is the most direct way to"
 " supply a passphrase to be used automatically."
 msgstr ""
+"``connect_kwargs.passphrase`` 配置选项是提供 passphrase 自动使用的最直接的方式。"
 
 #: ../../concepts/authentication.rst:49
 msgid ""

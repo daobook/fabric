@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../getting-started.rst:3
 msgid "Getting started"
-msgstr ""
+msgstr "快速上手"
 
 #: ../../getting-started.rst:5
 msgid ""
@@ -27,10 +27,11 @@ msgid ""
 "details, see the links within, or the documentation index which has links"
 " to conceptual and API doc sections."
 msgstr ""
+"欢迎！本教程重点介绍了 Fabric 的核心特性；要了解更多的细节，请参见内部的链接，或文档索引，其中有概念文档和 API 文档部分的链接。"
 
 #: ../../getting-started.rst:11
 msgid "A note about imports"
-msgstr ""
+msgstr "关于导入的说明"
 
 #: ../../getting-started.rst:13
 msgid ""
@@ -39,6 +40,8 @@ msgid ""
 "package, but you'll sometimes import directly from ``invoke`` or "
 "``paramiko`` too:"
 msgstr ""
+"Fabric 由几个其他库组成，并在其上提供自己的层；"
+"用户代码通常从 ``fabric`` 包中导入，但有时也可以直接从 ``invoke`` 或 ``paramiko`` 中导入"
 
 #: ../../getting-started.rst:17
 msgid ""
@@ -46,6 +49,7 @@ msgid ""
 "organization, and shell command execution (a generic framework plus "
 "specific implementation for local commands.)"
 msgstr ""
+"`Invoke <https://www.pyinvoke.org>`_ 实现了 CLI 解析、任务组织和 shell 命令执行（通用框架加上本地命令的特定实现）。"
 
 #: ../../getting-started.rst:21
 msgid ""
@@ -53,42 +57,49 @@ msgid ""
 "and it is often used standalone by programmers who don't need any remote "
 "functionality."
 msgstr ""
+"任何与远程系统无关的内容都存在于 Invoke 中，并且通常由不需要任何远程功能的程序员独立使用。"
 
 #: ../../getting-started.rst:24
 msgid ""
 "Fabric users will frequently import Invoke objects, in cases where Fabric"
 " itself has no need to subclass or otherwise modify what Invoke provides."
 msgstr ""
+"Fabric 用户将经常导入 Invoke 对象，在 Fabric 本身不需要子类化或修改 Invoke 提供的内容的情况下。"
 
 #: ../../getting-started.rst:27
 msgid ""
 "`Paramiko <https://www.paramiko.org>`_ implements low/mid level SSH "
 "functionality - SSH and SFTP sessions, key management, etc."
 msgstr ""
+"`Paramiko <https://www.paramiko.org>`_ 实现了低/中级 SSH 功能- SSH 和 SFTP 会话，密钥管理，等等。"
 
 #: ../../getting-started.rst:30
 msgid ""
 "Fabric mostly uses this under the hood; users will only rarely import "
 "from Paramiko directly."
 msgstr ""
+"Fabric 主要在底层使用；用户很少会直接从 Paramiko 导入。"
 
 #: ../../getting-started.rst:33
 msgid ""
 "Fabric glues the other libraries together and provides its own high level"
 " objects too, e.g.:"
 msgstr ""
+"Fabric 将其他库粘合在一起，并提供自己的高级对象，例如："
 
 #: ../../getting-started.rst:36
 msgid ""
 "Subclassing Invoke's context and command-runner classes, wrapping them "
 "around Paramiko-level primitives;"
 msgstr ""
+"子类化 Invoke 的上下文和命令运行类，将它们包装在 paramiko 级原语中；"
 
 #: ../../getting-started.rst:38
 msgid ""
 "Extending Invoke's configuration system by using Paramiko's "
 "``ssh_config`` parsing machinery;"
 msgstr ""
+"通过使用 Paramiko 的 ``ssh_config``  解析机制来扩展 Invoke 的配置系统"
 
 #: ../../getting-started.rst:40
 msgid ""
@@ -96,10 +107,11 @@ msgid ""
 "forwarding context managers. (These may, in time, migrate downwards into "
 "Paramiko.)"
 msgstr ""
+"实现自己的新的高级原语，比如端口转发上下文管理器。（假以时日，它们可能会向下迁移到 Paramiko。）"
 
 #: ../../getting-started.rst:50
 msgid "Run commands via Connections and ``run``"
-msgstr ""
+msgstr "通过  Connections 和 ``run`` 运行命令"
 
 #: ../../getting-started.rst:52
 msgid ""
@@ -108,6 +120,8 @@ msgid ""
 " remote program's output is printed directly to your terminal, *and* "
 "captured. A basic example:"
 msgstr ""
+"Fabric 最基本的用途是通过 SSH 在远程系统上执行 shell 命令，然后（可选地）查询结果。"
+"默认情况下，远程程序的输出直接打印到终端，并被捕获。基本的例子："
 
 #: ../../getting-started.rst:85
 msgid ""
@@ -117,6 +131,9 @@ msgid ""
 "parameterized by username and/or port number. You can give these "
 "explicitly via args/kwargs::"
 msgstr ""
+"满足 ``.Connection``，它代表 SSH 连接，并提供 Fabric 的核心 API，如 :func:`~.Connection.run`。"
+"``.Connection`` 对象至少需要主机名才能成功创建，并且可以通过用户名和/或端口号进一步参数化。"
+"你可以通过 args/kwargs 明确地给出这些参数::"
 
 #: ../../getting-started.rst:92
 msgid ""
@@ -124,6 +141,7 @@ msgid ""
 " (though this is purely convenience; always use kwargs whenever ambiguity"
 " appears!)::"
 msgstr ""
+"或者将 ``[user@]host[:port]`` 字符串填充到 ``host`` 参数中（尽管这纯粹是为了方便；每当出现歧义时，总是使用 kwargs！） ::"
 
 #: ../../getting-started.rst:98
 msgid ""
@@ -132,6 +150,8 @@ msgid ""
 " sorts of details seen above: what was requested, what happened while the"
 " remote action occurred, and what the final result was."
 msgstr ""
+"``.Connection`` 对象的方法（如 ``~.Connection.run`` ）通常返回 `invoke.runners.Result` 的实例（或其子类），"
+"这些实例揭示了上面所看到的各种细节：请求了什么，当远程操作发生时发生了什么，以及最终结果是什么。"
 
 #: ../../getting-started.rst:104
 msgid ""
@@ -139,10 +159,11 @@ msgid ""
 "timeouts) can be given directly to the SSH backend by using the "
 ":ref:`connect_kwargs argument <connect_kwargs-arg>`."
 msgstr ""
+"通过使用 connect_kwargs 参数，可以将许多较低级的 SSH 连接参数（如私钥和超时）直接提供给 SSH 后端。"
 
 #: ../../getting-started.rst:109
 msgid "Superuser privileges via auto-response"
-msgstr ""
+msgstr "超级用户特权通过自动响应"
 
 #: ../../getting-started.rst:111
 msgid ""
@@ -153,6 +174,9 @@ msgid ""
 " most ``sudo`` implementations get grumpy at password-prompt time "
 "otherwise.)"
 msgstr ""
+"需要以远程系统的超级用户身份运行程序吗？"
+"您可以通过 `~.Connection.run` 调用 ``sudo`` 程序，并且（如果您的远程系统没有配置无密码的 sudo）手动响应密码提示，如下所示。"
+"（注意，我们需要请求远程伪终端；大多数 ``sudo`` 的实现在密码提示时间会变得暴躁。）"
 
 #: ../../getting-started.rst:140
 msgid ""
@@ -161,6 +185,8 @@ msgid ""
 ":`auto-respond <autoresponding>` to program output with pre-defined "
 "input. We can use this for ``sudo``:"
 msgstr ""
+"每次手写密码都会变旧；幸运的是，Invoke 强大的命令执行功能包括 :ref:`auto-respond <autoresponding>`  对带有预定义输入的程序输出的能力。"
+"我们可以用这个来表示 ``sudo``："
 
 #: ../../getting-started.rst:168
 msgid ""
@@ -168,10 +194,11 @@ msgid ""
 " user didn't need to type anything; ``mypassword`` was sent to the remote"
 " program automatically. Much easier!"
 msgstr ""
+"这很难在代码片段中显示出来，但当执行上述命令时，用户不需要输入任何东西；``mypassword`` 被自动发送到远程程序。容易得多！"
 
 #: ../../getting-started.rst:173
 msgid "The ``sudo`` helper"
-msgstr ""
+msgstr "``sudo`` 辅助函数"
 
 #: ../../getting-started.rst:175
 msgid ""
@@ -179,6 +206,7 @@ msgid ""
 "to set up every time - especially as real-world use cases need more work "
 "to detect failed/incorrect passwords."
 msgstr ""
+"在这里使用 watchers/responders 很有效，但是每次都需要设置很多模板——尤其是在现实的用例中需要做更多的工作来检测失败/错误的密码时。"
 
 #: ../../getting-started.rst:179
 msgid ""
@@ -190,6 +218,10 @@ msgid ""
 "themselves - but as always, common problems are best solved with commonly"
 " shared solutions."
 msgstr ""
+"为了帮助实现这一点，Invoke 提供了 `Context.sudo "
+"<invoke.context.Context.sudo>` 方法，"
+"它为你处理大部分样板文件（像 `.Connection` 的子类 `~invoke.context.Context`，它会免费获得这个方法。） "
+"`~invoke.context.Context.sudo` 不会做任何用户自己做不到的事情，但和以往一样，共同的解决方案能最好地解决共同的问题。"
 
 #: ../../getting-started.rst:186
 msgid ""
@@ -200,6 +232,9 @@ msgid ""
 "clarity, here's an example where a library/shell user performs their own "
 "`getpass`-based password prompt:"
 msgstr ""
+"用户需要做的就是确保 sudo password :doc:`configuration value </concepts/configuration>`  （通过配置文件、环境变量或 :option:`--prompt-for-sudo-"
+"password` 和 `.Connection.sudo` 填写剩下的工作。"
+"为了清晰起见，这里有示例，library/shell 用户执行自己的基于 getpass 的密码提示："
 
 #: ../../getting-started.rst:228
 msgid ""
@@ -208,10 +243,11 @@ msgid ""
 "system (perhaps using environment variables, to avoid polluting config "
 "files), or ideally, use a secrets management system."
 msgstr ""
+"在这个例子中，我们在运行时预先填写了 sudo 密码；在现实环境中，你也可以通过配置系统（可能使用环境变量，以避免污染配置文件）提供它，或者理想情况下，使用秘密管理系统。"
 
 #: ../../getting-started.rst:235
 msgid "Transfer files"
-msgstr ""
+msgstr "传输文件"
 
 #: ../../getting-started.rst:237
 msgid ""
@@ -219,6 +255,8 @@ msgid ""
 "is file transfer; `.Connection.put` and `.Connection.get` exist to fill "
 "this need. For example, say you had an archive file you wanted to upload:"
 msgstr ""
+"除了执行 shell 命令，SSH 连接的另一个常见用途是文件传输；`.Connection.put` 和 `.Connection.get` “存在”来满足这种需求。"
+"例如，假设你有一个存档文件想要上传："
 
 #: ../../getting-started.rst:256
 msgid ""
@@ -226,10 +264,11 @@ msgid ""
 "``scp``/``sftp`` in terms of argument evaluation - for example, in the "
 "above snippet, we omitted the filename part of the remote path argument."
 msgstr ""
+"这些方法在参数求值方面通常遵循 ``cp`` 和 ``scp``/``sftp``  的行为——例如，在上面的代码片段中，我们省略了远程路径参数的文件名部分。"
 
 #: ../../getting-started.rst:262
 msgid "Multiple actions"
-msgstr ""
+msgstr "多动作"
 
 #: ../../getting-started.rst:264
 msgid ""
@@ -238,6 +277,8 @@ msgid ""
 "basic level, you could do this by calling `.Connection` methods multiple "
 "times::"
 msgstr ""
+"一行程序是很好的例子，但并不总是现实的用例——一个程序通常需要多个步骤才能做任何有趣的事情。"
+"在最基本的层面上，您可以通过调用 `.Connection` 来实现多次连接方法::"
 
 #: ../../getting-started.rst:273
 msgid ""
@@ -245,16 +286,18 @@ msgid ""
 "parameterized with a `.Connection` object from the caller, to encourage "
 "reuse::"
 msgstr ""
+"你可以(但不必)把这样的代码块转换成函数，用参数化 `.Connection` 对象，以鼓励重用::"
 
 #: ../../getting-started.rst:280
 msgid ""
 "As you'll see below, such functions can be handed to other API methods to"
 " enable more complex use cases as well."
 msgstr ""
+"正如你将在下面看到的，这样的函数也可以交给其他 API 方法来实现更复杂的用例。"
 
 #: ../../getting-started.rst:285
 msgid "Multiple servers"
-msgstr ""
+msgstr "多服务器"
 
 #: ../../getting-started.rst:287
 msgid ""
@@ -263,6 +306,8 @@ msgid ""
 "`.Connection` arguments (or `.Connection` objects themselves, perhaps via"
 " ``map``)::"
 msgstr ""
+"大多数真实的用例都涉及在不止一台服务器上执行任务。"
+"简单的方法是遍历 `.Connection` 参数的列表或元组(或 `.Connection` 对象本身，可能通过 ``map``)::"
 
 #: ../../getting-started.rst:302
 msgid ""
@@ -272,12 +317,16 @@ msgid ""
 "API; specifically, you'll want to use one of its concrete subclasses like"
 " `.SerialGroup` or `.ThreadingGroup`."
 msgstr ""
+"这种方法是可行的，但随着用例变得更加复杂，将主机集合视为单个对象可能会很有用。"
+"输入 `.Group`，包含一个或多个 `.Connection` 对象的类，并提供类似的 API；"
+"具体来说，你会想要使用它的具体子类，比如 `.SerialGroup` 或 `.ThreadingGroup`。"
 
 #: ../../getting-started.rst:308
 msgid ""
 "The previous example, using `.Group` (`.SerialGroup` specifically), looks"
 " like this::"
 msgstr ""
+"上一个例子中，使用了 `.Group` (特别是 `.SerialGroup`)，看起来像这样::"
 
 #: ../../getting-started.rst:327
 msgid ""
@@ -286,6 +335,8 @@ msgid ""
 "`dict`-like objects offering access to individual per-connection results "
 "as well as metadata about the entire run."
 msgstr ""
+"这里 `.Connection` 方法返回单个 ``Result`` 对象(例如 `fabric.runners.Result`)，"
+"`.Group` 方法返回 `.GroupResult` 类似于 `dict` 的对象，提供对每个连接结果以及整个运行的元数据的访问。"
 
 #: ../../getting-started.rst:332
 msgid ""
@@ -295,10 +346,12 @@ msgid ""
 "`.Connection` methods, returning a value on success or raising an "
 "exception on failure."
 msgstr ""
+"当任何个人内部连接 `.Group` 遇到错误，被轻包装在 `.GroupResult` 将引发 `.GroupException`。"
+"因此，集体行为类似于个体的 `.Connection` 方法，成功时返回值，失败时引发异常。"
 
 #: ../../getting-started.rst:339
 msgid "Bringing it all together"
-msgstr ""
+msgstr "把它们放在一起"
 
 #: ../../getting-started.rst:341
 msgid ""
@@ -306,6 +359,8 @@ msgid ""
 " commands and/or file transfers and you want to apply it to multiple "
 "servers. You *could* use multiple `.Group` method calls to do this::"
 msgstr ""
+"最后，我们得出了最现实的用例：你有一堆命令和/或文件传输，你想把它应用到多个服务器上。"
+"你 *可以* 使用 multiple `.Group` 方法调用来完成此操作::"
 
 #: ../../getting-started.rst:350
 msgid ""
@@ -314,18 +369,23 @@ msgid ""
 "``/opt/mydata`` is empty. Performing that sort of check requires "
 "execution on a per-server basis."
 msgstr ""
+"当需要逻辑时，这种方法就会出现问题—例如，如果您只想在 ``/opt/mydata`` 为空时执行上面的 copy-and-untar 操作。"
+"执行这种检查需要在每个服务器上执行。"
 
 #: ../../getting-started.rst:354
 msgid ""
 "You could fill that need by using iterables of `.Connection` objects "
 "(though this foregoes some benefits of using `Groups <.Group>`)::"
 msgstr ""
+"你可以通过使用 `.Connection` 的可迭代对象来满足这个需求。(尽管这放弃了使用 `Groups <.Group>` 的一些好处)::"
 
 #: ../../getting-started.rst:364
 msgid ""
 "Alternatively, remember how we used a function in that earlier example? "
 "You can go that route instead::"
 msgstr ""
+"另外，还记得我们在前面的例子中是如何使用函数的吗？"
+"你可以走那条路::"
 
 #: ../../getting-started.rst:377
 msgid ""
@@ -334,10 +394,12 @@ msgid ""
 "``upload_and_unpack`` call as an aggregate, you have to do that yourself."
 " Look to future feature releases for more in this space!"
 msgstr ""
+"这种最后的方法唯一缺乏的便利是对 `.Group.run` 的有用模拟——如果你想跟踪所有 ``upload_and_unpack`` 调用的结果作为一个聚合，你必须自己做。"
+"期待未来的功能发布，在这个领域获得更多!"
 
 #: ../../getting-started.rst:384
 msgid "Addendum: the ``fab`` command-line tool"
-msgstr ""
+msgstr "附录：``fab`` 命令行工具"
 
 #: ../../getting-started.rst:386
 msgid ""
@@ -347,6 +409,8 @@ msgid ""
 "Fabric library code in them, but another option is Fabric's own "
 "\"network-oriented\" tool, ``fab``."
 msgstr ""
+"从 shell 运行 Fabric 代码通常很有用，例如部署应用程序或在任意服务器上运行系统管理任务。"
+"您可以使用带有 Fabric 库代码的 :ref:`Invoke tasks <defining-and-running-task-functions>`，但另一个选择是 Fabric 自己的面向网络的工具 ``fab``。"
 
 #: ../../getting-started.rst:392
 msgid ""
@@ -354,6 +418,7 @@ msgid ""
 "letting you quickly run tasks on various servers - without having to "
 "define ``host`` kwargs on all your tasks or similar."
 msgstr ""
+"``fab`` 将 Invoke 的 CLI 机制与主机选择等功能包装在一起，让您可以在不同的服务器上快速运行任务，而不必在所有任务或类似的任务上定义 ``host`` kwargs。"
 
 #: ../../getting-started.rst:397
 msgid ""
@@ -362,6 +427,8 @@ msgid ""
 "should be easy to revert to the library API directly (with or without "
 "Invoke's less opinionated CLI tasks wrapped around it)."
 msgstr ""
+"这种模式是 Fabric 1.x 的主要 API；对于 2.0 版本来说，这只是一种方便。"
+"无论何时你的用例落在这些快捷方式之外，它应该很容易直接恢复到库API(有或没有调用的不太固执的CLI任务包装它)。"
 
 #: ../../getting-started.rst:402
 msgid ""

@@ -62,18 +62,23 @@ msgid ""
 "<https://paramiko.org>`_ (SSH protocol implementation), extending their "
 "APIs to complement one another and provide additional functionality."
 msgstr ""
+"Fabric 是高级 Python(2.7, 3.4+) 库，用于通过 SSH 远程执行 shell 命令，并返回有用的 Python 对象。"
+"它构建在 `Invoke <https://pyinvoke.org>`_ (子进程命令执行和命令行特性) 和 Paramiko (SSH 协议实现)之上，扩展它们的 api 以相互补充并提供额外的功能。"
 
 #: ../../../../README.rst:29
 msgid ""
 "To find out what's new in this version of Fabric, please see `the "
 "changelog <https://fabfile.org/changelog.html#{}>`_."
 msgstr ""
+"要了解这个版本的 Fabric 的新特性，请查看 `the "
+"changelog <https://fabfile.org/changelog.html#{}>`_。"
 
 #: ../../../../README.rst:32
 msgid ""
 "The project maintainer keeps a `roadmap "
 "<https://bitprophet.org/projects#roadmap>`_ on his website."
 msgstr ""
+"项目维护者在他的网站上保持一个 `路线图 <https://bitprophet.org/projects#roadmap>`_。"
 
 #: ../../index.rst:3
 msgid ""
@@ -82,16 +87,19 @@ msgid ""
 "documentation can be found at our code documentation site, "
 "`docs.fabfile.org <https://docs.fabfile.org>`_."
 msgstr ""
+"该网站涵盖了 Fabric 的项目信息，如变更日志、贡献指南等。"
+"详细的用法和 API 文档可以在我们的代码文档网站上找到，`docs.fabfile.org <https://docs.fabfile.org>`_ "
 
 #: ../../index.rst:8
 msgid ""
 "Please see below for a high level intro, or the navigation on the left "
 "for the rest of the site content."
 msgstr ""
+"请参阅下面的高级介绍，或左侧的导航为网站的其余内容。"
 
 #: ../../index.rst:12
 msgid "What is Fabric?"
-msgstr ""
+msgstr "Fabric 是什么？"
 
 #: ../../index.rst:14
 msgid ""
@@ -99,6 +107,7 @@ msgid ""
 "shell commands remotely over SSH, yielding useful Python objects in "
 "return:"
 msgstr ""
+"Fabric 是高级 Python(2.7, 3.4+) 库，用于通过 SSH 远程执行 shell 命令，返回有用的 Python 对象："
 
 #: ../../index.rst:37
 msgid ""
